@@ -18,3 +18,6 @@ Route::get('/', function () {
 });
 
 Route::view('/administrador','Administrador/admin');
+
+Route::view('/unidades','Administrador/unidades');
+Route::view('/aspectoevaluacion','Administrador/AspectosEvaluacion');

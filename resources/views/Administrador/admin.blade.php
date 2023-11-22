@@ -40,7 +40,7 @@
     <ul class="navbar-nav bg-unan sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="Administrador.html">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('administrador')}}">
             <div class="sidebar-brand-icon ">
                 <i class="fa-solid fa-briefcase"></i>
             </div>
@@ -136,13 +136,13 @@
                 <span>Empresa</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="Genero.html">
+            <a class="nav-link" href="{{url('genero')}}">
                 <i class="fas fa-fw fa-venus-mars"></i>
                 <span>Género</span></a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="Rol.html">
+            <a class="nav-link" href="{{url('rol')}}">
                 <i class="fas fa-fw fa-user"></i>
                 <span>Rol</span></a>
         </li>

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Empresa</title>
+    <title>Genero</title>
 
     <!-- Custom fonts for this template -->
     <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -124,18 +124,18 @@
         </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item active">
+        <li class="nav-item">
             <a class="nav-link" href="{{url('empresa')}}">
                 <i class="fas fa-fw fa-building"></i>
                 <span>Empresa</span></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item ">
             <a class="nav-link" href="{{url('genero')}}">
                 <i class="fas fa-fw fa-venus-mars"></i>
                 <span>Género</span></a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item active">
             <a class="nav-link" href="{{url('rol')}}">
                 <i class="fas fa-fw fa-user"></i>
                 <span>Rol</span></a>
@@ -271,7 +271,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">Nombre usuario</span>
-                            <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
+                            <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -301,19 +301,19 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-center text-gray-800">Empresas de practicas de formación profesional</h1>
+                <h1 class="h3 mb-2 text-center text-gray-800">Roles que desempeñan los usuarios</h1>
 
-                <button id="btnEmpresa" class="btn btn-primary btn-icon-split my-3">
+                <button id="btnRol" class="btn btn-primary btn-icon-split my-3">
                         <span class="icon text-white-50">
-                            <i class="fas fa-fw fa-building"></i>
+                            <i class="fas fa-fw fa-user"></i>
                         </span>
-                    <span class="text">Agregar empresa</span>
+                    <span class="text">Agregar rol</span>
                 </button>
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Empresas</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Rol</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -321,14 +321,14 @@
                                 <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Nombre de la empresa</th>
+                                    <th>Nombre del Rol</th>
 
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Nombre de la empresa</th>
+                                    <th>Nombre del Rol</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
@@ -391,14 +391,14 @@
     </div>
 </div>
 
-<!--Formulario para agregar empresa-->
 
-<div id="ModalEmpresa" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+<!--Formulario para agregar roles-->
+<div id="ModalRol" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agregar empresa</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Agregar nuevo rol</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -406,21 +406,21 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group" hidden>
-                        <label for="IdEmpresa" class="col-form-label">Identificador:</label>
+                        <label for="IdRol" class="col-form-label">Identificador:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-user"></i>
                                 </span>
-                            <input type="text" class="form-control" id="IdEmpresa" name="IdEmpresa">
+                            <input type="text" class="form-control" id="IdRol" name="IdRol">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="NombreEmpresa" class="col-form-label">Nombre de la empresa:</label>
+                        <label for="NombreRol" class="col-form-label">Nombre del rol:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
-                                    <i class="fas fa-fw fa-building"></i>
+                                    <i class="fas fa-fw fa-user"></i>
                                 </span>
-                            <input type="text" class="form-control" id="NombreEmpresa" name="NombreEmpresa">
+                            <input type="text" class="form-control" id="NombreRol" name="NombreRol">
                         </div>
                     </div>
 
@@ -435,7 +435,8 @@
         </div>
     </div>
 </div>
+
 @include('Administrador/footer')
-<script src="{{asset('js/modalEmpresa.js')}}"></script>
+<script src="{{asset('js/modalRol.js')}}"></script>
 </body>
 </html>

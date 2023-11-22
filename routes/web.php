@@ -23,3 +23,5 @@ Route::view('/unidades','Administrador/unidades');
 Route::view('/aspectoevaluacion','Administrador/AspectosEvaluacion');
 Route::view('/valoracion','Administrador/valoracion');
 Route::view('/empresa','Administrador/empresa');
+Route::view('/genero','Administrador/genero');
+Route::view('/rol','Administrador/rol');

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<body lang="en">
+<html lang="en">
 
 <head>
 
@@ -9,16 +9,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Crear usuarios</title>
+    <title>Empresa</title>
 
     <!-- Custom fonts for this template -->
     <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
-    {{--
-    "../vendor/fontawesome-free/css/all.min.css"
-    "../css/sb-admin-2.css"
-
-    --}}
-    <script src="https://kit.fontawesome.com/4ae6dfa596.js" crossorigin="anonymous"></script>
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -27,7 +21,7 @@
     <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href=" {{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
 </head>
 
@@ -51,7 +45,7 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
+        <li class="nav-item">
             <a class="nav-link" href="{{url('administrador')}}">
                 <i class="fas fa-fw fa-users"></i>
                 <span>Crear Usuarios</span></a>
@@ -130,7 +124,7 @@
         </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item active">
             <a class="nav-link" href="{{url('empresa')}}">
                 <i class="fas fa-fw fa-building"></i>
                 <span>Empresa</span></a>
@@ -219,7 +213,6 @@
                     <!-- Nav Item - Search Dropdown (Visible Only XS) -->
 
 
-
                     <!-- Nav Item - Alerts -->
                     <li class="nav-item dropdown no-arrow mx-1">
                         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
@@ -300,75 +293,49 @@
                     </li>
 
                 </ul>
-            </nav>
 
+            </nav>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-center text-gray-800">Usuarios de practica de formación profesional</h1>
+                <h1 class="h3 mb-2 text-center text-gray-800">Empresas de practicas de formación profesional</h1>
 
-                <button id="btnUsuarios" class="btn btn-primary btn-icon-split my-3">
+                <button id="btnEmpresa" class="btn btn-primary btn-icon-split my-3">
                         <span class="icon text-white-50">
-                            <i class="fa-solid fa-user-plus"></i>
+                            <i class="fas fa-fw fa-building"></i>
                         </span>
-                    <span class="text">Agregar usuario</span>
+                    <span class="text">Agregar empresa</span>
                 </button>
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Usuarios</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Empresas</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>Cedula</th>
-                                    <th>Nombre</th>
-                                    <th>Apellido</th>
-                                    <th>Carnet</th>
-                                    <th>Start date</th>
-                                    <th>foto</th>
-                                    <th>Activo</th>
-                                    <th>Rol</th>
-                                    <th>Correo</th>
-                                    <th>Telefono</th>
-                                    <th>Empresa</th>
+                                    <th>Id</th>
+                                    <th>Nombre de la empresa</th>
+
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
-                                    <th>Cedula</th>
-                                    <th>Nombre</th>
-                                    <th>Apellido</th>
-                                    <th>Carnet</th>
-                                    <th>Start date</th>
-                                    <th>foto</th>
-                                    <th>Activo</th>
-                                    <th>Rol</th>
-                                    <th>Correo</th>
-                                    <th>Telefono</th>
-                                    <th>Empresa</th>
-
+                                    <th>Id</th>
+                                    <th>Nombre de la empresa</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
                                 <tr>
                                     <td>Tiger Nixon</td>
                                     <td>System Architect</td>
-                                    <td>Edinburgh</td>
-                                    <td>61</td>
-                                    <td>2011/04/25</td>
-                                    <td>$320,800</td>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                    <td>Edinburgh</td>
-                                    <td>61</td>
-                                    <td>2011/04/25</td>
+
                                 </tr>
 
                                 </tbody>
@@ -424,16 +391,14 @@
     </div>
 </div>
 
+<!--Formulario para agregar empresa-->
 
-<!-- Button trigger modal -->
-
-<!-- Formulario para agregar usuario -->
-<div id="ModalUsuarios" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+<div id="ModalEmpresa" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agregar usuario</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Agregar empresa</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -441,150 +406,36 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group" hidden>
-                        <label for="Identificador" class="col-form-label">Identificador:</label>
+                        <label for="IdEmpresa" class="col-form-label">Identificador:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-user"></i>
                                 </span>
-                            <input type="text" class="form-control" id="Identificador">
+                            <input type="text" class="form-control" id="IdEmpresa" name="IdEmpresa">
                         </div>
                     </div>
-
-                    <div class="form-group"f>
-                        <label for="NombreUsuario" class="col-form-label">Nombres del usuario:</label>
+                    <div class="form-group">
+                        <label for="NombreEmpresa" class="col-form-label">Nombre de la empresa:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
-                                    <i class="fa-solid fa-user"></i>
+                                    <i class="fas fa-fw fa-building"></i>
                                 </span>
-                            <input type="text" class="form-control" id="NombreUsuario" name="NombreUsuario">
+                            <input type="text" class="form-control" id="NombreEmpresa" name="NombreEmpresa">
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="ApellidoUsuario" class="col-form-label">Apellidos del usuario:</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fa-solid fa-user"></i>
-                                </span>
-                            <input type="text" class="form-control" id="ApellidoUsuario" name="ApellidoUsuario">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Direccion" class="col-form-label">Direccion: </label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fa-solid fa-location-dot"></i>
-                                </span>
-                            <input type="text" class="form-control" id="Direccion" name="Direccion">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Genero" class="col-form-label">Genero:</label>
-                        <div class="input-group" id="SeleccionarGenero">
-                            <!--
-                            <span class="input-group-text">
-                                <i class="fa-solid fa-user"></i>
-                            </span>
-                            <input type="text" class="form-control" id="Identificador">
-                        -->
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Estado">Estado</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fa-solid fa-user-group"></i>
-                                </span>
-                            <select class="form-control" name="Estado" id="Estado">
-                                <option value="1">Activo</option>
-                                <option value="0">Inactivo</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Cedula">Cedula</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </span>
-                            <input type="text" class="form-control" name="Cedula" id="Cedula">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Carnet">Carnet</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </span>
-                            <input type="text" class="form-control" name="Carnet" id="Carnet">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Rol">Rol</label>
-                        <div class="input-group" id="Rol">
-
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Correo">Correo</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fa-solid fa-envelope"></i>
-                                </span>
-                            <input type="email" class="form-control" name="Correo" id="Correo">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Clave">Contraseña</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fa-solid fa-lock"></i>
-                                </span>
-                            <input type="password" class="form-control" name="Clave" id="Clave">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Telefono">Telefono</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fa-solid fa-phone"></i>
-                                </span>
-                            <input type="text" class="form-control" name="Telefono" id="Telefono">
-                        </div>
-                    </div>
 
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+
             </div>
         </div>
     </div>
 </div>
-
-<!-- Bootstrap core JavaScript-->
-<!--Ventanas modal para agregar usuario-->
 @include('Administrador/footer')
-<script src="{{asset('js/modal.js')}}"></script>
-
-
-
+<script src="{{asset('js/modalEmpresa.js')}}"></script>
 </body>
-
 </html>
-
-
-
-
-
-

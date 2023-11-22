@@ -46,7 +46,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
-            <a class="nav-link" href="Administrador.html">
+            <a class="nav-link" href="{{url('administrador')}}">
                 <i class="fas fa-fw fa-users"></i>
                 <span>Crear Usuarios</span></a>
         </li>
@@ -61,19 +61,19 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item active">
-            <a class="nav-link" href="Unidades.html">
+            <a class="nav-link" href="{{url('unidades')}}">
                 <i class="fas fa-fw fa-book-open"></i>
                 <span>Unidades</span></a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="AspectosEvaluacion.html">
+            <a class="nav-link" href="{{url('aspectoevaluacion')}}">
                 <i class="fas fa-fw fa-clipboard"></i>
                 <span>Aspectos evaluación</span></a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="Valoracion.html">
+            <a class="nav-link" href="{{url('valoracion')}}">
                 <i class="fas fa-fw fa-list"></i>
                 <span>Valoración</span></a>
         </li>
@@ -125,7 +125,7 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link" href="Empresa.html">
+            <a class="nav-link" href="{{url('empresa')}}">
                 <i class="fas fa-fw fa-building"></i>
                 <span>Empresa</span></a>
         </li>
@@ -274,7 +274,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">Nombre usuario</span>
-                            <img class="img-profile rounded-circle" src="../img/undraw_profile.svg">
+                            <img class="img-profile rounded-circle"  src="{{asset('img/undraw_profile.svg')}}">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -441,7 +441,7 @@
 
 
 <!--Formulario para agregar unidad-->
-<div id="ModalUnidad" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+<div id="Modalunidad" class="modal fade"  tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -490,5 +490,8 @@
 
 
 
-<script src="../js/modalunidad.js"></script>
 @include('Administrador/footer');
+<script src="{{asset('js/modalunidad.js')}}"></script>
+
+</body>
+</html>

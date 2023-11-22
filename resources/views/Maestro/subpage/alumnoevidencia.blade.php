@@ -9,10 +9,26 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Valoración</title>
+    <title>Portafolio</title>
 
-    <!-- Custom fonts for this template -->
+    <!-- Custom fonts for this template-->
+
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+
+
+    <!-- Custom fonts for this template-->
     <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+    {{--
+    "../vendor/fontawesome-free/css/all.min.css"
+    "../css/sb-admin-2.css"
+
+    --}}
+    <script src="https://kit.fontawesome.com/4ae6dfa596.js" crossorigin="anonymous"></script>
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -21,7 +37,9 @@
     <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <link href=" {{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+
+
 
 </head>
 
@@ -34,7 +52,7 @@
     <ul class="navbar-nav bg-unan sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('administrador')}}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('maestro')}}">
             <div class="sidebar-brand-icon ">
                 <i class="fa-solid fa-briefcase"></i>
             </div>
@@ -45,37 +63,39 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
-            <a class="nav-link" href="{{url('administrador')}}">
-                <i class="fas fa-fw fa-users"></i>
-                <span>Crear Usuarios</span></a>
-        </li>
+
 
         <!-- Divider -->
-        <hr class="sidebar-divider">
+
 
         <!-- Heading -->
-        <div class="sidebar-heading">
-            Evaluaciones
-        </div>
+
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link" href="{{url('unidades')}}">
-                <i class="fas fa-fw fa-book-open"></i>
-                <span>Unidades</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="{{url('aspectoevaluacion')}}">
-                <i class="fas fa-fw fa-clipboard"></i>
-                <span>Aspectos evaluación</span></a>
+            <a class="nav-link" href="{{url('maestro')}}">
+                <i class="fas fa-fw fa-user"></i>
+                <span>Grupos</span></a>
         </li>
 
         <li class="nav-item active">
-            <a class="nav-link" href="{{url('valoracion')}}">
-                <i class="fas fa-fw fa-list"></i>
-                <span>Valoración</span></a>
+            <a class="nav-link" href="{{url('evidencia')}}">
+                <i class="fas fa-fw fa-clipboard"></i>
+                <span>Evidencias</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#collapseTwo"
+               aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Evaluaciones</span>
+            </a>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="../EAsignadas.html">Asignadas</a>
+                    <a class="collapse-item" href="../ECompletadas.html">Completadas</a>
+                </div>
+            </div>
         </li>
 
 
@@ -115,31 +135,21 @@
             </div>
         </li>
     -->
-        <!-- Divider -->
-        <hr class="sidebar-divider">
-
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            Catalogos
-        </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link" href="{{url('empresa')}}">
+            <a class="nav-link" href="../Supervision.html">
                 <i class="fas fa-fw fa-building"></i>
-                <span>Empresa</span></a>
+                <span>Supervision</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{url('genero')}}">
-                <i class="fas fa-fw fa-venus-mars"></i>
-                <span>Género</span></a>
+            <a class="nav-link" href="../ReporteAlumnos.html">
+                    <span class="material-symbols-outlined">
+                        query_stats
+                    </span>
+                <span>Reportes alumnos</span></a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link" href="{{url('rol')}}">
-                <i class="fas fa-fw fa-user"></i>
-                <span>Rol</span></a>
-        </li>
 
 
         <!--  <li class="nav-item">
@@ -186,8 +196,6 @@
 
 
     </ul>
-
-
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -271,8 +279,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">Nombre usuario</span>
-                            <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
-                        </a>
+                            <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">                        </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
@@ -301,43 +308,48 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-center text-gray-800">Valoración de las practica de formación profesional
-                </h1>
+                <h1 class="h3 mb-2 text-center text-gray-800">Alumnos del grupo XXXX</h1>
 
-                <button id="btnValoracion" class="btn btn-primary btn-icon-split my-3">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-fw fa-list"></i>
-                        </span>
-                    <span class="text">Agregar nueva valoración</span>
-                </button>
+
 
                 <!-- DataTales Example -->
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4 mt-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Usuarios</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Estudiantes</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Valoración</th>
-                                    <th>Puntaje</th>
+                                    <th>Carnet</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Empresa</th>
+                                    <th>Opciones</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Valoración</th>
-                                    <th>Puntaje</th>
+                                    <th>Carnet</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Empresa</th>
+                                    <th>Opciones</th>
+
                                 </tr>
                                 </tfoot>
                                 <tbody>
                                 <tr>
                                     <td>Tiger Nixon</td>
                                     <td>System Architect</td>
-                                    <td>System Architect</td>
+                                    <td>Edinburgh</td>
+                                    <td>61</td>
+                                    <td>
+                                        <a href="{{url('archivos')}}"
+                                           class="d-none d-sm-block btn btn-sm btn-success shadow-sm">
+                                            Ver evidencia</a>
+                                    </td>
                                 </tr>
 
                                 </tbody>
@@ -347,6 +359,8 @@
                 </div>
 
             </div>
+
+
             <!-- /.container-fluid -->
 
         </div>
@@ -374,7 +388,6 @@
 </a>
 
 <!-- Logout Modal-->
-
 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -394,61 +407,8 @@
     </div>
 </div>
 
-<!--Formulario para agregar valoracion-->
-
-<div id="ModalValoracion" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agregar nueva valoración</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group" hidden>
-                        <label for="IdValoracion" class="col-form-label">Identificador:</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fa-solid fa-user"></i>
-                                </span>
-                            <input type="text" class="form-control" id="IdValoracion" name="IdValoracion">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="NombreValoracion" class="col-form-label">Nombre valoración:</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fas fa-fw fa-list"></i>
-                                </span>
-                            <input type="text" class="form-control" id="NombreValoracion" name="NombreValoracion">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="puntaje" class="col-form-label">Puntaje:</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </span>
-                            <input type="number" class="form-control" id="puntaje" min="0" max="20" name="puntaje">
-                        </div>
-                    </div>
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Guardar</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-
-            </div>
-        </div>
-    </div>
-</div>
+@include('footer')
 
 
-@include('Administrador/footer')
-<script src="{{asset('js/modalValoracion.js')}}"></script>
 </body>
 </html>

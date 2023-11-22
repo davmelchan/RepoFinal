@@ -25,3 +25,14 @@ Route::view('/valoracion','Administrador/valoracion');
 Route::view('/empresa','Administrador/empresa');
 Route::view('/genero','Administrador/genero');
 Route::view('/rol','Administrador/rol');
+
+
+/*
+ * Maestro  view
+ * */
+Route::view('/maestro','Maestro/maestro');
+Route::view('/alumnosgrupo','Maestro/subpage/alumnosgrupo');
+Route::view('/evidencia','Maestro/evidencia');
+Route::view('/alumnoevidencia','Maestro/subpage/alumnoevidencia');
+Route::view('/archivos','Maestro/subpage/archivo');
+

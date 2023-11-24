@@ -310,9 +310,9 @@
                     <div class="tile">
                         <div class="tile-title-w-btn">
                             <h3 class="title">All Items</h3>
-                            <div class="btn-group"><a class="btn btn-unan" href="#"><i
+                            <div class="btn-group"><a class="btn btn-unan" id="btnEditar"><i
                                         class="fa-solid fa-pen-to-square"></i></a><a class="btn btn-unan"
-                                                                                     href="#"><i class="fa-solid fa-trash"></i></a></div>
+                                                                                     onclick="eliminar()"><i class="fa-solid fa-trash"></i></a></div>
                         </div>
                         <div class="tile-body">
                             <b>Card with button group </b><br>
@@ -379,7 +379,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agregar grupo</h5>
+                <h5 class="modal-title" id="tituloModal"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -441,12 +441,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="Titulo" class="col-form-label">Titulo:</label>
+                        <label for="Descripcion" class="col-form-label">Descripción:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fas fa-fw fa-book-open"></i>
                                 </span>
-                            <input type="text" class="form-control" id="Titulo" name="Titulo">
+                            <textarea class="form-control" id="Descripcion" onresize="false" name="Descripcion" cols="30" rows="10"></textarea>
+
                         </div>
                     </div>
 
@@ -479,7 +480,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Guardar</button>
+                <button type="button" id="btnGuardar" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 
             </div>

@@ -35,4 +35,5 @@ Route::view('/alumnosgrupo','Maestro/subpage/alumnosgrupo');
 Route::view('/evidencia','Maestro/evidencia');
 Route::view('/alumnoevidencia','Maestro/subpage/alumnoevidencia');
 Route::view('/archivos','Maestro/subpage/archivo');
+Route::view('/evaluacionasignada','Maestro/evaluacionasignada');
 

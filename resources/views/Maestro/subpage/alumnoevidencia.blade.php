@@ -92,7 +92,7 @@
             </a>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="../EAsignadas.html">Asignadas</a>
+                    <a class="collapse-item" href="{{url('evaluacionasignada')}}">Asignadas</a>
                     <a class="collapse-item" href="../ECompletadas.html">Completadas</a>
                 </div>
             </div>

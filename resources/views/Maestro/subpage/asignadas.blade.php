@@ -300,7 +300,7 @@
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">Grupos de prácticas</h1>
-                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
+                    <a id="btnAsignacion" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
 
                         <i class="fa-solid fa-plus" style="color: #ffffff;"></i>
                         Agregar asignación</a>
@@ -373,6 +373,126 @@
 </div>
 
 
+<!--Formulario para agregar grupo-->
+<div id="ModalAsignacion" class="modal fade"  tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar grupo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group" hidden>
+                        <label for="IdEvaluacion" class="col-form-label">Identificador:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            <input type="text" class="form-control" id="IdEvaluacion" name="IdEvaluacion">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Titulo" class="col-form-label">Titulo:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-fw fa-book-open"></i>
+                                </span>
+                            <input type="text" class="form-control" id="Titulo" name="Titulo">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="FechaEvaluacion" class="col-form-label">Fecha de evaluacion:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-fw fa-book-open"></i>
+                                </span>
+                            <input type="date" class="form-control" id="FechaEvaluacion" name="FechaEvaluacion">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Puntaje" class="col-form-label">Puntaje:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-fw fa-book-open"></i>
+                                </span>
+                            <input type="number" min="0" max="20" class="form-control" id="Puntaje" name="Puntaje">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="IdUnidad" class="col-form-label">Unidad:</label>
+                        <div class="input-group">
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="TipoEvaluacion" class="col-form-label">Tipo de evaluacion:</label>
+                        <div class="input-group">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Titulo" class="col-form-label">Titulo:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-fw fa-book-open"></i>
+                                </span>
+                            <input type="text" class="form-control" id="Titulo" name="Titulo">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="IdGrupo" class="col-form-label">Grupo:</label>
+                        <div class="input-group">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Estado" class="col-form-label">Estado:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-fw fa-book-open"></i>
+                                </span>
+                            <select class="form-control" id="Estado" name="Estado">
+                                <option value="0">Inactivo</option>
+                                <option value="1">Activo</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
 @include('footer')
+<script src="{{asset('js/modalAsignacion.js')}}"></script>
 </body>
 </html>

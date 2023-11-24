@@ -325,7 +325,7 @@
                                         target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
                                     constantly updated collection of beautiful svg images that you can use
                                     completely free and without attribution!</p>
-                                <a href="Subpage/EAsignadasView.html" class="btn btn-unan btn-block">Seleccionar
+                                <a href="{{url('asignacion')}}" class="btn btn-unan btn-block">Seleccionar
                                     Grupo</a>
                             </div>
                         </div>
@@ -345,7 +345,7 @@
                                         target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
                                     constantly updated collection of beautiful svg images that you can use
                                     completely free and without attribution!</p>
-                                <a href="Subpage/EAsignadasView.html" class="btn btn-unan btn-block">Seleccionar
+                                <a href="{{url('asignacion')}}" class="btn btn-unan btn-block">Seleccionar
                                     Grupo</a>
                             </div>
                         </div>
@@ -365,7 +365,7 @@
                                         target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
                                     constantly updated collection of beautiful svg images that you can use
                                     completely free and without attribution!</p>
-                                <a href="Subpage/EAsignadasView.html" class="btn btn-unan btn-block">Seleccionar
+                                <a href="{{url('asignacion')}}" class="btn btn-unan btn-block">Seleccionar
                                     Grupo</a>
                             </div>
                         </div>
@@ -386,7 +386,7 @@
                                         target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
                                     constantly updated collection of beautiful svg images that you can use
                                     completely free and without attribution!</p>
-                                <a href="Subpage/EAsignadasView.html" class="btn btn-unan btn-block">
+                                <a href="{{url('asignacion')}}" class="btn btn-unan btn-block">
                                     Seleccionar Grupo</a>
                             </div>
                         </div>

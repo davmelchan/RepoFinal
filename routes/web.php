@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Models\User;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,11 +17,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('login');
-});
 
-Route::view('/administrador','Administrador/admin');
+/*Route::get('/', function () {
+    return view('login');
+});*/
+
+Route::post('/',[LoginController::class,'login']);
+Route::view('/','login')->middleware('guest')->name('login');
+
+/*
+ Vistas del rol de administrador
+
+ */
+/*
+Route::get('/administrador',function(){
+    $rol = session('rol');
+    return view('Administrador/admin',['rol' => $rol]);
+
+})->middleware('auth');
+*/
+Route::view('/','login')->middleware('guest')->name('login');
+
+
+
+Route::post('/administrador',[AdminController::class,'logout'])->middleware('Auth');
+Route::view('/administrador','Administrador/admin')->middleware('auth');
 
 Route::view('/unidades','Administrador/unidades');
 Route::view('/aspectoevaluacion','Administrador/AspectosEvaluacion');
@@ -25,6 +49,10 @@ Route::view('/valoracion','Administrador/valoracion');
 Route::view('/empresa','Administrador/empresa');
 Route::view('/genero','Administrador/genero');
 Route::view('/rol','Administrador/rol');
+
+Route::get('/recargar',function(){
+    return Redirect::back();
+   });
 
 
 /*

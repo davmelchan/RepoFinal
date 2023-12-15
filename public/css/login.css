@@ -2071,11 +2071,11 @@ fieldset:disabled a.btn {
   pointer-events: none; }
 
 .btn-primary {
-  color: #fff;
+  color: #000;
   background-color: #007bff;
   border-color: #007bff; }
   .btn-primary:hover {
-    color: #fff;
+    color: #000;
     background-color: #0069d9;
     border-color: #0062cc; }
   .btn-primary:focus, .btn-primary.focus {
@@ -8231,7 +8231,7 @@ h1, h2, h3, h4, h5,
   box-shadow: none;
   border-radius: 0;
   border: none;
-  border-bottom: 1px solid #b689b0;
+  border-bottom: 1px solid #f39318;
   padding-left: 30px;
   padding-right: 0;
   letter-spacing: 1px;
@@ -8333,7 +8333,9 @@ h1, h2, h3, h4, h5,
   .btn.btn-primary {
     background: #f39318 !important;
     border: 1px solid #ffffff !important;
-    color: #fff !important; }
+    color: #000 !important; 
+    font-weight: bold;
+  }
     .btn.btn-primary:hover {
       border: 1px solid #b689b0;
       background: transparent;

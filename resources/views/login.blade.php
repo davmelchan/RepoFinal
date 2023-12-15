@@ -22,18 +22,19 @@
                     <div class="img d-flex align-items-center justify-content-center" style="background-image: url({{asset('img/logo2.png')}});"></div>
                     <h3 class="text-center mb-0">Bienvenidos al portafolio académico</h3>
                     <p class="text-center">Ingrese sus credenciales</p>
-                    <form action="#" class="login-form">
+                    <form action="" method="post" class="login-form">
+                    @csrf
                         <div class="form-group">
                             <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-user"></span></div>
-                            <input type="text" class="form-control" placeholder="Correo electronico" required>
+                            <input type="text" name="identificacion" class="form-control" autocomplete="off" autofocus placeholder="Identificación" required>
                         </div>
                         <div class="form-group">
                             <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-lock"></span></div>
-                            <input type="password" class="form-control" placeholder="Contraseña" required>
+                            <input type="password" name="clave" class="form-control" placeholder="Contraseña" required>
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn form-control btn-primary rounded submit px-3">Get Started</button>
+                            <button type="submit" class="btn form-control btn-primary rounded submit px-3">Iniciar sesión</button>
                         </div>
                     </form>
 

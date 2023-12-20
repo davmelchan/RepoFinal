@@ -39,6 +39,7 @@ Route::get('/administrador',function(){
 Route::view('/','login')->name('login');
 
 
+;
 
 
 Route::middleware(['Roles', 'cache.headers:private'])->group(function () {
@@ -49,7 +50,10 @@ Route::middleware(['Roles', 'cache.headers:private'])->group(function () {
     Route::view('/valoracion','Administrador/valoracion');
     Route::view('/empresa','Administrador/empresa');
     Route::view('/genero','Administrador/genero');
-    Route::view('/rol','Administrador/rol');
+    Route::get('/rol',[AdminController::class,'index'])->name('rol');
+    Route::post('/rol',[AdminController::class,'GuardarRol'])->name('SaveRol');
+    Route::delete('/rol/{IdRol}', [AdminController::class, 'destroy'])->name('rol.destroy');
+
 });
 
 ///Session::get('rol');

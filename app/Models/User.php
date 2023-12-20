@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+   use HasApiTokens, HasFactory, Notifiable;
    protected $table = 'usuario';
    public $timestamps = false;
     /**
@@ -19,8 +19,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'carnet',
+        'Identificacion',
         'password',
+        'Estado',
         'IdRol'
     ];
 
@@ -39,6 +40,6 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'fecha' => 'datetime',
+        'FechaCreacion' => 'datetime',
     ];
 }

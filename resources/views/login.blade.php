@@ -49,5 +49,18 @@
     </div>
 </section>
 
+<script src="{{asset('js/sweetalert2.js')}}"></script>
+@if(session('mensaje') != "")
+    <script>
+        Swal.fire({
+            title: "Error al iniciar sesión",
+            text: "{{session('mensaje')}}",
+            icon: "error"
+        });
+
+
+    </script>
+@endif
+
 </body>
 </html>

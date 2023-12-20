@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('Rol', function (Blueprint $table) {
+        Schema::create('Roles', function (Blueprint $table) {
             $table->increments('IdRol');
             $table->string('Nombre', 50);
             $table->boolean('Estado');
 
-            $table->primary(['IdRol'], 'PK_Rol');
+            $table->primary(['IdRol'], 'PK_Roles');
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Rol');
+        Schema::dropIfExists('Roles');
     }
 };

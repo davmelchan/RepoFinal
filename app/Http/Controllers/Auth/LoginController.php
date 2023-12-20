@@ -12,10 +12,11 @@ class LoginController extends Controller
 {
     public function login(Request $request){
 
-        $user = User::where('carnet',$request->identificacion)->first();
+        $user = User::where('Identificacion',$request->identificacion)->first();
+
         if(isset($user->IdRol)){
             if($user->IdRol == 1){
-
+                if($user->Estado == 1){
                 if($user->password === md5($request->clave)){
                     Auth::login($user);
                     $user->update(['password' => Hash::make($request->clave)]);
@@ -32,34 +33,44 @@ class LoginController extends Controller
                     return redirect()->intended('administrador');//->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
 
                 }
-
+                    return redirect('/')->with("mensaje","Correo y contraseña incorrectos");
+                
+                }else{
+                    return redirect('/')->with("mensaje","Usuario no activo");
+                }
 
             }
 
             if($user->IdRol == 2){
+                if($user->Estado == 1) {
+                    if ($user->password === md5($request->clave)) {
+                        Auth::login($user);
+                        $user->update(['password' => Hash::make($request->clave)]);
+                        $request->session()->regenerate();
+                        Session::put('rol', $user->IdRol);
+                        return redirect()->intended('maestro');
 
-                if($user->password === md5($request->clave)){
-                    Auth::login($user);
-                    $user->update(['password' => Hash::make($request->clave)]);
-                    $request->session()->regenerate();
-                    Session::put('rol',$user->IdRol );
-                    return redirect()->intended('maestro');
+                    }
+                    if (Hash::check($request->clave, $user->password)) {
+                        Auth::login($user);
+                        $user->update(['password' => Hash::make($request->clave)]);
+                        $request->session()->regenerate();
+                        Session::put('rol', $user->IdRol);
+                        return redirect()->intended('maestro');
 
+                    }
+                    return redirect('/')->with("mensaje","Correo y contraseña incorrectos");
+
+                }else{
+                    return redirect('/')->with("mensaje","Usuario no activo");
                 }
-                if(Hash::check($request->clave, $user->password)){
-                    Auth::login($user);
-                    $user->update(['password' => Hash::make($request->clave)]);
-                    $request->session()->regenerate();
-                    Session::put('rol',$user->IdRol );
-                    return redirect()->intended('maestro');
-
-                }
-
 
             }
 
+        }else{
+            return redirect('/')->with("mensaje","Usuario no registrado");
         }
-        return redirect('/');
+
 
 
 

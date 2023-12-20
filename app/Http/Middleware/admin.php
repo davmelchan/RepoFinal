@@ -5,10 +5,9 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use mysql_xdevapi\Exception;
 use Symfony\Component\HttpFoundation\Response;
 
-class Roles
+class admin
 {
     /**
      * Handle an incoming request.
@@ -17,24 +16,15 @@ class Roles
      */
     public function handle(Request $request, Closure $next): Response
     {
-
-
-        if(isset(auth()->user()->IdRol) && isset(auth()->user()->Estado)){
-
-            if(auth()->user()->IdRol == 1 && auth()->user()->Estado == 1){
+        if(session()->has('rol')){
+            if(session()->get('rol') == 1){
                 $reponse =$next($request);
                 $reponse->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
                 return $reponse;
+            }else{
+                return redirect()->back();
             }
-            return redirect()->back();
-
-
-
-
-
-        }else{
-            return redirect()->to('/');
         }
-
+        return redirect()->to('/');
     }
 }

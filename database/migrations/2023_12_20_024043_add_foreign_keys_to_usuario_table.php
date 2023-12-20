@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('usuario', function (Blueprint $table) {
-            $table->foreign(['IdRol'], 'FK_usuario_Rol')->references(['IdRol'])->on('Rol')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+            $table->foreign(['IdRol'], 'FK_Usuario_Roles')->references(['IdRol'])->on('Roles')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('usuario', function (Blueprint $table) {
-            $table->dropForeign('FK_usuario_Rol');
+            $table->dropForeign('FK_Usuario_Roles');
         });
     }
 };

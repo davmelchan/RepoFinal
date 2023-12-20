@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Genero</title>
+    <title>Rol</title>
 
     <!-- Custom fonts for this template -->
     <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -270,7 +270,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Nombre usuario</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrador</span>
                             <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                         </a>
                         <!-- Dropdown - User Information -->
@@ -324,11 +324,13 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered table-hover display responsive nowrap" id="myTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
                                     <th>Id</th>
                                     <th>Nombre del Rol</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
 
                                 </tr>
                                 </thead>
@@ -336,15 +338,45 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Nombre del Rol</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
+                                @foreach($roles as $rol)
+                                @if($rol->Estado == 1 )
                                 <tr>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
+                                    <td>{{$rol->IdRol}}</td>
+                                    <td>{{$rol->Nombre}}</td>
+                                    @if($rol->Estado==1)
+                                        <td>Activo</td>
+                                    @else
+                                        <td>No activo</td>
+                                    @endif
+                                    <td>
+                                        <button id="editar" class="btn btn-warning btn-circle">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+
+                                        <form method="post" action="{{url('/rol/'.$rol->IdRol)}}" class="form-eliminar btn btn-danger btn-circle">
+                                           @csrf
+                                            {{method_field('DELETE')}}
+                                        <button type="submit" class="btn btn-danger btn-circle">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        </form>
+
+
+
+
+
+                                    </td>
+
+
 
                                 </tr>
-
+                                @endif
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -382,7 +414,7 @@
 
 
 <!--Formulario para agregar roles-->
-<div id="ModalRol" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+<div id="ModalRol" class="modal fade"  tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -393,7 +425,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="formulario" method="POST">
+                    @csrf
                     <div class="form-group" hidden>
                         <label for="IdRol" class="col-form-label">Identificador:</label>
                         <div class="input-group">
@@ -409,7 +442,7 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-fw fa-user"></i>
                                 </span>
-                            <input type="text" class="form-control" id="NombreRol" name="NombreRol">
+                            <input type="text" required class="form-control" id="NombreRol" name="NombreRol">
                         </div>
                     </div>
 
@@ -417,7 +450,9 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Guardar</button>
+
+                <button type="submit" form="formulario" class="btn btn-primary">Guardar</button>
+
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 
             </div>
@@ -427,5 +462,66 @@
 
 @include('Administrador/footer')
 <script src="{{asset('js/modalRol.js')}}"></script>
+
+
+<script>
+    $('.form-eliminar').submit(function(e){
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro de eliminar el Rol?',
+            text: 'Esta acción no se puede deshacer',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Enviar el formulario de eliminación
+
+                this.submit();
+            }
+        });
+    });
+
+
+
+    $('.btneliminar').click(function(e){
+        Swal.fire({
+            title: '¿Estás seguro de eliminar el Rol?',
+            text: 'Esta acción no se puede deshacer',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Enviar el formulario de eliminación
+
+                $('form-eliminar').submit();
+            }
+        });
+    });
+
+
+
+</script>
+
+{{--@if(Session::has('exito'))
+<script>
+    Swal.fire(
+        'Guardado',
+        'Proceso realizado exitosamente',
+        'success'
+    )
+</script>
+@endif
+--}}
+
+
+
 </body>
 </html>

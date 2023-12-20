@@ -15,12 +15,13 @@ return new class extends Migration
     {
         Schema::create('usuario', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('carnet');
+            $table->string('Identificacion');
             $table->text('password');
-            $table->dateTime('fecha');
+            $table->dateTime('FechaCreacion');
+            $table->boolean('Estado');
             $table->integer('IdRol');
 
-            $table->primary(['id'], 'PK_usuario');
+            $table->primary(['id'], 'PK_Usuario_1');
         });
     }
 

@@ -127,7 +127,7 @@
         <li class="nav-item">
             <a class="nav-link" href="{{url('empresa')}}">
                 <i class="fas fa-fw fa-building"></i>
-                <span>Empresa</span></a>
+                <span>Centro de prácticas</span></a>
         </li>
         <li class="nav-item ">
             <a class="nav-link" href="{{url('genero')}}">
@@ -469,7 +469,7 @@
     $('.form-eliminar').submit(function(e){
         e.preventDefault();
         Swal.fire({
-            title: '¿Estás seguro de eliminar el Rol?',
+            title: '¿Estás seguro de eliminar el rol?',
             text: 'Esta acción no se puede deshacer',
             icon: 'warning',
             showCancelButton: true,
@@ -511,7 +511,7 @@
 
 </script>
 
---@if(Session::has('exito'))
+@if(Session::has('exito'))
 <script>
     Swal.fire(
         'Completado',

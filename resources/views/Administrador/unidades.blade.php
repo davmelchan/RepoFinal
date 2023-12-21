@@ -127,7 +127,7 @@
         <li class="nav-item">
             <a class="nav-link" href="{{url('empresa')}}">
                 <i class="fas fa-fw fa-building"></i>
-                <span>Empresa</span></a>
+                <span>Centro de prácticas</span></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{url('genero')}}">
@@ -332,6 +332,8 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Nombre</th>
+                                <th>Estado</th>
+                                <th>Opciones</th>
 
                             </tr>
                             </thead>
@@ -339,60 +341,41 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Position</th>
+                                <th>Estado</th>
+                                <th>Opciones</th>
                             </tr>
                             </tfoot>
                             <tbody>
+                            @foreach($unidades as $unidad)
+                                @if($unidad->Estado==1)
                             <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
+                                <td>{{$unidad->IdUnidad}}</td>
+                                <td>{{$unidad->Nombre}}</td>
+                                @if($unidad->Estado==1)
+                                    <td>Activo</td>
+                                @else
+                                    <td>No activo</td>
+                                @endif
+
+
+                                <td>
+                                    <button onclick="editar({{$unidad}})"  class="btn btn-unan btn-circle">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                    <form method="post" action="{{url('/unidades/'.$unidad->IdUnidad)}}" class="form-eliminar btn btn-danger btn-circle" >
+                                        @csrf
+                                        {{method_field('DELETE')}}
+                                        <button type="submit" class="btn btn-danger btn-circle">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+
+
+
+                                </td>
                             </tr>
-
-
-                            <tr>
-                                <td>Ashton Cox</td>
-                                <td>Junior Technical Author</td>
-                            </tr>
-                            <tr>
-                                <td>Cedric Kelly</td>
-                                <td>Senior Javascript Developer</td>
-
-                            </tr>
-                            <tr>
-                                <td>Airi Satou</td>
-                                <td>Accountant</td>
-
-                            </tr>
-                            <tr>
-                                <td>Brielle Williamson</td>
-                                <td>Integration Specialist</td>
-
-                            </tr>
-                            <tr>
-                                <td>Herrod Chandler</td>
-                                <td>Sales Assistant</td>
-
-                            </tr>
-                            <tr>
-                                <td>Rhona Davidson</td>
-                                <td>Integration Specialist</td>
-
-                            </tr>
-                            <tr>
-                                <td>Colleen Hurst</td>
-                                <td>Javascript Developer</td>
-
-                            </tr>
-                            <tr>
-                                <td>Sonya Frost</td>
-                                <td>Software Engineer</td>
-
-                            </tr>
-                            <tr>
-                                <td>Jena Gaines</td>
-                                <td>Office Manager</td>
-
-                            </tr>
-
+                            @endif
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -434,13 +417,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agregar Unidad</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Agregar nueva unidad</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="formulario" method="POST">
+                    @csrf
                     <div class="form-group" hidden>
                         <label for="IdUnidad" class="col-form-label">Identificador:</label>
                         <div class="input-group">
@@ -464,7 +448,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Guardar</button>
+                <button type="submit" id="btnGuardar" form="formulario" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 
             </div>
@@ -480,6 +464,47 @@
 
 @include('Administrador/footer');
 <script src="{{asset('js/modalunidad.js')}}"></script>
+
+<script>
+    $('.form-eliminar').submit(function(e){
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro de eliminar la unidad?',
+            text: 'Esta acción no se puede deshacer',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Enviar el formulario de eliminación
+
+                this.submit();
+            }
+        });
+    });
+
+
+
+</script>
+
+
+
+
+
+@if(Session::has('exito'))
+    <script>
+        Swal.fire(
+            'Completado',
+            '{{Session::get('exito')}}',
+            'success'
+        )
+    </script>
+@endif
+
+
 
 </body>
 </html>

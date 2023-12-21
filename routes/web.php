@@ -45,12 +45,31 @@ Route::view('/','login')->name('login');
 Route::middleware(['Roles', 'cache.headers:private'])->group(function () {
     Route::view('/administrador','Administrador/admin');
     Route::post('/salir',[AdminController::class,'logout'])->name('salir');
-    Route::view('/unidades','Administrador/unidades');
+
     Route::view('/aspectoevaluacion','Administrador/AspectosEvaluacion');
     Route::view('/valoracion','Administrador/valoracion');
     Route::view('/empresa','Administrador/empresa');
-    Route::view('/genero','Administrador/genero');
-    Route::get('/rol',[AdminController::class,'index'])->name('rol');
+
+    ///Crud Empresa
+    Route::get('/empresa',[AdminController::class,'indexEmpresa']);
+    Route::post('/empresa',[AdminController::class,'GuardarEmpresa']);
+    Route::delete('/empresa/{IdEmpresa}',[AdminController::class,'EliminarEmpresa']);
+
+
+
+    ////Crud de unidades
+    Route::get('/unidades',[AdminController::class,'indexUnidad']);
+    Route::post('/unidades',[AdminController::class,'GuardarUnidad']);
+    Route::delete('/unidades/{IdUnidad}',[AdminController::class,'EliminarUnidad']);
+
+    ////Crud del genero
+    Route::get('/genero',[AdminController::class,'indexGenero'])->name('genero');
+    Route::post('/genero',[AdminController::class,'GuardarGenero'])->name('SaveGenero');
+    Route::delete('/genero/{IdGenero}', [AdminController::class, 'EliminarGenero'])->name('genero.destroy');
+
+
+    ////Crud del rol
+    Route::get('/rol',[AdminController::class,'indexRol'])->name('rol');
     Route::post('/rol',[AdminController::class,'GuardarRol'])->name('SaveRol');
     Route::delete('/rol/{IdRol}', [AdminController::class, 'destroy'])->name('rol.destroy');
 

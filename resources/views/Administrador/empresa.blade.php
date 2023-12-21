@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Empresa</title>
+    <title>Centro de práctica</title>
 
     <!-- Custom fonts for this template -->
     <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -127,7 +127,7 @@
         <li class="nav-item active">
             <a class="nav-link" href="{{url('empresa')}}">
                 <i class="fas fa-fw fa-building"></i>
-                <span>Empresa</span></a>
+                <span>Centro de prácticas</span></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{url('genero')}}">
@@ -308,19 +308,19 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-center text-gray-800">Empresas de practicas de formación profesional</h1>
+                <h1 class="h3 mb-2 text-center text-gray-800">Centro de prácticas</h1>
 
                 <button id="btnEmpresa" class="btn btn-primary btn-icon-split my-3">
                         <span class="icon text-white-50">
                             <i class="fas fa-fw fa-building"></i>
                         </span>
-                    <span class="text">Agregar empresa</span>
+                    <span class="text">Agregar centro de prácticas</span>
                 </button>
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Empresas</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Centro de prácticas</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -328,20 +328,37 @@
                                 <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Nombre de la empresa</th>
+                                    <th>Centro de prácticas</th>
+                                    <th>Descripción</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
 
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Nombre de la empresa</th>
+                                    <th>Centro de prácticas</th>
+                                    <th>Descripción</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
                                 <tr>
                                     <td>Tiger Nixon</td>
                                     <td>System Architect</td>
+                                    <td>Tiger Nixon</td>
+                                    <td>System Architect</td>
+                                    <td>
+                                        <button id="btnEditar"   class="btn btn-unan btn-circle">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+
+                                        <button type="submit" class="btn btn-danger btn-circle">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
 
                                 </tr>
 
@@ -387,13 +404,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agregar empresa</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Agregar centro de prácticas</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="formulario" method="POST">
+                    @csrf
                     <div class="form-group" hidden>
                         <label for="IdEmpresa" class="col-form-label">Identificador:</label>
                         <div class="input-group">
@@ -404,7 +422,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="NombreEmpresa" class="col-form-label">Nombre de la empresa:</label>
+                        <label for="NombreEmpresa" class="col-form-label">Nombre de centro de prácticas:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fas fa-fw fa-building"></i>
@@ -412,12 +430,30 @@
                             <input type="text" class="form-control" id="NombreEmpresa" name="NombreEmpresa">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="Descripcion" class="col-form-label">Descripción:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </span>
+                            <textarea type="text" style="resize: none" class="form-control" rows="4" cols="50" id="Descripcion" name="Descripcion"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Responsable" class="col-form-label">Responsable del centro de prácticas:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-fw fa-building"></i>
+                                </span>
+                            <input type="text" class="form-control" id="Responsable" name="Responsable">
+                        </div>
+                    </div>
 
 
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Guardar</button>
+                <button type="submit" form="formulario" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 
             </div>

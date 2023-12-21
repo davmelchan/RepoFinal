@@ -141,7 +141,7 @@
         <li class="nav-item">
             <a class="nav-link" href="{{url('empresa')}}">
                 <i class="fas fa-fw fa-building"></i>
-                <span>Empresa</span></a>
+                <span>Centro de prácticas</span></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{url('genero')}}">

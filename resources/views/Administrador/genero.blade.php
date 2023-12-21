@@ -127,7 +127,7 @@
         <li class="nav-item">
             <a class="nav-link" href="{{url('empresa')}}">
                 <i class="fas fa-fw fa-building"></i>
-                <span>Empresa</span></a>
+                <span>Centro de prácticas</span></a>
         </li>
         <li class="nav-item active">
             <a class="nav-link" href="{{url('genero')}}">
@@ -314,7 +314,7 @@
                         <span class="icon text-white-50">
                             <i class="fas fa-fw fa-venus-mars"></i>
                         </span>
-                    <span class="text">Agregar Género</span>
+                    <span class="text">Agregar género</span>
                 </button>
 
                 <!-- DataTales Example -->
@@ -343,21 +343,37 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
+                                @foreach($genero as $gen)
+                                    @if($gen->Estado==1)
                                 <tr>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                    <td>System Architect</td>
-                                    <td> <button id="btnEditar"  class="btn btn-unan btn-circle">
+                                    <td>{{$gen->IdGenero}}</td>
+                                    <td>{{$gen->Nombre}}</td>
+                                    @if($gen->Estado==1)
+                                    <td>Activo</td>
+                                    @else
+                                        <td>No activo</td>
+                                    @endif
+
+                                    <td>
+                                        <button id="btnEditar" onclick="editar({{$gen}})"  class="btn btn-unan btn-circle">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
-                                        <button type="submit" class="btn btn-danger btn-circle">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        <form method="post" action="{{url('/genero/'.$gen->IdGenero)}}" class="form-eliminar btn btn-danger btn-circle">
+                                            @csrf
+                                            {{method_field('DELETE')}}
+                                            <button type="submit" class="btn btn-danger btn-circle">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+
+
+
 
                                     </td>
 
                                 </tr>
-
+                                    @endif
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -394,18 +410,19 @@
 
 
 <!--Formulario para agregar Generos-->
-<div id="ModalGenero" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+<div id="ModalGenero" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agregar género</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Agregar nuevo género</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="formulario" method="POST">
+                    @csrf
                     <div class="form-group" hidden>
                         <label for="IdGenero" class="col-form-label">Identificador:</label>
                         <div class="input-group">
@@ -429,7 +446,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Guardar</button>
+                <button id="btnGuardar" type="submit" form="formulario" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 
             </div>
@@ -440,5 +457,44 @@
 
 @include('Administrador/footer');
 <script src="{{asset('js/modalGenero.js')}}"></script>
+
+<script>
+    $('.form-eliminar').submit(function(e){
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro de eliminar el gfénero?',
+            text: 'Esta acción no se puede deshacer',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Enviar el formulario de eliminación
+
+                this.submit();
+            }
+        });
+    });
+
+
+
+
+</script>
+
+
+
+@if(Session::has('exito'))
+    <script>
+        Swal.fire(
+            'Completado',
+            '{{Session::get('exito')}}',
+            'success'
+        )
+    </script>
+@endif
+
 </body>
 </html>

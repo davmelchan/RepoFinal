@@ -308,7 +308,7 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-center text-gray-800">Género de los usuarios en las practica de formación profesional</h1>
+                <h1 class="h3 mb-2 text-center text-gray-800">Género establecidos para los usuarios</h1>
 
                 <button id="btnGenero" class="btn btn-primary btn-icon-split my-3">
                         <span class="icon text-white-50">
@@ -329,6 +329,8 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Nombre del género</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
 
                                 </tr>
                                 </thead>
@@ -336,12 +338,23 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Nombre del género</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
                                 <tr>
                                     <td>Tiger Nixon</td>
                                     <td>System Architect</td>
+                                    <td>System Architect</td>
+                                    <td> <button id="btnEditar"  class="btn btn-unan btn-circle">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                        <button type="submit" class="btn btn-danger btn-circle">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+
+                                    </td>
 
                                 </tr>
 

@@ -354,7 +354,8 @@
                                         <td>No activo</td>
                                     @endif
                                     <td>
-                                        <button id="editar" class="btn btn-warning btn-circle">
+
+                                        <button id="btnEditar" onclick="editar({{$rol}})" class="btn btn-unan btn-circle">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
 
@@ -451,7 +452,7 @@
             </div>
             <div class="modal-footer">
 
-                <button type="submit" form="formulario" class="btn btn-primary">Guardar</button>
+                <button type="submit" id="btnFormulario" form="formulario" class="btn btn-primary">Guardar</button>
 
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 
@@ -510,16 +511,16 @@
 
 </script>
 
-{{--@if(Session::has('exito'))
+--@if(Session::has('exito'))
 <script>
     Swal.fire(
-        'Guardado',
-        'Proceso realizado exitosamente',
+        'Completado',
+        '{{Session::get('exito')}}',
         'success'
     )
 </script>
 @endif
---}}
+
 
 
 

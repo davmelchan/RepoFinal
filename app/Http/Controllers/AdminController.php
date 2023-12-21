@@ -11,46 +11,61 @@ use Illuminate\Support\Facades\Cache;
 
 class AdminController extends Controller
 {
-    public function logout(Request $request,Redirector $redirect){
+    public function logout(Request $request, Redirector $redirect)
+    {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
     }
-    public function index(){
+
+    public function index()
+    {
 
         $datos['roles'] = Roles::all();
-        return view('Administrador/rol',$datos);
+        return view('Administrador/rol', $datos);
     }
 
-    public function GuardarRol  (Request $request){
-        $rol = ['Nombre'=>$request->NombreRol,'Estado'=>1];
-        Roles::insert($rol);
-        Return back()->with('exito','Rol guardado exitosamente');
+    public function GuardarRol(Request $request)
+    {
 
+        if (isset($request->IdRol)) {
+            $rol = Roles::find($request->IdRol);
+            if (!$rol) {
+                return back()->with('Fracaso', 'Rol no encontrado');
+            }
+
+            // Actualiza solo el campo 'nombre'
+            $rol->update(['Nombre' => $request->NombreRol]);
+
+            return back()->with('exito', 'Rol actualizado exitosamente');
+        } else {
+
+            $rol = ['Nombre' => $request->NombreRol, 'Estado' => 1];
+            Roles::insert($rol);
+            return back()->with('exito', 'Rol guardado exitosamente');
+        }
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $rol = Roles::find($id);
         if (!$rol) {
-            Return back()->with('Fracaso','Rol no encontrado');
+            return back()->with('Fracaso', 'Rol no encontrado');
         }
 
         // Actualiza solo el campo 'nombre'
         $rol->update(['Estado' => 0]);
 
-        Return back()->with('exito','Rol eliminado exitosamente');
+        return back()->with('exito', 'Rol eliminado exitosamente');
     }
-   public function eliminar($id){
-        return $id;
-        $rol = Roles::find($id);
-       if (!$rol) {
-          Return back()->with('Fracaso','Rol no encontrado');
-       }
 
-       // Actualiza solo el campo 'nombre'
-       $rol->update(['Estado' => 0]);
+    public function GuardarGenero(Request $request){
 
-       Return back()->with('exito','Rol eliminado exitosamente');
-   }
+
+    }
+    public function EliminarGenero($id){
+
+    }
+
 }

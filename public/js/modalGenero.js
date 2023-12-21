@@ -8,3 +8,9 @@ btnGenero.addEventListener("click", function () {
 
 
 });
+
+function editar(info){
+
+
+
+}

@@ -69,13 +69,13 @@
         <li class="nav-item">
             <a class="nav-link" href="{{url('aspectoevaluacion')}}">
                 <i class="fas fa-fw fa-clipboard"></i>
-                <span>Aspectos evaluación</span></a>
+                <span>Categorias de evaluación</span></a>
         </li>
 
         <li class="nav-item">
             <a class="nav-link" href="{{url('valoracion')}}">
                 <i class="fas fa-fw fa-list"></i>
-                <span>Valoración</span></a>
+                <span>Categorias de supervisión</span></a>
         </li>
 
 
@@ -440,7 +440,7 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-fw fa-book-open"></i>
                                 </span>
-                            <input type="text" class="form-control" id="NombreUnidad" name="NombreUnidad">
+                            <input type="text"  required class="form-control" id="NombreUnidad" name="NombreUnidad">
                         </div>
                     </div>
 

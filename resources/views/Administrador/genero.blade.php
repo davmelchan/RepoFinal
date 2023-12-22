@@ -69,13 +69,13 @@
         <li class="nav-item">
             <a class="nav-link" href="{{url('aspectoevaluacion')}}">
                 <i class="fas fa-fw fa-clipboard"></i>
-                <span>Aspectos evaluación</span></a>
+                <span>Categorías de evaluación</span></a>
         </li>
 
         <li class="nav-item">
             <a class="nav-link" href="{{url('valoracion')}}">
                 <i class="fas fa-fw fa-list"></i>
-                <span>Valoración</span></a>
+                <span>Categorías de supervisión</span></a>
         </li>
 
 
@@ -438,7 +438,7 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-fw fa-venus-mars"></i>
                                 </span>
-                            <input type="text" class="form-control" id="NombreGenero" name="NombreGenero">
+                            <input type="text" required class="form-control" id="NombreGenero" name="NombreGenero">
                         </div>
                     </div>
 
@@ -462,7 +462,7 @@
     $('.form-eliminar').submit(function(e){
         e.preventDefault();
         Swal.fire({
-            title: '¿Estás seguro de eliminar el gfénero?',
+            title: '¿Estás seguro de eliminar el género?',
             text: 'Esta acción no se puede deshacer',
             icon: 'warning',
             showCancelButton: true,

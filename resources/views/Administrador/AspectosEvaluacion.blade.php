@@ -69,13 +69,13 @@
         <li class="nav-item active">
             <a class="nav-link" href="{{url('aspectoevaluacion')}}">
                 <i class="fas fa-fw fa-clipboard"></i>
-                <span>Aspectos evaluación</span></a>
+                <span>Categorías evaluación</span></a>
         </li>
 
         <li class="nav-item">
             <a class="nav-link" href="{{url('valoracion')}}">
                 <i class="fas fa-fw fa-list"></i>
-                <span>Valoración</span></a>
+                <span>Categorías de supervisión</span></a>
         </li>
 
 
@@ -308,20 +308,20 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-center text-gray-800"> Aspectos a evaluar en las practicas de formación
+                <h1 class="h3 mb-2 text-center text-gray-800"> Categoría de evaluación de las prácticas de formación
                     profesional</h1>
 
                 <button id="btnAspecto" class="btn btn-primary btn-icon-split my-3">
                         <span class="icon text-white-50">
                             <i class="fas fa-fw fa-clipboard"></i>
                         </span>
-                    <span class="text">Agregar aspecto de evaluación</span>
+                    <span class="text">Agregar categoría de evaluación</span>
                 </button>
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Aspectos evaluación</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Categoría de evaluación</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -329,21 +329,46 @@
                                 <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Nombre Aspecto</th>
+                                    <th>Nombre</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
                                     <th>Id</th>
                                     <th>Nombre Aspecto</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
+                                @foreach($categorias as $categoria)
+                                    @if($categoria->Estado==1)
                                 <tr>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                </tr>
+                                    <td>{{$categoria->IdCatEvaluacion}}</td>
+                                    <td>{{$categoria->Nombre}}</td>
+                                    @if($categoria->Estado == 1)
+                                        <td>Activo</td>
+                                    @else
+                                        <td>No Activo</td>
+                                    @endif
+                                    <td>
+                                        <button id="btnEditar" onclick="editar({{$categoria}})" class="btn btn-unan btn-circle">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                        <form  class="btn btn-danger btn-circle form-eliminar" action="{{url('/aspectoevaluacion/'.$categoria->IdCatEvaluacion)}}" method="post">
+                                        @csrf
+                                        {{method_field('DELETE')}}
+                                        <button type="submit" class="btn btn-danger btn-circle">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        </form>
 
+                                    </td>
+                                </tr>
+                                    @endif
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -380,20 +405,21 @@
 
 
 <!--Formulario para agregar aspecto de evaluacion-->
-<div id="ModalAspecto" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+<div id="ModalAspecto" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agregar aspecto de evaluación</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Agregar categoría de evaluación</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="formulario" method="POST">
+                    @csrf
                     <div class="form-group" hidden>
-                        <label for="IdAspecto" class="col-form-label">Id Aspecto:</label>
+                        <label for="IdAspecto" class="col-form-label">Identificador:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-user"></i>
@@ -402,12 +428,12 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="NombreAspecto" class="col-form-label">Nombre aspecto de evaluación:</label>
+                        <label for="NombreAspecto" class="col-form-label">Nombre categoría de evaluación:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fas fa-fw fa-clipboard"></i>
                                 </span>
-                            <input type="text" class="form-control" id="NombreAspecto" name="NombreAspecto">
+                            <input type="text" required class="form-control" id="NombreAspecto" name="NombreAspecto">
                         </div>
                     </div>
 
@@ -415,7 +441,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Guardar</button>
+                <button type="submit" id="btnGuardar" form="formulario" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 
             </div>
@@ -426,6 +452,42 @@
 
 @include('Administrador/footer')
 <script src="{{asset('js/modalAspecto.js')}}"></script>
+
+<script>
+    $('.form-eliminar').submit(function(e){
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro de eliminar la categoría de evaluación?',
+            text: 'Esta acción no se puede deshacer',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+
+                this.submit();
+            }
+        });
+    });
+
+</script>
+
+
+
+
+@if(Session::has('exito'))
+    <script>
+        Swal.fire(
+            'Completado',
+            '{{Session::get('exito')}}',
+            'success'
+        )
+    </script>
+@endif
 
 </body>
 </html>

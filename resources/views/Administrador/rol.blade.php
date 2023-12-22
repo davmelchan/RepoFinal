@@ -69,13 +69,13 @@
         <li class="nav-item">
             <a class="nav-link" href="{{url('aspectoevaluacion')}}">
                 <i class="fas fa-fw fa-clipboard"></i>
-                <span>Aspectos evaluación</span></a>
+                <span>Categorias de evaluación</span></a>
         </li>
 
         <li class="nav-item">
             <a class="nav-link" href="{{url('valoracion')}}">
                 <i class="fas fa-fw fa-list"></i>
-                <span>Valoración</span></a>
+                <span>Categorias de supervisión</span></a>
         </li>
 
 
@@ -452,7 +452,7 @@
             </div>
             <div class="modal-footer">
 
-                <button type="submit" id="btnFormulario" form="formulario" class="btn btn-primary">Guardar</button>
+                <button type="submit" id="btnGuardar" form="formulario" class="btn btn-primary">Guardar</button>
 
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 

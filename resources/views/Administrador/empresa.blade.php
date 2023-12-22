@@ -23,6 +23,9 @@
     <!-- Custom styles for this page -->
     <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
+
 </head>
 
 <body id="page-top">
@@ -69,13 +72,13 @@
         <li class="nav-item">
             <a class="nav-link" href="{{url('aspectoevaluacion')}}">
                 <i class="fas fa-fw fa-clipboard"></i>
-                <span>Aspectos evaluación</span></a>
+                <span>Categorías evaluación</span></a>
         </li>
 
         <li class="nav-item">
             <a class="nav-link" href="{{url('valoracion')}}">
                 <i class="fas fa-fw fa-list"></i>
-                <span>Valoración</span></a>
+                <span>Categorías de supervisión</span></a>
         </li>
 
 
@@ -324,12 +327,13 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered display responsive nowrap"  id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
                                     <th>Id</th>
                                     <th>Centro de prácticas</th>
                                     <th>Descripción</th>
+                                    <th>Responsable</th>
                                     <th>Estado</th>
                                     <th>Opciones</th>
 
@@ -337,31 +341,49 @@
                                 </thead>
                                 <tfoot>
                                 <tr>
+
                                     <th>Id</th>
                                     <th>Centro de prácticas</th>
                                     <th>Descripción</th>
+                                    <th>Responsable</th>
                                     <th>Estado</th>
                                     <th>Opciones</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
+                                @foreach($centros as $centro)
+                                    @if($centro->Estado==1)
                                 <tr>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                    <td>
-                                        <button id="btnEditar"   class="btn btn-unan btn-circle">
+                                    <td>{{$centro->IdEmpresa}}</td>
+                                    <td>{{$centro->Nombre}}</td>
+
+
+                                    <td>{{$centro->Descripcion}}</td>
+                                    <td>{{$centro->Responsable}}</td>
+                                    @if($centro->Estado==1)
+                                    <td>Activo</td>
+                                    @else
+                                    <td>No Activo</td>
+                                    @endif
+
+                                        <td>
+                                        <button  onclick="editar({{$centro}})"  class="btn btn-unan btn-circle">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
 
-                                        <button type="submit" class="btn btn-danger btn-circle">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
+                                            <form action="{{url('/empresa/'.$centro->IdEmpresa)}}"  class="eliminarFrm btn btn-danger btn-circle" method="post">
+                                                @csrf
+                                                {{method_field('DELETE')}}
+                                                <button type="submit" class="btn btn-danger btn-circle" >
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+
+                                        </td>
 
                                 </tr>
-
+                                    @endif
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -427,7 +449,7 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-fw fa-building"></i>
                                 </span>
-                            <input type="text" class="form-control" id="NombreEmpresa" name="NombreEmpresa">
+                            <input type="text" required class="form-control" id="NombreEmpresa" name="NombreEmpresa">
                         </div>
                     </div>
                     <div class="form-group">
@@ -436,7 +458,7 @@
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </span>
-                            <textarea type="text" style="resize: none" class="form-control" rows="4" cols="50" id="Descripcion" name="Descripcion"></textarea>
+                            <textarea type="text" required style="resize: none" class="form-control" rows="4" cols="50" id="Descripcion" name="Descripcion"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
@@ -445,7 +467,7 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-fw fa-building"></i>
                                 </span>
-                            <input type="text" class="form-control" id="Responsable" name="Responsable">
+                            <input type="text" required class="form-control" id="Responsable" name="Responsable">
                         </div>
                     </div>
 
@@ -453,7 +475,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" form="formulario" class="btn btn-primary">Guardar</button>
+                <button type="submit" id="btnGuardar" form="formulario" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 
             </div>
@@ -462,5 +484,54 @@
 </div>
 @include('Administrador/footer')
 <script src="{{asset('js/modalEmpresa.js')}}"></script>
+
+
+    <script>
+
+</script>
+
+
+<script>
+    $('.eliminarFrm').submit(function(e){
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro de eliminar el centro de práctica?',
+            text: 'Esta acción no se puede deshacer',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Enviar el formulario de eliminación
+
+                this.submit();
+            }
+        });
+    });
+
+
+
+</script>
+
+
+
+
+@if(Session::has('exito'))
+    <script>
+        Swal.fire(
+            'Completado',
+            '{{Session::get('exito')}}',
+            'success'
+        )
+    </script>
+@endif
+
+
+
+
+
 </body>
 </html>

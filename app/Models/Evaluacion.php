@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Empresa extends Model
+class Evaluacion extends Model
 {
     use HasFactory;
-
-    protected $table = 'Tb_empresa';
-    protected $primaryKey = 'IdEmpresa';
+    protected $table = 'Cat_evaluacion';
+    protected $primaryKey = 'IdCatEvaluacion';
     public $timestamps = false;
-    protected $fillable= ['Nombre', 'Descripcion','Responsable','Estado'];
+    protected $fillable= ['Nombre','Estado'];
 }

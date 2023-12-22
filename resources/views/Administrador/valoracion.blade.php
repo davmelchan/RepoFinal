@@ -69,13 +69,14 @@
         <li class="nav-item">
             <a class="nav-link" href="{{url('aspectoevaluacion')}}">
                 <i class="fas fa-fw fa-clipboard"></i>
-                <span>Aspectos evaluación</span></a>
+                <span> Categorías de evaluación</span></a>
+
         </li>
 
         <li class="nav-item active">
             <a class="nav-link" href="{{url('valoracion')}}">
                 <i class="fas fa-fw fa-list"></i>
-                <span>Valoración</span></a>
+                <span>Categorías de supervisión</span></a>
         </li>
 
 
@@ -308,20 +309,20 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-center text-gray-800">Valoración de las practica de formación profesional
+                <h1 class="h3 mb-2 text-center text-gray-800">Categorías de supervision de las practica de formación profesional
                 </h1>
 
                 <button id="btnValoracion" class="btn btn-primary btn-icon-split my-3">
                         <span class="icon text-white-50">
                             <i class="fas fa-fw fa-list"></i>
                         </span>
-                    <span class="text">Agregar nueva valoración</span>
+                    <span class="text">Agregar categoría de supervisión</span>
                 </button>
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Usuarios</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Categorías de supervisíon</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -329,20 +330,23 @@
                                 <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Valoración</th>
-                                    <th>Puntaje</th>
+                                    <th>Nombre</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Valoración</th>
-                                    <th>Puntaje</th>
+                                    <th>Nombre</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
                                 <tr>
                                     <td>Tiger Nixon</td>
+                                    <td>System Architect</td>
                                     <td>System Architect</td>
                                     <td>System Architect</td>
                                 </tr>

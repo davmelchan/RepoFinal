@@ -46,7 +46,7 @@ Route::middleware(['Roles', 'cache.headers:private'])->group(function () {
     Route::view('/administrador','Administrador/admin');
     Route::post('/salir',[AdminController::class,'logout'])->name('salir');
 
-    Route::view('/aspectoevaluacion','Administrador/AspectosEvaluacion');
+ ///   Route::view('/aspectoevaluacion','Administrador/AspectosEvaluacion');
     Route::view('/valoracion','Administrador/valoracion');
     Route::view('/empresa','Administrador/empresa');
 
@@ -73,6 +73,10 @@ Route::middleware(['Roles', 'cache.headers:private'])->group(function () {
     Route::post('/rol',[AdminController::class,'GuardarRol'])->name('SaveRol');
     Route::delete('/rol/{IdRol}', [AdminController::class, 'destroy'])->name('rol.destroy');
 
+    ////crud de categoria evaluacion
+    Route::get('/aspectoevaluacion',[AdminController::class,'indexEvaluacion']);
+    Route::post('/aspectoevaluacion',[AdminController::class,'GuardarEvaluacion']);
+    Route::delete('/aspectoevaluacion/{IdAspecto}',[AdminController::class,'EliminarEvaluacion']);
 });
 
 ///Session::get('rol');

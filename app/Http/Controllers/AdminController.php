@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Empresa;
+use App\Models\Evaluacion;
 use App\Models\Genero;
 use App\Models\Roles;
 use App\Models\Unidad;
@@ -144,8 +146,80 @@ class AdminController extends Controller
 
 ////Empresa
     public function indexEmpresa(){
-       // $datos['centros'] = Empresa::all();
-        return view('Administrador/empresa');
+        $datos['centros'] = Empresa::all();
+        return view('Administrador/empresa',$datos);
     }
+    public function GuardarEmpresa(Request $request){
+        if(isset($request->IdEmpresa)){
+
+            $empresa = Empresa::find($request->IdEmpresa);
+            if (!$empresa) {
+                return back()->with('Fracaso', 'Unidad no encontrada');
+            }
+
+            // Actualiza solo el campo 'nombre'
+            $empresa->update(['Nombre' => $request->NombreEmpresa,'Descripcion'=>$request->Descripcion,
+            'Responsable'=>$request->Responsable]);
+
+            return back()->with('exito', 'Centro de práctica actualizado exitosamente');
+        }
+
+
+        $empresa = ['Nombre' => $request->NombreEmpresa, 'Descripcion'=> $request->Descripcion,
+            'Responsable'=>$request->Responsable,'Estado' => 1];
+        Empresa::insert($empresa);
+        return back()->with('exito', 'Centro de prácticas guardado exitosamente');
+    }
+
+    public function EliminarEmpresa($id){
+        $empresa = Empresa::find($id);
+        if (!$empresa) {
+            return back()->with('Fracaso', 'Centro de práctica no encontrado');
+        }
+
+        // Actualiza solo el campo 'nombre'
+        $empresa->update(['Estado' => 0]);
+
+        return back()->with('exito', 'Centro de práctica eliminado exitosamente');
+
+    }
+
+
+
+////Categoria Evaluacion
+    public function indexEvaluacion(){
+        $datos['categorias'] = Evaluacion::all();
+        return view('Administrador/AspectosEvaluacion',$datos);
+    }
+    public function GuardarEvaluacion(Request $request){
+        if(isset($request->IdAspecto)){
+            $evaluacion = Evaluacion::find($request->IdAspecto);
+            if(!$evaluacion){
+                return back()->with('fracaso', 'Categoría de evaluación no ha sido encontrada');
+            }
+
+            $evaluacion->update(['Nombre' => $request->NombreAspecto]);
+            return back()->with('exito', 'Categoría de evaluación actualizada exitosamente');
+
+        }
+
+
+        $evaluacion = ['Nombre' => $request->NombreAspecto,'Estado' => 1];
+        Evaluacion::insert($evaluacion);
+        return back()->with('exito', 'Categoría de evaluación guardada exitosamente');
+    }
+    public function EliminarEvaluacion($id){
+        $evaluacion = Evaluacion::find($id);
+        if (!$evaluacion) {
+            return back()->with('Fracaso', 'Categoría de evaluación no encontrada');
+        }
+
+        // Actualiza solo el campo 'nombre'
+        $evaluacion->update(['Estado' => 0]);
+
+        return back()->with('exito', 'Categoría de evaluación eliminada exitosamente');
+    }
+
+
 
 }

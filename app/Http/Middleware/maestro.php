@@ -17,7 +17,7 @@ class maestro
     {
         if(isset(auth()->user()->IdRol)){
 
-            if(auth()->user()->IdRol == 2){
+            if(auth()->user()->IdRol == 26){
                 $reponse =$next($request);
                 $reponse->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
                 return $reponse;

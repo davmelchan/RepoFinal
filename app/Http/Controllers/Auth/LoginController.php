@@ -34,14 +34,14 @@ class LoginController extends Controller
 
                 }
                     return redirect('/')->with("mensaje","Correo y contraseña incorrectos");
-                
+
                 }else{
                     return redirect('/')->with("mensaje","Usuario no activo");
                 }
 
             }
 
-            if($user->IdRol == 2){
+            if($user->IdRol == 26){
                 if($user->Estado == 1) {
                     if ($user->password === md5($request->clave)) {
                         Auth::login($user);
@@ -71,7 +71,7 @@ class LoginController extends Controller
             return redirect('/')->with("mensaje","Usuario no registrado");
         }
 
-
+        return redirect('/')->with("mensaje","Usuario no encontrado");
 
 
 

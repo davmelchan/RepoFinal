@@ -12,4 +12,8 @@ class Genero extends Model
     protected $primaryKey = 'IdGenero';
     public $timestamps = false;
     protected $fillable= ['Nombre', 'Estado'];
+
+    public function maestros(){
+        return $this->belongsTo(Maestros::class,'idGenero');
+    }
 }

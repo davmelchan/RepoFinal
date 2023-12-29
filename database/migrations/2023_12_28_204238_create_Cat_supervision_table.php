@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('Estudiante', function (Blueprint $table) {
-            $table->foreign(['idGenero'], 'FK_Estudiante_Tb_genero')->references(['IdGenero'])->on('Tb_genero')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+        Schema::create('Cat_supervision', function (Blueprint $table) {
+            $table->increments('IdCatSupervision');
+            $table->string('Nombre', 50);
+            $table->boolean('Estado');
+
+            $table->primary(['IdCatSupervision'], 'PK_Cat_supervision');
         });
     }
 
@@ -25,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('Estudiante', function (Blueprint $table) {
-            $table->dropForeign('FK_Estudiante_Tb_genero');
-        });
+        Schema::dropIfExists('Cat_supervision');
     }
 };

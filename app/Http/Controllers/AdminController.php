@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CatSupervisiones;
 use App\Models\Empresa;
 use App\Models\Evaluacion;
 use App\Models\Genero;
+use App\Models\Maestros;
 use App\Models\Roles;
 use App\Models\Unidad;
+use App\Models\User;
+use App\Models\Estudiante;
+use Carbon\Carbon;
 use Couchbase\Role;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
@@ -219,6 +224,177 @@ class AdminController extends Controller
 
         return back()->with('exito', 'Categoría de evaluación eliminada exitosamente');
     }
+
+////Categoria Supervision
+    public function indexSupervision(){
+        $datos['supervisiones']= CatSupervisiones::all();
+        return view('Administrador/valoracion',$datos);
+    }
+    public function GuardarCatSupervision(Request $request){
+        if(isset($request->IdValoracion)){
+            $supervision = CatSupervisiones::find($request->IdValoracion);
+            if(!$supervision){
+                return back()->with('fracaso', 'Categoría de supervisión no ha sido encontrada');
+            }
+
+            $supervision->update(['Nombre' => $request->NombreValoracion]);
+            return back()->with('exito', 'Categoría de supervisión actualizada exitosamente');
+
+        }
+
+        $supervision = ['Nombre'=>$request->NombreValoracion,"Estado"=>1];
+        CatSupervisiones::insert($supervision);
+        return back()->with('exito', 'Categoría de supervisión guardada exitosamente');
+    }
+
+    public function EliminarCatSupervision($id){
+        $supervision = CatSupervisiones::find($id);
+        if (!$supervision) {
+            return back()->with('Fracaso', 'Categoría de supervisión no encontrada');
+        }
+
+        // Actualiza solo el campo 'nombre'
+        $supervision->update(['Estado' => 0]);
+
+        return back()->with('exito', 'Categoría de supervisión eliminada exitosamente');
+    }
+
+    ///Maestros
+    public function indexMaestro()
+    {
+        $maestros = Maestros::all();
+        $generos = Genero::all();
+        return view('Administrador/admin',compact('maestros'),compact('generos'));
+    }
+
+
+    public function SaveMaestro(Request $request){
+        $verificar = Maestros::find($request->identificador);
+        $user= User::where('Identificacion', $request->identificador)->first();
+        if(!$verificar){
+            $fechaHoy = Carbon::now();
+            $fechaFormateada = $fechaHoy->format('Y-m-d');
+
+            $usuario = ['Identificacion'=>$request->identificador,'password'=>md5($request->Clave)
+                ,'FechaCreacion'=>$fechaFormateada,'Estado'=>1,'IdRol'=>26];
+            User::insert($usuario);
+
+
+
+            $maestro =['Identificacion'=>$request->identificador,'especialidad'=>$request->Especialidad
+                ,'IdGenero'=>$request->IdGenero,'Estado'=>1,'Nombres'=>$request->NombreMaestro,'Apellidos'=>$request->ApellidoMaestro];
+            Maestros::insert($maestro);
+
+            return back()->with('exito', 'Maestro almacenado exitosamente');
+
+
+
+        }
+
+        if(isset($request->Clave)){
+
+            $verificar->update(['especialidad' => $request->Especialidad,'idGenero'=>$request->IdGenero,
+                'Nombres'=>$request->NombreMaestro,'Apellidos'=>$request->ApellidoMaestro]);
+
+            $user->update(['password' => md5($request->Clave)]);
+            return back()->with('exito', 'Maestro actualizado exitosamente');
+
+        }else{
+
+            $verificar->update(['especialidad' => $request->Especialidad,'idGenero'=>$request->IdGenero,
+                'Nombres'=>$request->NombreMaestro,'Apellidos'=>$request->ApellidoMaestro]);
+            return back()->with('exito', 'Maestro actualizado exitosamente');
+        }
+
+
+
+
+
+    }
+
+
+    public function EliminarMaestro($id){
+        $user= User::where('Identificacion', $id)->first();
+        $maestro = Maestros::find($id);
+        if (!$user) {
+            return back()->with('Fracaso', 'Maestro no encontrado');
+        }
+
+        // Actualiza solo el campo 'nombre'
+        $user->update(['Estado' => 0]);
+        $maestro->update(['Estado'=> 0]);
+        return back()->with('exito', 'Maestro eliminado exitosamente');
+    }
+
+
+
+
+
+    ///crud estudiante
+    public function indexEstudiante(){
+        $estudiantes = Estudiante::all();
+        $generos = Genero::all();
+        $empresas = Empresa::all();
+        return view('Administrador/estudiante',compact('estudiantes'),compact('generos','empresas'));
+
+    }
+
+    public function GuardarEstudiante(Request $request){
+        $verificar = Estudiante::find($request->identificador);
+        $user= User::where('Identificacion', $request->identificador)->first();
+        if(!$verificar){
+            $fechaHoy = Carbon::now();
+            $fechaFormateada = $fechaHoy->format('Y-m-d');
+
+            $usuario = ['Identificacion'=>$request->identificador,'password'=>md5($request->Clave)
+                ,'FechaCreacion'=>$fechaFormateada,'Estado'=>1,'IdRol'=>27];
+            User::insert($usuario);
+
+
+
+            $estudiante =['Identificacion'=>$request->identificador,'Direccion'=>$request->Direccion,'idEmpresa'=>$request->Empresa
+                ,'idGenero'=>$request->Genero,'Estado'=>1,'Nombres'=>$request->NombreEstudiante,'Apellidos'=>$request->ApellidoEstudiante,'Telefono'=>$request->Telefono];
+            Estudiante::insert($estudiante);
+
+            return back()->with('exito', 'Estudiante almacenado exitosamente');
+
+
+        }
+
+        if(isset($request->Clave)){
+
+            $verificar->update(['Identificacion'=>$request->identificador,'Direccion'=>$request->Direccion,'idEmpresa'=>$request->Empresa
+                ,'idGenero'=>$request->Genero,'Estado'=>1,'Nombres'=>$request->NombreEstudiante,'Apellidos'=>$request->ApellidoEstudiante,'Telefono'=>$request->Telefono]);
+            $user->update(['password'=>md5($request->Clave)]);
+            return back()->with('exito', 'Estudiante actualizado exitosamente');
+
+        }else{
+
+            $verificar->update(['Identificacion'=>$request->identificador,'Direccion'=>$request->Direccion,'idEmpresa'=>$request->Empresa
+                ,'idGenero'=>$request->Genero,'Estado'=>1,'Nombres'=>$request->NombreEstudiante,'Apellidos'=>$request->ApellidoEstudiante,'Telefono'=>$request->Telefono]);
+            return back()->with('exito', 'Estudiante actualizado exitosamente');
+        }
+
+
+
+
+
+    }
+
+public function EliminarEstudiante($id){
+
+    $user= User::where('Identificacion', $id)->first();
+    $estudiante = Estudiante::find($id);
+    if (!$user) {
+        return back()->with('Fracaso', 'Estudiante no encontrado');
+    }
+
+    // Actualiza solo el campo 'nombre'
+    $user->update(['Estado' => 0]);
+    $estudiante->update(['Estado'=> 0]);
+    return back()->with('exito', 'Estudiante eliminado exitosamente');
+
+}
 
 
 

@@ -1,4 +1,4 @@
-@if(Session::get('rol')==1)
+
 <!DOCTYPE html>
 <html>
 <body lang="en">
@@ -56,13 +56,23 @@
         </a>
 
         <!-- Divider -->
-        <hr class="sidebar-divider my-0">
+        <hr class="sidebar-divider">
+
+        <!-- Nav Item - Dashboard -->
+        <div class="sidebar-heading">
+            Usuarios
+        </div>
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
             <a class="nav-link" href="{{url('administrador')}}">
                 <i class="fas fa-fw fa-users"></i>
-                <span>Crear Usuarios</span></a>
+                <span>Agregar maestro</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{url('estudiante')}}">
+                <i class="fas fa-fw fa-users"></i>
+                <span>Agregar estudiante</span></a>
         </li>
 
         <!-- Divider -->
@@ -81,13 +91,13 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="{{url('aspectoevaluacion')}}">
+            <a class="nav-link" href="{{url('categoriaEvaluacion')}}">
                 <i class="fas fa-fw fa-clipboard"></i>
                 <span>Categorías evaluación</span></a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="{{url('valoracion')}}">
+            <a class="nav-link" href="{{url('categoriaSupervision')}}">
                 <i class="fas fa-fw fa-list"></i>
                 <span>Categorías de supervisión</span></a>
         </li>
@@ -229,55 +239,7 @@
 
 
                     <!-- Nav Item - Alerts -->
-                    <li class="nav-item dropdown no-arrow mx-1">
-                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-bell fa-fw"></i>
-                            <!-- Counter - Alerts -->
-                            <span class="badge badge-danger badge-counter">3+</span>
-                        </a>
-                        <!-- Dropdown - Alerts -->
-                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                             aria-labelledby="alertsDropdown">
-                            <h6 class="dropdown-header">
-                                Alerts Center
-                            </h6>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="mr-3">
-                                    <div class="icon-circle bg-primary">
-                                        <i class="fas fa-file-alt text-white"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">December 12, 2019</div>
-                                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                </div>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="mr-3">
-                                    <div class="icon-circle bg-success">
-                                        <i class="fas fa-donate text-white"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">December 7, 2019</div>
-                                    $290.29 has been deposited into your account!
-                                </div>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="mr-3">
-                                    <div class="icon-circle bg-warning">
-                                        <i class="fas fa-exclamation-triangle text-white"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">December 2, 2019</div>
-                                    Spending Alert: We've noticed unusually high spending for your account.
-                                </div>
-                            </a>
-                            <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                        </div>
-                    </li>
+
 
                     <!-- Nav Item - Messages -->
 
@@ -338,13 +300,13 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-center text-gray-800">Usuarios de practica de formación profesional</h1>
+                <h1 class="h3 mb-2 text-center text-gray-800">Maestros de practica de formación profesional</h1>
 
                 <button id="btnUsuarios" class="btn btn-primary btn-icon-split my-3">
                         <span class="icon text-white-50">
                             <i class="fa-solid fa-user-plus"></i>
                         </span>
-                    <span class="text">Agregar usuario</span>
+                    <span class="text">Agregar maestro</span>
                 </button>
 
                 <!-- DataTales Example -->
@@ -357,51 +319,71 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>Cedula</th>
-                                    <th>Nombre</th>
-                                    <th>Apellido</th>
-                                    <th>Carnet</th>
-                                    <th>Start date</th>
+                                    <th>Identificacion</th>
+                                    <th>Nombres</th>
+                                    <th>Apellidos</th>
+                                    <th>Especialidad</th>
+                                    <th>Género</th>
                                     <th>foto</th>
-                                    <th>Activo</th>
-                                    <th>Rol</th>
-                                    <th>Correo</th>
-                                    <th>Telefono</th>
-                                    <th>Empresa</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
-                                    <th>Cedula</th>
-                                    <th>Nombre</th>
-                                    <th>Apellido</th>
-                                    <th>Carnet</th>
-                                    <th>Start date</th>
+                                    <th>Identificacion</th>
+                                    <th>Nombres</th>
+                                    <th>Apellidos</th>
+                                    <th>Especialidad</th>
+                                    <th>Género</th>
                                     <th>foto</th>
-                                    <th>Activo</th>
-                                    <th>Rol</th>
-                                    <th>Correo</th>
-                                    <th>Telefono</th>
-                                    <th>Empresa</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
 
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                    <td>Edinburgh</td>
-                                    <td>61</td>
-                                    <td>2011/04/25</td>
-                                    <td>$320,800</td>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                    <td>Edinburgh</td>
-                                    <td>61</td>
-                                    <td>2011/04/25</td>
-                                </tr>
 
-                                </tbody>
+                                @foreach($maestros as $maestro)
+                                    @if($maestro->Estado==1)
+                                <tr>
+                                    <td>{{$maestro->Identificacion}}</td>
+                                    <td>{{$maestro->Nombres}}</td>
+                                    <td>{{$maestro->Apellidos}}</td>
+                                    <td>{{$maestro->especialidad}}</td>
+                                    <td>{{$maestro->Genero->Nombre}}</td>
+                                    @if(isset($maestro->FotoRuta))
+                                        <td>{{$maestro->FotoRuta}}</td>
+                                    @else
+                                        <td>Sin fotografia</td>
+                                    @endif
+
+                                    @if($maestro->Estado==1)
+
+                                        <td>Activo</td>
+                                    @else
+
+                                        <td>No activo</td>
+                                    @endif
+
+
+                                    <td>
+                                        <button id="btnEditar" onclick="editar({{$maestro}})" class="btn btn-unan btn-circle">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+
+                                        <form method="post" action="{{url('/administrador/'.$maestro->Identificacion)}}" class="form-eliminar btn btn-danger btn-circle">
+                                            @csrf
+                                            {{method_field('DELETE')}}
+                                            <button type="submit" class="btn btn-danger btn-circle">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+
+                                </tr>
+                                @endif
+                                @endforeach                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -438,119 +420,76 @@
 <!-- Button trigger modal -->
 
 <!-- Formulario para agregar usuario -->
-<div id="ModalUsuarios" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+<div id="ModalUsuarios" class="modal fade"  tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agregar usuario</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Agregar datos del maestro</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="form-group" hidden>
-                        <label for="Identificador" class="col-form-label">Identificador:</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fa-solid fa-user"></i>
-                                </span>
-                            <input type="text" class="form-control" id="Identificador">
-                        </div>
-                    </div>
+                <form id="formulario" method="POST">
+                    @csrf
 
-                    <div class="form-group"f>
-                        <label for="NombreUsuario" class="col-form-label">Nombres del usuario:</label>
+                    <div class="form-group">
+                        <label for="NombreMaestro" class="col-form-label">Nombres:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-user"></i>
                                 </span>
-                            <input type="text" class="form-control" id="NombreUsuario" name="NombreUsuario">
+                            <input type="text" class="form-control" required id="NombreMaestro" name="NombreMaestro">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="ApellidoUsuario" class="col-form-label">Apellidos del usuario:</label>
+                        <label for="ApellidoMaestro" class="col-form-label">Apellidos del maestro:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-user"></i>
                                 </span>
-                            <input type="text" class="form-control" id="ApellidoUsuario" name="ApellidoUsuario">
+                            <input type="text" class="form-control" required id="ApellidoMaestro" name="ApellidoMaestro">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="Direccion" class="col-form-label">Direccion: </label>
+                        <label for="IdGenero" class="col-form-label">Genero: </label>
                         <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-location-dot"></i>
                                 </span>
-                            <input type="text" class="form-control" id="Direccion" name="Direccion">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Genero" class="col-form-label">Genero:</label>
-                        <div class="input-group" id="SeleccionarGenero">
-                            <!--
-                            <span class="input-group-text">
-                                <i class="fa-solid fa-user"></i>
-                            </span>
-                            <input type="text" class="form-control" id="Identificador">
-                        -->
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Estado">Estado</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fa-solid fa-user-group"></i>
-                                </span>
-                            <select class="form-control" name="Estado" id="Estado">
-                                <option value="1">Activo</option>
-                                <option value="0">Inactivo</option>
+                            <select  class="form-control" id="IdGenero" required name="IdGenero">
+                                @foreach($generos as $genero)
+                                    @if($genero->Estado==1)
+                                <option value="{{$genero->IdGenero}}">{{$genero->Nombre}}</option>
+                                    @endif
+                                        @endforeach
                             </select>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label for="Cedula">Cedula</label>
+                        <label for="Especialidad"  class="col-form-label">Especialidad:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
-                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    <i class="fa-solid fa-user"></i>
                                 </span>
-                            <input type="text" class="form-control" name="Cedula" id="Cedula">
+                            <input type="text" class="form-control" required id="Especialidad" name="Especialidad">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="Carnet">Carnet</label>
+                        <label for="identificador" class="col-form-label">Identificador:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
-                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    <i class="fa-solid fa-user"></i>
                                 </span>
-                            <input type="text" class="form-control" name="Carnet" id="Carnet">
+                            <input type="text" class="form-control" required id="identificador" name="identificador">
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="Rol">Rol</label>
-                        <div class="input-group" id="Rol">
 
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Correo">Correo</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fa-solid fa-envelope"></i>
-                                </span>
-                            <input type="email" class="form-control" name="Correo" id="Correo">
-                        </div>
-                    </div>
 
                     <div class="form-group">
                         <label for="Clave">Contraseña</label>
@@ -558,24 +497,15 @@
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-lock"></i>
                                 </span>
-                            <input type="password" class="form-control" name="Clave" id="Clave">
+                            <input type="password" class="form-control" minlength="8" maxlength="20" name="Clave" id="Clave">
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="Telefono">Telefono</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fa-solid fa-phone"></i>
-                                </span>
-                            <input type="text" class="form-control" name="Telefono" id="Telefono">
-                        </div>
-                    </div>
 
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Guardar</button>
+                <button type="submit" id="btnGuardar" form="formulario" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
@@ -585,11 +515,48 @@
 <!-- Bootstrap core JavaScript-->
 <!--Ventanas modal para agregar usuario-->
 @include('Administrador/footer')
-</body>
-@else
-    uchurus
-@endif
+<script src="{{asset('js/modal.js')}}"></script>
 
+
+<script>
+
+    $('.form-eliminar').submit(function(e){
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro de eliminar este maestro?',
+            text: 'Esta acción no se puede deshacer',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Enviar el formulario de eliminación
+
+                this.submit();
+            }
+        });
+    });
+
+
+
+</script>
+
+
+
+
+@if(Session::has('exito'))
+    <script>
+        Swal.fire(
+            'Completado',
+            '{{Session::get('exito')}}',
+            'success'
+        )
+    </script>
+@endif
+</body>
 
 
 

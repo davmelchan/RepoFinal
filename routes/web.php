@@ -43,11 +43,20 @@ Route::view('/','login')->name('login');
 
 
 Route::middleware(['Roles', 'cache.headers:private'])->group(function () {
-    Route::view('/administrador','Administrador/admin');
+    //Crud maestros
+    Route::get('/administrador',[AdminController::class,'indexMaestro']);
+    Route::post('/administrador',[AdminController::class,'SaveMaestro']);
+    Route::delete('/administrador/{Id}',[AdminController::class,'EliminarMaestro']);
+
+    //Crud estudiantes
+    Route::get('/estudiante',[AdminController::class,'indexEstudiante']);
+    Route::post('/estudiante',[AdminController::class,'GuardarEstudiante']);
+    Route::delete('/estudiante/{Id}',[AdminController::class,'EliminarEstudiante']);
+
     Route::post('/salir',[AdminController::class,'logout'])->name('salir');
 
- ///   Route::view('/aspectoevaluacion','Administrador/AspectosEvaluacion');
-    Route::view('/valoracion','Administrador/valoracion');
+
+
     Route::view('/empresa','Administrador/empresa');
 
     ///Crud Empresa
@@ -73,10 +82,16 @@ Route::middleware(['Roles', 'cache.headers:private'])->group(function () {
     Route::post('/rol',[AdminController::class,'GuardarRol'])->name('SaveRol');
     Route::delete('/rol/{IdRol}', [AdminController::class, 'destroy'])->name('rol.destroy');
 
-    ////crud de categoria evaluacion
-    Route::get('/aspectoevaluacion',[AdminController::class,'indexEvaluacion']);
-    Route::post('/aspectoevaluacion',[AdminController::class,'GuardarEvaluacion']);
-    Route::delete('/aspectoevaluacion/{IdAspecto}',[AdminController::class,'EliminarEvaluacion']);
+    ////Crud de categoria evaluacion
+    Route::get('/categoriaEvaluacion',[AdminController::class,'indexEvaluacion']);
+    Route::post('/categoriaEvaluacion',[AdminController::class,'GuardarEvaluacion']);
+    Route::delete('/categoriaEvaluacion/{IdAspecto}',[AdminController::class,'EliminarEvaluacion']);
+
+    ///Crud de categoria supervision
+    Route::get('/categoriaSupervision',[AdminController::class,'indexSupervision']);
+    Route::post('/categoriaSupervision',[AdminController::class,'GuardarCatSupervision']);
+    Route::delete('/categoriaSupervision/{IdValoracion}',[AdminController::class,'EliminarCatSupervision']);
+
 });
 
 ///Session::get('rol');

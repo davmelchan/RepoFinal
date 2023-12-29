@@ -12,7 +12,7 @@ const formulario = document.getElementById('formulario');
 btnRol.addEventListener("click", function () {
     mymodal.show();
     let titulo = document.getElementById('exampleModalLabel');
-    let btnFormulario = document.getElementById('btnFormulario');
+    let btnFormulario = document.getElementById('btnGuardar');
     formulario.reset();
     titulo.innerText = 'Agregar nuevo rol';
     btnFormulario.innerText = 'Guardar';
@@ -33,13 +33,13 @@ function editar(info){
     mymodal.show();
 
     let titulo = document.getElementById('exampleModalLabel');
-    let btnFormulario = document.getElementById('btnFormulario');
+    let btnFormulario = document.getElementById('btnGuardar');
     titulo.innerText = 'Actualizar rol';
     btnFormulario.innerText = 'Actualizar';
 
     ///datos formulario
 
-    $('#IdRol').val(info.IdRol);
+    $('#NombreMaestro').val(info.IdRol);
     $('#NombreRol').val(info.Nombre);
 
     /*

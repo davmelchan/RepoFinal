@@ -15,16 +15,17 @@ return new class extends Migration
     {
         Schema::create('Estudiante', function (Blueprint $table) {
             $table->string('Identificacion');
-            $table->string('primerNombre', 50);
-            $table->string('segundoNombre', 50);
-            $table->string('apellidoMaterno', 50);
-            $table->string('apellidoPaterno', 50);
-            $table->text('direccion');
+            $table->string('Nombres', 50);
+            $table->string('Apellidos', 50);
+            $table->text('Direccion');
             $table->integer('idGenero');
-            $table->integer('idEmpresa');
-            $table->integer('idGrupo');
+            $table->integer('idEmpresa')->nullable();
+            $table->integer('idGrupo')->nullable();
             $table->text('rutaImagen')->nullable();
             $table->char('Estado', 10);
+            $table->string('Telefono', 9);
+
+            $table->primary(['Identificacion'], 'PK_Estudiante');
         });
     }
 

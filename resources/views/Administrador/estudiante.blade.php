@@ -1,5 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+@if(Session::get('rol')==1)
+    <!DOCTYPE html>
+<html>
+<body lang="en">
 
 <head>
 
@@ -9,20 +11,32 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Categoría evaluación</title>
+    <title>Crear usuarios</title>
 
     <!-- Custom fonts for this template -->
     <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+    {{--
+    "../vendor/fontawesome-free/css/all.min.css"
+    "../css/sb-admin-2.css"
+
+    --}}
+    <script>
+
+        window.onbeforeunload = function() {
+            window.location.href = window.location.href;
+        };
+    </script>
+    <script src="https://kit.fontawesome.com/4ae6dfa596.js" crossorigin="anonymous"></script>
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{asset('css/sb-admin-2.css')}}/" rel="stylesheet">
+    <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href="{{'vendor/datatables/dataTables.bootstrap4.min.css'}}" rel="stylesheet">
-
+    <link href=" {{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
 </head>
 
 <body id="page-top">
@@ -55,7 +69,7 @@
                 <i class="fas fa-fw fa-users"></i>
                 <span>Agregar maestro</span></a>
         </li>
-        <li class="nav-item ">
+        <li class="nav-item active">
             <a class="nav-link" href="{{url('estudiante')}}">
                 <i class="fas fa-fw fa-users"></i>
                 <span>Agregar estudiante</span></a>
@@ -223,7 +237,9 @@
                     <!-- Nav Item - Search Dropdown (Visible Only XS) -->
 
 
+
                     <!-- Nav Item - Alerts -->
+
 
                     <!-- Nav Item - Messages -->
 
@@ -232,7 +248,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrador</span>
-                            <img class="img-profile rounded-circle"  src="{{asset('img/undraw_profile.svg')}}">
+                            <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -257,79 +273,132 @@
                                     @csrf
                                 </form>
                             @endauth
+
+
+
+                            <!--
+
+                            <form action="" method="post">
+
+                                <button class="dropdown-item" type="submit">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Salir
+
+                                </button>
+                            </form>
+
+                            -->
                         </div>
                     </li>
 
                 </ul>
-
             </nav>
+
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-center text-gray-800"> Categoría de evaluación de las prácticas de formación
-                    profesional</h1>
+                <h1 class="h3 mb-2 text-center text-gray-800">Estudiantes de prácticas de formación profesional</h1>
 
-                <button id="btnAspecto" class="btn btn-primary btn-icon-split my-3">
+                <button id="btnUsuarios" class="btn btn-primary btn-icon-split my-3">
                         <span class="icon text-white-50">
-                            <i class="fas fa-fw fa-clipboard"></i>
+                            <i class="fa-solid fa-user-plus"></i>
                         </span>
-                    <span class="text">Agregar categoría de evaluación</span>
+                    <span class="text">Agregar estudiante</span>
                 </button>
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Categoría de evaluación</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Estudiantes</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Nombre</th>
-                                    <th>Estado</th>
                                     <th>Opciones</th>
+                                    <th>Identificación</th>
+                                    <th>Nombres</th>
+                                    <th>Apellidos</th>
+                                    <th>Dirección</th>
+                                    <th>Género</th>
+                                    <th>Imagen</th>
+                                    <th>Empresa</th>
+                                    <th>Grupo</th>
+                                    <th>Teléfono</th>
+                                    <th>Estado</th>
+
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Nombre Aspecto</th>
-                                    <th>Estado</th>
                                     <th>Opciones</th>
+                                    <th>Identificación</th>
+                                    <th>Nombres</th>
+                                    <th>Apellidos</th>
+                                    <th>Dirección</th>
+                                    <th>Género</th>
+                                    <th>Imagen</th>
+                                    <th>Empresa</th>
+                                    <th>Grupo</th>
+                                    <th>Teléfono</th>
+                                    <th>Estado</th>
+
+
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                @foreach($categorias as $categoria)
-                                    @if($categoria->Estado==1)
                                 <tr>
-                                    <td>{{$categoria->IdCatEvaluacion}}</td>
-                                    <td>{{$categoria->Nombre}}</td>
-                                    @if($categoria->Estado == 1)
-                                        <td>Activo</td>
-                                    @else
-                                        <td>No Activo</td>
-                                    @endif
+                                    @foreach($estudiantes as $estudiante)
                                     <td>
-                                        <button id="btnEditar" onclick="editar({{$categoria}})" class="btn btn-unan btn-circle">
+                                        <button id="btnEditar" onclick="editar({{$estudiante}})"  class="btn btn-unan btn-circle">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
-                                        <form  class="btn btn-danger btn-circle form-eliminar" action="{{url('/aspectoevaluacion/'.$categoria->IdCatEvaluacion)}}" method="post">
-                                        @csrf
-                                        {{method_field('DELETE')}}
-                                        <button type="submit" class="btn btn-danger btn-circle">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+
+
+                                        <form method="post" action="{{url('/estudiante/'.$estudiante->Identificacion)}}" class="form-eliminar btn btn-danger btn-circle">
+                                            @csrf
+                                            {{method_field('DELETE')}}
+                                            <button type="submit" class="btn btn-danger btn-circle">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </form>
 
                                     </td>
-                                </tr>
+                                    <td>{{$estudiante->Identificacion}}</td>
+                                    <td>{{$estudiante->Nombres}}</td>
+                                    <td>{{$estudiante->Apellidos}}</td>
+                                    <td>{{$estudiante->Direccion}}</td>
+                                    <td>{{$estudiante->Genero->Nombre}}</td>
+                                    @if(isset($estudiante->rutaImagen))
+                                            <td>{{$estudiante->rutaImagen}}</td>
+                                        @else
+                                        <td>Sin foto</td>
                                     @endif
-                                @endforeach
+
+                                    <td>{{$estudiante->Empresa->Nombre}}</td>
+                                    @if($estudiante->idGrupo!=0)
+                                            <td>{{$estudiante->idGrupo}}</td>
+
+                                        @else
+                                            <td>No asignado</td>
+                                        @endif
+
+                                    <td>{{$estudiante->Telefono}}</td>
+
+                                    @if($estudiante->Estado==1)
+
+                                            <td>Activo</td>
+                                        @else
+                                            <td>No activo</td>
+                                    @endif
+
+                                    @endforeach
+                                </tr>
+
                                 </tbody>
                             </table>
                         </div>
@@ -364,14 +433,15 @@
 </a>
 
 
+<!-- Button trigger modal -->
 
-<!--Formulario para agregar aspecto de evaluacion-->
-<div id="ModalAspecto" class="modal fade" tabindex="-1" role="dialog"
+<!-- Formulario para agregar usuario -->
+<div id="ModalUsuarios" class="modal fade"  tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agregar categoría de evaluación</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Agregar estudiante</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -379,46 +449,120 @@
             <div class="modal-body">
                 <form id="formulario" method="POST">
                     @csrf
-                    <div class="form-group" hidden>
-                        <label for="IdAspecto" class="col-form-label">Identificador:</label>
+                    <div class="form-group">
+                        <label for="NombreEstudiante" class="col-form-label">Nombres del estudiante:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-user"></i>
                                 </span>
-                            <input type="text" class="form-control" id="IdAspecto" name="IdAspecto">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="NombreAspecto" class="col-form-label">Nombre categoría de evaluación:</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fas fa-fw fa-clipboard"></i>
-                                </span>
-                            <input type="text" required class="form-control" id="NombreAspecto" name="NombreAspecto">
+                            <input type="text" required class="form-control" id="NombreEstudiante" name="NombreEstudiante">
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label for="ApellidoEstudiante" class="col-form-label">Apellidos del estudiante:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            <input type="text" required class="form-control" id="ApellidoEstudiante" name="ApellidoEstudiante">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Direccion" class="col-form-label">Dirección: </label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </span>
+                            <input type="text"  required class="form-control" id="Direccion" name="Direccion">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Genero" class="col-form-label">Género:</label>
+                        <div class="input-group" id="SeleccionarGenero">
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            <select name="Genero" required id="Genero" class="form-control">
+                                @foreach($generos as $genero)
+                                <option value="{{$genero->IdGenero}}">{{$genero->Nombre}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Empresa" class="col-form-label">Centro de práctica:</label>
+                        <div class="input-group">
+                                                      <select name="Empresa" id="Empresa" required class="form-control company" style="display: none; width: 100%" multiple="multiple" >
+                                <optgroup label="Centros de prácticas">
+                                    <option value=""></option>
+                                    @foreach($empresas as $empresa)
+                                        @if($empresa->Estado==1)
+                                    <option value="{{$empresa->IdEmpresa}}">{{$empresa->Nombre}}</option>
+                                        @endif
+                                            @endforeach
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="identificador"  class="col-form-label">Identificación: </label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            <input type="text" required class="form-control" id="identificador" name="identificador">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Clave">Contraseña</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-lock"></i>
+                                </span>
+                            <input type="password" minlength="8" maxlength="20" class="form-control" name="Clave" id="Clave">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Telefono">Teléfono</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-phone"></i>
+                                </span>
+                            <input type="text" required class="form-control" name="Telefono" id="Telefono">
+                        </div>
+                    </div>
 
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="submit" id="btnGuardar" form="formulario" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-
             </div>
         </div>
     </div>
 </div>
 
-
+<!-- Bootstrap core JavaScript-->
+<!--Ventanas modal para agregar usuario-->
 @include('Administrador/footer')
-<script src="{{asset('js/modalAspecto.js')}}"></script>
+<script src="{{asset('js/select2.full.min.js')}}"></script>
+<script src="{{asset('js/estudiante.js')}}"></script>
 
 <script>
+
     $('.form-eliminar').submit(function(e){
         e.preventDefault();
         Swal.fire({
-            title: '¿Estás seguro de eliminar la categoría de evaluación?',
+            title: '¿Estás seguro de eliminar este estudiante?',
             text: 'Esta acción no se puede deshacer',
             icon: 'warning',
             showCancelButton: true,
@@ -428,14 +572,18 @@
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-
+                // Enviar el formulario de eliminación
 
                 this.submit();
             }
         });
     });
 
+
+
 </script>
+
+
 
 
 
@@ -450,5 +598,13 @@
     </script>
 @endif
 
+
 </body>
-</html>
+@else
+    uchurus
+@endif
+
+
+
+
+

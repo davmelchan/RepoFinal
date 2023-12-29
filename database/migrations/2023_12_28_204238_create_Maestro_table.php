@@ -15,13 +15,12 @@ return new class extends Migration
     {
         Schema::create('Maestro', function (Blueprint $table) {
             $table->string('Identificacion');
-            $table->text('primerNombre');
-            $table->text('segundoNombre');
-            $table->text('apellidoPaterno');
-            $table->text('apellidoMaterno');
             $table->text('especialidad');
             $table->integer('idGenero');
-            $table->text('FotoRuta');
+            $table->text('FotoRuta')->nullable();
+            $table->boolean('Estado');
+            $table->text('Nombres');
+            $table->text('Apellidos');
 
             $table->primary(['Identificacion'], 'PK_Maestro');
         });

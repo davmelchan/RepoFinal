@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Valoración</title>
+    <title>Categoría supervisión</title>
 
     <!-- Custom fonts for this template -->
     <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -42,15 +42,22 @@
         </a>
 
         <!-- Divider -->
-        <hr class="sidebar-divider my-0">
+        <hr class="sidebar-divider">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
+        <div class="sidebar-heading">
+            Usuarios
+        </div>
+        <li class="nav-item ">
             <a class="nav-link" href="{{url('administrador')}}">
                 <i class="fas fa-fw fa-users"></i>
-                <span>Crear Usuarios</span></a>
+                <span>Agregar maestro</span></a>
         </li>
-
+        <li class="nav-item ">
+            <a class="nav-link" href="{{url('estudiante')}}">
+                <i class="fas fa-fw fa-users"></i>
+                <span>Agregar estudiante</span></a>
+        </li>
         <!-- Divider -->
         <hr class="sidebar-divider">
 
@@ -67,14 +74,13 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="{{url('aspectoevaluacion')}}">
+            <a class="nav-link" href="{{url('categoriaEvaluacion')}}">
                 <i class="fas fa-fw fa-clipboard"></i>
-                <span> Categorías de evaluación</span></a>
-
+                <span>Categorías evaluación</span></a>
         </li>
 
-        <li class="nav-item active">
-            <a class="nav-link" href="{{url('valoracion')}}">
+        <li class="nav-item">
+            <a class="nav-link" href="{{url('categoriaSupervision')}}">
                 <i class="fas fa-fw fa-list"></i>
                 <span>Categorías de supervisión</span></a>
         </li>
@@ -215,55 +221,7 @@
 
 
                     <!-- Nav Item - Alerts -->
-                    <li class="nav-item dropdown no-arrow mx-1">
-                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-bell fa-fw"></i>
-                            <!-- Counter - Alerts -->
-                            <span class="badge badge-danger badge-counter">3+</span>
-                        </a>
-                        <!-- Dropdown - Alerts -->
-                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                             aria-labelledby="alertsDropdown">
-                            <h6 class="dropdown-header">
-                                Alerts Center
-                            </h6>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="mr-3">
-                                    <div class="icon-circle bg-primary">
-                                        <i class="fas fa-file-alt text-white"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">December 12, 2019</div>
-                                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                </div>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="mr-3">
-                                    <div class="icon-circle bg-success">
-                                        <i class="fas fa-donate text-white"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">December 7, 2019</div>
-                                    $290.29 has been deposited into your account!
-                                </div>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="mr-3">
-                                    <div class="icon-circle bg-warning">
-                                        <i class="fas fa-exclamation-triangle text-white"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">December 2, 2019</div>
-                                    Spending Alert: We've noticed unusually high spending for your account.
-                                </div>
-                            </a>
-                            <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                        </div>
-                    </li>
+
 
                     <!-- Nav Item - Messages -->
 
@@ -344,13 +302,32 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
+                                @foreach($supervisiones as $supervision)
+                                    @if($supervision->Estado==1)
                                 <tr>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                    <td>System Architect</td>
-                                    <td>System Architect</td>
-                                </tr>
+                                    <td>{{$supervision->IdCatSupervision}}</td>
+                                    <td>{{$supervision->Nombre}}</td>
+                                    @if($supervision->Estado==1)
+                                    <td>Activo</td>
+                                    @else
+                                        <td>No Activo</td>
+                                    @endif
+                                        <td>
+                                        <button id="btnEditar" onclick="editar({{$supervision}})" class="btn btn-unan btn-circle">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
 
+                                            <form action="{{url('/categoriaSupervision/'.$supervision->IdCatSupervision)}}" method="post"  class="form-eliminar btn btn-danger btn-circle">
+                                            @csrf
+                                                {{method_field('DELETE')}}
+                                                <button type="submit" class="btn btn-danger btn-circle">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                            </form>
+                                        </td>
+                                </tr>
+                                    @endif
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -388,18 +365,19 @@
 
 <!--Formulario para agregar valoracion-->
 
-<div id="ModalValoracion" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+<div id="ModalValoracion" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agregar nueva valoración</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Agregar categoría de supervisión</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="formulario" method="POST">
+                    @csrf
                     <div class="form-group" hidden>
                         <label for="IdValoracion" class="col-form-label">Identificador:</label>
                         <div class="input-group">
@@ -410,7 +388,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="NombreValoracion" class="col-form-label">Nombre valoración:</label>
+                        <label for="NombreValoracion" class="col-form-label">Nombre categoría de supervisión:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fas fa-fw fa-list"></i>
@@ -418,20 +396,12 @@
                             <input type="text" class="form-control" id="NombreValoracion" name="NombreValoracion">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="puntaje" class="col-form-label">Puntaje:</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </span>
-                            <input type="number" class="form-control" id="puntaje" min="0" max="20" name="puntaje">
-                        </div>
-                    </div>
+
 
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Guardar</button>
+                <button type="submit" id="btnGuardar" form="formulario"  class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 
             </div>
@@ -442,5 +412,45 @@
 
 @include('Administrador/footer')
 <script src="{{asset('js/modalValoracion.js')}}"></script>
+
+<script>
+    $('.form-eliminar').submit(function(e){
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro de eliminar la categoría de supervisión?',
+            text: 'Esta acción no se puede deshacer',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Enviar el formulario de eliminación
+
+                this.submit();
+            }
+        });
+    });
+
+
+
+</script>
+
+
+
+
+@if(Session::has('exito'))
+    <script>
+        Swal.fire(
+            'Completado',
+            '{{Session::get('exito')}}',
+            'success'
+        )
+    </script>
+@endif
+
+
 </body>
 </html>

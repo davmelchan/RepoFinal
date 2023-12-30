@@ -210,7 +210,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Nombre usuario</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ session('datos')->first()->Nombres }} {{ session('datos')->first()->Apellidos }}</span>
                             <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
                         </a>
                         <!-- Dropdown - User Information -->
@@ -248,12 +248,17 @@
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Grupos de practicas</h1>
-                    <a id="btnGrupo" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
+                    <h1 class="h3 mb-0 text-gray-800">Grupos</h1>
+                    <a id="btnGrupo" class="btn btn-success btn-icon-split">
+                                        <span class="icon text-white-50">
+                                           <i class="fa-solid fa-plus" style="color: #ffffff;"></i>
+                                        </span>
+                        <span class="text">Crear grupo</span>
+                    </a>
 
-                        <i class="fa-solid fa-plus" style="color: #ffffff;"></i>
-                        Crear grupo</a>
                 </div>
+
+
 
                 <!-- Content Row -->
 
@@ -263,19 +268,19 @@
 
                     <!-- Content Column -->
 
-
+                    @foreach($grupos as $grupo)
                     <div class="col-lg-4 mb-2">
                         <!-- Illustrations -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">{{$grupo->Nombre}}</h6>
                             </div>
                             <div class="card-body">
                                 <div class="text-center">
                                     <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset('img/undraw_posting_photo.svg')}}" alt="">
+                                         src="{{asset(Storage::url($grupo->RutaImagen))}}" alt="">
                                 </div>
-                                <p>Add some quality, svg illustrations to your project courtesy of <a
+                                <p>  {{$grupo->RutaImagen}}  Add some quality, svg illustrations to your project courtesy of <a
                                         target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
                                     constantly updated collection of beautiful svg images that you can use
                                     completely free and without attribution!</p>
@@ -285,72 +290,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 mb-2">
-                        <!-- Illustrations -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset('img/undraw_posting_photo.svg')}}" alt="...">
-                                </div>
-                                <p>Add some quality, svg illustrations to your project courtesy of <a
-                                        target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                    constantly updated collection of beautiful svg images that you can use
-                                    completely free and without attribution!</p>
-                                <a href="{{url('alumnosgrupo')}}" class="btn btn-unan btn-block"><i
-                                        class="fa-solid fa-eye"></i>
-                                    Ver Grupo</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 mb-2">
-                        <!-- Illustrations -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset('img/undraw_posting_photo.svg')}}" alt="...">
-                                </div>
-                                <p>Add some quality, svg illustrations to your project courtesy of <a
-                                        target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                    constantly updated collection of beautiful svg images that you can use
-                                    completely free and without attribution!</p>
-                                <a href="{{url('alumnosgrupo')}}" class="btn btn-unan btn-block"><i
-                                        class="fa-solid fa-eye"></i>
-                                    Ver Grupo</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 mb-2">
-                        <!-- Illustrations -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset('img/undraw_posting_photo.svg')}}" alt="...">
-                                </div>
-                                <p>Add some quality, svg illustrations to your project courtesy of <a
-                                        target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                    constantly updated collection of beautiful svg images that you can use
-                                    completely free and without attribution!</p>
-                                <a href="{{url('alumnosgrupo')}}" class="btn btn-unan btn-block"><i
-                                        class="fa-solid fa-eye"></i>
-                                    Ver Grupo</a>
-                            </div>
-                        </div>
-                    </div>
-
-
+                    @endforeach
                 </div>
 
             </div>
@@ -387,12 +327,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Agregar grupo</h5>
+
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <div id="errores"></div>
+                <form method="POST" id="formulario" action="{{route('GrupoSave')}}"  enctype="multipart/form-data">
+                    @csrf
                     <div class="form-group" hidden>
                         <label for="IdGrupo" class="col-form-label">Identificador:</label>
                         <div class="input-group">
@@ -408,7 +351,16 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-fw fa-book-open"></i>
                                 </span>
-                            <input type="text" class="form-control" id="NombreGrupo" name="NombreGrupo">
+                            <input type="text" class="form-control" required id="NombreGrupo" name="NombreGrupo">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fotoGrupo" class="col-form-label">Foto:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-fw fa-book-open"></i>
+                                </span>
+                            <input type="file" class="form-control" name="fotoGrupo" id="fotoGrupo" accept=".jpg, .jpeg, .png" >
                         </div>
                     </div>
 
@@ -416,7 +368,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Guardar</button>
+                <button type="button" onclick="subirArchivo()" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 
             </div>
@@ -430,5 +382,47 @@
 
 @include('footer')
 <script src="{{asset('js/modalGrupo.js')}}"></script>
+
+
+<script>
+    function subirArchivo() {
+        // Obtén los datos del formulario
+        var formData = new FormData($('#formulario')[0]);
+
+        // Realiza la llamada AJAX
+        $.ajax({
+            type: 'POST',
+            url: '{{ route('GrupoSave') }}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                console.log(response.success);
+
+         /*       Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: response.success,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                location.reload();*/
+            },
+            error: function(xhr) {
+                // Si hay errores de validación, muestra los mensajes en el modal
+                var errors = xhr.responseJSON.errors;
+                var mensajeErrores = '';
+
+                $.each(errors, function(key, value) {
+                    mensajeErrores += '<p>' + value[0] + '</p>';
+                });
+
+                $('#errores').html(mensajeErrores);
+            }
+        });
+    }
+</script>
+
+
 </body>
 </html>

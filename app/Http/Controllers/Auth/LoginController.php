@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Estudiante;
+use App\Models\Maestros;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,6 +50,8 @@ class LoginController extends Controller
                         $user->update(['password' => Hash::make($request->clave)]);
                         $request->session()->regenerate();
                         Session::put('rol', $user->IdRol);
+                        $resultados = Maestros::where('Identificacion', $request->identificacion)->get();
+                        Session::put('datos',$resultados);
                         return redirect()->intended('maestro');
 
                     }
@@ -56,6 +60,8 @@ class LoginController extends Controller
                         $user->update(['password' => Hash::make($request->clave)]);
                         $request->session()->regenerate();
                         Session::put('rol', $user->IdRol);
+                        $resultados = Maestros::where('Identificacion', $request->identificacion)->get();
+                        Session::put('datos',$resultados);
                         return redirect()->intended('maestro');
 
                     }

@@ -107,7 +107,10 @@ Route::middleware(['Roles', 'cache.headers:private'])->group(function () {
  * Maestro  view
  * */
 Route::middleware(['maestro', 'cache.headers:private'])->group(function(){
-    Route::view('/maestro','Maestro/maestro');
+    Route::get('/maestro',[MaestroController::class,'indexGrupo']);
+    Route::post('/maestro',[MaestroController::class,'GuardarGrupo'])->name('GrupoSave');
+
+
     Route::post('/logout',[MaestroController::class,'logoutMaestro'])->name('logoutDocente');
     Route::view('/alumnosgrupo','Maestro/subpage/alumnosgrupo');
     Route::view('/evidencia','Maestro/evidencia');

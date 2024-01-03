@@ -383,6 +383,7 @@ class AdminController extends Controller
 
 public function EliminarEstudiante($id){
 
+
     $user= User::where('Identificacion', $id)->first();
     $estudiante = Estudiante::find($id);
     if (!$user) {

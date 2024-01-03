@@ -268,28 +268,64 @@
 
                     <!-- Content Column -->
 
-                    @foreach($grupos as $grupo)
+                    @foreach($datos as $grupo)
+                        @if($grupo->GruposMaestro->Estado==1)
                     <div class="col-lg-4 mb-2">
                         <!-- Illustrations -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">{{$grupo->Nombre}}</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">{{$grupo->GruposMaestro->Nombre}}</h6>
                             </div>
                             <div class="card-body">
-                                <div class="text-center">
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset(Storage::url($grupo->RutaImagen))}}" alt="">
-                                </div>
-                                <p>  {{$grupo->RutaImagen}}  Add some quality, svg illustrations to your project courtesy of <a
-                                        target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                    constantly updated collection of beautiful svg images that you can use
-                                    completely free and without attribution!</p>
-                                <a href="{{url('alumnosgrupo')}}" class="btn btn-unan btn-block"><i
-                                        class="fa-solid fa-eye"></i>
-                                    Ver Grupo</a>
+                                @if(isset($grupo->GruposMaestro->RutaImagen))
+
+                                    <div class="text-center">
+                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
+                                             src="{{asset(Storage::url($grupo->GruposMaestro->RutaImagen))}}" alt="">
+                                    </div>
+
+                                @else
+                                    <div class="text-center">
+                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
+                                             src="{{asset('img/undraw_posting_photo.svg')}}" alt="foto del grupo">
+                                    </div>
+                                @endif
+                                <p><b>Codigo: </b>  {{$grupo->IdGrupo}}<br>
+                                    @if($grupo->GruposMaestro->Estado==1)
+                                    <b>Estado: </b> Activo
+                                    @endif
+                                    </p>
+                                    <div class="dropdown  btn-block">
+                                        <button class="btn btn-unan btn-block dropdown-toggle" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            Opciones
+                                        </button>
+                                        <div class="dropdown-menu animated--fade-in"
+                                             aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="{{url('alumnosgrupo')}}">
+                                                <i class="fa-solid fa-eye"></i>
+                                                Ver alumnos
+                                            </a>
+                                            <button onclick="editar('{{$grupo->GruposMaestro->Nombre}}','{{$grupo->IdGrupo}}','{{asset(Storage::url($grupo->GruposMaestro->RutaImagen))}}')"  class="dropdown-item">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                                Editar grupo
+                                            </button>
+                                            <form method="post" action="{{url('/maestro/'.$grupo->IdGrupo)}}" class="form-eliminar">
+                                                @csrf
+                                                {{method_field('DELETE')}}
+                                                <button type="submit" class="dropdown-item">
+                                                    <i class="fas fa-trash"></i>
+                                                    Eliminar grupo
+                                                </button>
+                                            </form>
+
+                                        </div>
+                                    </div>
                             </div>
                         </div>
                     </div>
+                        @endif
                     @endforeach
                 </div>
 
@@ -349,16 +385,23 @@
                         <label for="NombreGrupo" class="col-form-label">Nombre del Grupo:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
-                                    <i class="fas fa-fw fa-book-open"></i>
+                                    <i class="fa-solid fa-user-group"></i>
                                 </span>
                             <input type="text" class="form-control" required id="NombreGrupo" name="NombreGrupo">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="fotoGrupo" class="col-form-label">Foto:</label>
+
+                        <div class="rounded mx-auto d-block mb-2">
+                            <!-- Imagen con tamaño específico y clase modal-img -->
+                            <img id="imgGrupo" src="" alt="Imagen grupo"   class="modal-img">
+                        </div>
+
+
                         <div class="input-group">
                                 <span class="input-group-text">
-                                    <i class="fas fa-fw fa-book-open"></i>
+                                   <i class="fa-solid fa-image"></i>
                                 </span>
                             <input type="file" class="form-control" name="fotoGrupo" id="fotoGrupo" accept=".jpg, .jpeg, .png" >
                         </div>
@@ -368,7 +411,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" onclick="subirArchivo()" class="btn btn-primary">Guardar</button>
+                <button type="button" id="btnGuardar" onclick="guardarGrupo()" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 
             </div>
@@ -385,8 +428,26 @@
 
 
 <script>
-    function subirArchivo() {
-        // Obtén los datos del formulario
+    $('.form-eliminar').submit(function(e){
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro de eliminar este grupo?',
+            text: 'Esta acción no se puede deshacer',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+
+                this.submit();
+            }
+        });
+    });
+    function guardarGrupo(){
         var formData = new FormData($('#formulario')[0]);
 
         // Realiza la llamada AJAX
@@ -397,32 +458,51 @@
             processData: false,
             contentType: false,
             success: function(response) {
-                console.log(response.success);
-
-         /*       Swal.fire({
-                    position: 'top-end',
+                // Si la llamada es exitosa, puedes cerrar el modal, mostrar un mensaje, etc.
+                Swal.fire({
+                    position: 'center',
                     icon: 'success',
                     title: response.success,
                     showConfirmButton: false,
                     timer: 1500
-                })
-                location.reload();*/
+                });
+                console.log(response);
+                setTimeout(function() {
+                    window.location.reload();
+                }, 1550);
+
+
             },
             error: function(xhr) {
-                // Si hay errores de validación, muestra los mensajes en el modal
-                var errors = xhr.responseJSON.errors;
-                var mensajeErrores = '';
+                Swal.fire(
+                    'Error',
+                    xhr.responseJSON.errors,
+                    'error'
+                )
 
-                $.each(errors, function(key, value) {
-                    mensajeErrores += '<p>' + value[0] + '</p>';
-                });
 
-                $('#errores').html(mensajeErrores);
             }
-        });
+        })
+
     }
+
+
+
+
+
+
+
+
 </script>
 
-
+@if(Session::has('exito'))
+    <script>
+        Swal.fire(
+            'Completado',
+            '{{Session::get('exito')}}',
+            'success'
+        )
+    </script>
+@endif
 </body>
 </html>

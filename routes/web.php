@@ -108,7 +108,8 @@ Route::middleware(['Roles', 'cache.headers:private'])->group(function () {
  * */
 Route::middleware(['maestro', 'cache.headers:private'])->group(function(){
     Route::get('/maestro',[MaestroController::class,'indexGrupo']);
-    Route::post('/maestro',[MaestroController::class,'GuardarGrupo'])->name('GrupoSave');
+    Route::post('/maestro',[MaestroController::class,'GuardarGrupoMaestro'])->name('GrupoSave');
+    Route::delete('/maestro/{id}',[MaestroController::class,'GrupoEliminar'])->name('Grupodelete');
 
 
     Route::post('/logout',[MaestroController::class,'logoutMaestro'])->name('logoutDocente');

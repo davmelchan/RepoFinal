@@ -6544,6 +6544,14 @@ a.close.disabled {
   outline: 0;
 }
 
+
+.modal-img{
+    max-width: 100%;
+    height: auto;
+    max-height: 100vh; /* Ajusta según sea necesario */
+    object-fit: contain;
+}
+
 .modal-dialog {
   position: relative;
   width: auto;

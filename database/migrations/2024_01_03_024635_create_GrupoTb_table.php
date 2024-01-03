@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('Tb_Grupo', function (Blueprint $table) {
-            $table->string('IdGrupo', 10);
+        Schema::create('GrupoTb', function (Blueprint $table) {
+            $table->string('IdGrupo');
             $table->string('Nombre', 250);
             $table->boolean('Estado');
-            $table->text('RutaImagen');
+            $table->text('RutaImagen')->nullable();
 
-            $table->primary(['IdGrupo'], 'PK_Tb_Grupo');
+            $table->primary(['IdGrupo'], 'PK_GrupoTb');
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Tb_Grupo');
+        Schema::dropIfExists('GrupoTb');
     }
 };

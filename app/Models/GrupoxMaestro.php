@@ -13,6 +13,14 @@ class GrupoxMaestro extends Model
     public $timestamps = false;
     protected $fillable= ['IdGrupo', 'IdMaestro','Estado'];
 
+    protected $casts = [
+        'IdGrupo' => 'string',
+        'IdMaestro' => 'string'
+    ];
+    public function GruposMaestro(){
+        return $this->hasOne(GrupoMaestro::class,'Identificacion','IdGrupo');
+    }
+
 
 
 }

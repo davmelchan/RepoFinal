@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('GrupoXMaestro', function (Blueprint $table) {
-            $table->string('IdGrupo', 10);
+            $table->string('IdGrupo');
             $table->string('IdMaestro');
             $table->boolean('Estado');
             $table->increments('IdgrupoMaestro');

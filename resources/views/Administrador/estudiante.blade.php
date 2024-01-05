@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Crear usuarios</title>
 
     <!-- Custom fonts for this template -->
@@ -32,11 +32,12 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
+
 
     <!-- Custom styles for this page -->
     <link href=" {{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
+    @include('Administrador/data')
 </head>
 
 <body id="page-top">
@@ -316,7 +317,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table id="example" class="table table-striped dt-responsive table-bordered nowrap" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
                                     <th>Opciones</th>
@@ -333,72 +334,51 @@
 
                                 </tr>
                                 </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>Opciones</th>
-                                    <th>Identificación</th>
-                                    <th>Nombres</th>
-                                    <th>Apellidos</th>
-                                    <th>Dirección</th>
-                                    <th>Género</th>
-                                    <th>Imagen</th>
-                                    <th>Empresa</th>
-                                    <th>Grupo</th>
-                                    <th>Teléfono</th>
-                                    <th>Estado</th>
-
-
-                                </tr>
-                                </tfoot>
                                 <tbody>
-                                <tr>
-                                    @foreach($estudiantes as $estudiante)
-                                    <td>
-                                        <button id="btnEditar" onclick="editar({{$estudiante}})"  class="btn btn-unan btn-circle">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
+                                @foreach($estudiantes as $estudiante)
+                                    <tr>
 
+                                        <td class="text-center">
+                                            <button id="btnEditar" onclick="editar({{$estudiante}})"  class="btn btn-unan btn-circle">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
 
-                                        <form method="post" action="{{url('/estudiante/'.$estudiante->Identificacion)}}" class="form-eliminar btn btn-danger btn-circle">
-                                            @csrf
-                                            {{method_field('DELETE')}}
-                                            <button type="submit" class="btn btn-danger btn-circle">
+                                            <button onclick="eliminar('{{$estudiante->Identificacion}}')" class="btn btn-danger btn-circle">
                                                 <i class="fas fa-trash"></i>
                                             </button>
-                                        </form>
 
-                                    </td>
-                                    <td>{{$estudiante->Identificacion}}</td>
-                                    <td>{{$estudiante->Nombres}}</td>
-                                    <td>{{$estudiante->Apellidos}}</td>
-                                    <td>{{$estudiante->Direccion}}</td>
-                                    <td>{{$estudiante->Genero->Nombre}}</td>
-                                    @if(isset($estudiante->rutaImagen))
+                                        </td>
+                                        <td>{{$estudiante->Identificacion}}</td>
+                                        <td>{{$estudiante->Nombres}}</td>
+                                        <td>{{$estudiante->Apellidos}}</td>
+                                        <td>{{$estudiante->Direccion}}</td>
+                                        <td>{{$estudiante->Genero->Nombre}}</td>
+                                        @if(isset($estudiante->rutaImagen))
                                             <td>{{$estudiante->rutaImagen}}</td>
                                         @else
-                                        <td>Sin foto</td>
-                                    @endif
+                                            <td>Sin foto</td>
+                                        @endif
 
-                                    <td>{{$estudiante->Empresa->Nombre}}</td>
-                                    @if($estudiante->idGrupo!=0)
+                                        <td>{{$estudiante->Empresa->Nombre}}</td>
+                                        @if($estudiante->idGrupo!=0)
                                             <td>{{$estudiante->idGrupo}}</td>
 
                                         @else
                                             <td>No asignado</td>
                                         @endif
 
-                                    <td>{{$estudiante->Telefono}}</td>
+                                        <td>{{$estudiante->Telefono}}</td>
 
-                                    @if($estudiante->Estado==1)
+                                        @if($estudiante->Estado==1)
 
                                             <td>Activo</td>
                                         @else
                                             <td>No activo</td>
-                                    @endif
+                                        @endif
 
-                                    @endforeach
-                                </tr>
 
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -499,7 +479,6 @@
                         <div class="input-group">
                                                       <select name="Empresa" id="Empresa" required class="form-control company" style="display: none; width: 100%" multiple="multiple" >
                                 <optgroup label="Centros de prácticas">
-                                    <option value=""></option>
                                     @foreach($empresas as $empresa)
                                         @if($empresa->Estado==1)
                                     <option value="{{$empresa->IdEmpresa}}">{{$empresa->Nombre}}</option>
@@ -558,30 +537,69 @@
 <script src="{{asset('js/estudiante.js')}}"></script>
 
 <script>
+function eliminar(id){
 
-    $('.form-eliminar').submit(function(e){
-        e.preventDefault();
-        Swal.fire({
-            title: '¿Estás seguro de eliminar este estudiante?',
-            text: 'Esta acción no se puede deshacer',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Enviar el formulario de eliminación
+Swal.fire({
+title: '¿Estás seguro de eliminar este estudiante?',
+text: 'Esta acción no se puede deshacer',
+icon: 'warning',
+showCancelButton: true,
+confirmButtonColor: '#3085d6',
+cancelButtonColor: '#d33',
+confirmButtonText: 'Eliminar',
+cancelButtonText: 'Cancelar'
+}).then((result) => {
+if (result.isConfirmed) {
+// Enviar el formulario de eliminación
 
-                this.submit();
-            }
-        });
-    });
+$.ajax({
+type: 'DELETE',
+url: '{{route("student.destroy",":id")}}'.replace(':id',id),
+headers: {
+'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+},
+success: function(response) {
+Swal.fire({
+position: 'center',
+icon: 'success',
+title: response.success,
+showConfirmButton: false,
+timer: 1500
+});
+setTimeout(function() {
+window.location.reload();
+}, 1550);
+
+},
+error: function(errores) {
+Swal.fire({
+position: 'center',
+icon: 'success',
+title: errores.error,
+showConfirmButton: false,
+timer: 1500
+});
+}
+});
 
 
 
+
+
+
+
+
+
+
+}
+});
+
+
+
+
+}
 </script>
+
 
 
 

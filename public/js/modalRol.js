@@ -1,8 +1,28 @@
-$(document).ready(function() {
-    $('#myTable').DataTable({
-        responsive: true,
+var tabla;
+$(document).ready(function()
+    {
 
-});
+
+
+      tabla =  $('.table').dataTable({
+            responsive:true,
+
+
+
+        });
+
+    }
+);
+
+$(window).resize(function () {
+    // Destruir DataTables
+    tabla.destroy();
+
+    // Volver a inicializar DataTables
+    tabla = $('.table').DataTable({
+        responsive: true,
+        // Otras opciones...
+    });
 });
 const btnRol = document.getElementById("btnRol");
 const modal = document.getElementById("ModalRol");
@@ -39,7 +59,7 @@ function editar(info){
 
     ///datos formulario
 
-    $('#NombreMaestro').val(info.IdRol);
+    $('#IdRol').val(info.IdRol);
     $('#NombreRol').val(info.Nombre);
 
     /*

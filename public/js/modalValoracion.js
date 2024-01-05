@@ -1,3 +1,33 @@
+var tabla;
+$(document).ready(function()
+    {
+
+
+
+        tabla =  $('.table').dataTable({
+            responsive:true,
+
+
+
+        });
+
+    }
+);
+
+$(window).resize(function () {
+    // Destruir DataTables
+    tabla.destroy();
+
+    // Volver a inicializar DataTables
+    tabla = $('.table').DataTable({
+        responsive: true,
+
+    });
+});
+
+
+
+
 const btnValoracion = document.getElementById("btnValoracion");
 const modal = document.getElementById("ModalValoracion");
 const mymodal = new bootstrap.Modal(modal);

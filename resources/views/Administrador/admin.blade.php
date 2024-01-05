@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Crear usuarios</title>
 
     <!-- Custom fonts for this template -->
@@ -32,11 +32,11 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
+
 
     <!-- Custom styles for this page -->
     <link href=" {{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
-
+    @include('Administrador/data')
 </head>
 
 <body id="page-top">
@@ -300,7 +300,7 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-center text-gray-800">Maestros de practica de formación profesional</h1>
+                <h1 class="h3 mb-2 text-center text-gray-800">Maestros de prácticas de formación profesional</h1>
 
                 <button id="btnUsuarios" class="btn btn-primary btn-icon-split my-3">
                         <span class="icon text-white-50">
@@ -316,73 +316,60 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+                            <table id="example" class="table table-striped dt-responsive table-bordered nowrap" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
+                                    <th>Opciones</th>
                                     <th>Identificacion</th>
                                     <th>Nombres</th>
+
                                     <th>Apellidos</th>
                                     <th>Especialidad</th>
                                     <th>Género</th>
                                     <th>foto</th>
                                     <th>Estado</th>
-                                    <th>Opciones</th>
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>Identificacion</th>
-                                    <th>Nombres</th>
-                                    <th>Apellidos</th>
-                                    <th>Especialidad</th>
-                                    <th>Género</th>
-                                    <th>foto</th>
-                                    <th>Estado</th>
-                                    <th>Opciones</th>
 
                                 </tr>
-                                </tfoot>
+                                </thead>
                                 <tbody>
 
                                 @foreach($maestros as $maestro)
                                     @if($maestro->Estado==1)
-                                <tr>
-                                    <td>{{$maestro->Identificacion}}</td>
-                                    <td>{{$maestro->Nombres}}</td>
-                                    <td>{{$maestro->Apellidos}}</td>
-                                    <td>{{$maestro->especialidad}}</td>
-                                    <td>{{$maestro->Genero->Nombre}}</td>
-                                    @if(isset($maestro->FotoRuta))
-                                        <td>{{$maestro->FotoRuta}}</td>
-                                    @else
-                                        <td>Sin fotografia</td>
+                                        <tr>    <td>
+                                                <button id="btnEditar" onclick="editar({{$maestro}})" class="btn btn-unan btn-circle">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </button>
+                                                <button onclick="eliminar('{{$maestro->Identificacion }}')" class="btn btn-danger btn-circle">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+
+
+                                            </td>
+                                            <td>{{$maestro->Identificacion}}</td>
+                                            <td>{{$maestro->Nombres}} {{$maestro->Apellidos}}</td>
+                                            <td>{{$maestro->Apellidos}}</td>
+                                            <td>{{$maestro->especialidad}}</td>
+                                            <td>{{$maestro->Genero->Nombre}}</td>
+                                            @if(isset($maestro->FotoRuta))
+                                                <td>{{$maestro->FotoRuta}}</td>
+                                            @else
+                                                <td>Sin fotografia</td>
+                                            @endif
+
+                                            @if($maestro->Estado==1)
+
+                                                <td>Activo</td>
+                                            @else
+
+                                                <td>No activo</td>
+                                            @endif
+
+
+
+
+                                        </tr>
                                     @endif
-
-                                    @if($maestro->Estado==1)
-
-                                        <td>Activo</td>
-                                    @else
-
-                                        <td>No activo</td>
-                                    @endif
-
-
-                                    <td>
-                                        <button id="btnEditar" onclick="editar({{$maestro}})" class="btn btn-unan btn-circle">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
-
-                                        <form method="post" action="{{url('/administrador/'.$maestro->Identificacion)}}" class="form-eliminar btn btn-danger btn-circle">
-                                            @csrf
-                                            {{method_field('DELETE')}}
-                                            <button type="submit" class="btn btn-danger btn-circle">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-
-                                </tr>
-                                @endif
                                 @endforeach                                </tbody>
                             </table>
                         </div>
@@ -520,8 +507,12 @@
 
 <script>
 
-    $('.form-eliminar').submit(function(e){
-        e.preventDefault();
+
+
+
+
+    function eliminar(id){
+
         Swal.fire({
             title: '¿Estás seguro de eliminar este maestro?',
             text: 'Esta acción no se puede deshacer',
@@ -535,13 +526,52 @@
             if (result.isConfirmed) {
                 // Enviar el formulario de eliminación
 
-                this.submit();
+                $.ajax({
+                    type: 'DELETE',
+                    url: '{{route("teacher.destroy",":id")}}'.replace(':id',id),
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: response.success,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1550);
+
+                    },
+                    error: function(errores) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: errores.error,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                });
+
+
+
+
+
+
+
+
+
+
             }
         });
-    });
 
 
 
+
+    }
 </script>
 
 

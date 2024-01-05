@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <title>Genero</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Género</title>
 
     <!-- Custom fonts for this template -->
     <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -18,10 +18,12 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
+
 
     <!-- Custom styles for this page -->
     <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    @include('Administrador/data')
+
 
 </head>
 
@@ -284,58 +286,52 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Nombre del género</th>
-                                    <th>Estado</th>
-                                    <th>Opciones</th>
+                        <table id="example" class="table table-striped dt-responsive table-bordered nowrap" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>Opciones</th>
+                                <th>Id</th>
+                                <th>Nombre del género</th>
+                                <th>Estado</th>
 
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Nombre del género</th>
-                                    <th>Estado</th>
-                                    <th>Opciones</th>
-                                </tr>
-                                </tfoot>
-                                <tbody>
-                                @foreach($genero as $gen)
-                                    @if($gen->Estado==1)
-                                <tr>
-                                    <td>{{$gen->IdGenero}}</td>
-                                    <td>{{$gen->Nombre}}</td>
-                                    @if($gen->Estado==1)
-                                    <td>Activo</td>
-                                    @else
-                                        <td>No activo</td>
-                                    @endif
 
-                                    <td>
-                                        <button id="btnEditar" onclick="editar({{$gen}})"  class="btn btn-unan btn-circle">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
-                                        <form method="post" action="{{url('/genero/'.$gen->IdGenero)}}" class="form-eliminar btn btn-danger btn-circle">
-                                            @csrf
-                                            {{method_field('DELETE')}}
-                                            <button type="submit" class="btn btn-danger btn-circle">
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($genero as $gen)
+                                @if($gen->Estado==1)
+                                    <tr>
+                                        <td class="text-center">
+                                            <button id="btnEditar" onclick="editar({{$gen}})"  class="btn btn-unan btn-circle">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+
+
+
+                                            <button onclick="eliminar('{{$gen->IdGenero}}')" class="btn btn-danger btn-circle">
                                                 <i class="fas fa-trash"></i>
                                             </button>
-                                        </form>
 
 
 
 
-                                    </td>
 
-                                </tr>
-                                    @endif
-                                @endforeach
-                                </tbody>
-                            </table>
+                                        </td>
+                                        <td>{{$gen->IdGenero}}</td>
+                                        <td>{{$gen->Nombre}}</td>
+                                        @if($gen->Estado==1)
+                                            <td>Activo</td>
+                                        @else
+                                            <td>No activo</td>
+                                        @endif
+
+
+
+                                    </tr>
+                                @endif
+                            @endforeach
+                            </tbody>
+                        </table>
                         </div>
                     </div>
                 </div>
@@ -418,11 +414,17 @@
 @include('Administrador/footer');
 <script src="{{asset('js/modalGenero.js')}}"></script>
 
+
 <script>
-    $('.form-eliminar').submit(function(e){
-        e.preventDefault();
+
+
+
+
+
+    function eliminar(id){
+
         Swal.fire({
-            title: '¿Estás seguro de eliminar el género?',
+            title: '¿Estás seguro de eliminar este género?',
             text: 'Esta acción no se puede deshacer',
             icon: 'warning',
             showCancelButton: true,
@@ -434,14 +436,52 @@
             if (result.isConfirmed) {
                 // Enviar el formulario de eliminación
 
-                this.submit();
+                $.ajax({
+                    type: 'DELETE',
+                    url: '{{route("genero.destroy",":id")}}'.replace(':id',id),
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: response.success,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1550);
+
+                    },
+                    error: function(errores) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: errores.error,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                });
+
+
+
+
+
+
+
+
+
+
             }
         });
-    });
 
 
 
 
+    }
 </script>
 
 

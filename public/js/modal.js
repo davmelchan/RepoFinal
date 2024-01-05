@@ -1,3 +1,32 @@
+var tabla;
+$(document).ready(function()
+    {
+
+
+
+        tabla =  $('.table').dataTable({
+            responsive:true,
+
+
+
+        });
+
+    }
+);
+
+$(window).resize(function () {
+    // Destruir DataTables
+    tabla.destroy();
+
+    // Volver a inicializar DataTables
+    tabla = $('.table').DataTable({
+        responsive: true,
+        // Otras opciones...
+    });
+});
+
+
+
 /*Modal para los usuarios */
 
 const btnUsuario = document.getElementById("btnUsuarios");

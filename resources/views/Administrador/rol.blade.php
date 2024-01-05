@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Rol</title>
 
     <!-- Custom fonts for this template -->
@@ -18,10 +18,12 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
+
 
     <!-- Custom styles for this page -->
     <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    @include('Administrador/data')
+
 
 </head>
 
@@ -65,6 +67,7 @@
         <hr class="sidebar-divider">
 
         <!-- Heading -->
+
         <div class="sidebar-heading">
             Evaluaciones
         </div>
@@ -281,9 +284,69 @@
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">Rol</h6>
                     </div>
+
                     <div class="card-body">
+
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover display responsive nowrap" id="myTable" width="100%" cellspacing="0">
+                        <table id="example" class="table table-striped dt-responsive table-bordered nowrap" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>Opciones</th>
+                                <th>Id</th>
+                                <th>Nombre del Rol</th>
+                                <th>Estado</th>
+
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($roles as $rol)
+                                @if($rol->Estado == 1 )
+                                    <tr>
+                                        <td class="text-center">
+
+                                            <button id="btnEditar" onclick="editar({{$rol}})" class=" btn btn-unan btn-circle">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+
+
+                                            <button onclick="eliminar('{{$rol->IdRol }}')" class="btn btn-danger btn-circle">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+
+
+
+
+
+                                        </td>
+                                        <td>{{$rol->IdRol}}</td>
+                                        <td>{{$rol->Nombre}}</td>
+                                        @if($rol->Estado==1)
+                                            <td>Activo</td>
+                                        @else
+                                            <td>No activo</td>
+                                        @endif
+
+
+
+
+                                    </tr>
+                                @endif
+                            @endforeach
+                            </tbody>
+
+
+                        </table>
+                        </div>
+
+
+
+
+
+
+<!--
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover display responsive nowrap" id="tabla" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
                                     <th>Id</th>
@@ -340,6 +403,7 @@
                                 </tbody>
                             </table>
                         </div>
+    -->
                     </div>
                 </div>
 
@@ -425,49 +489,72 @@
 
 
 <script>
-    $('.form-eliminar').submit(function(e){
-        e.preventDefault();
-        Swal.fire({
-            title: '¿Estás seguro de eliminar el rol?',
-            text: 'Esta acción no se puede deshacer',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Enviar el formulario de eliminación
-
-                this.submit();
-            }
-        });
-    });
 
 
 
-    $('.btneliminar').click(function(e){
-        Swal.fire({
-            title: '¿Estás seguro de eliminar el Rol?',
-            text: 'Esta acción no se puede deshacer',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Enviar el formulario de eliminación
-
-                $('form-eliminar').submit();
-            }
-        });
-    });
 
 
+   function eliminar(id){
 
+       Swal.fire({
+           title: '¿Estás seguro de eliminar el rol?',
+           text: 'Esta acción no se puede deshacer',
+           icon: 'warning',
+           showCancelButton: true,
+           confirmButtonColor: '#3085d6',
+           cancelButtonColor: '#d33',
+           confirmButtonText: 'Eliminar',
+           cancelButtonText: 'Cancelar'
+       }).then((result) => {
+           if (result.isConfirmed) {
+               // Enviar el formulario de eliminación
+
+               $.ajax({
+                   type: 'DELETE',
+                   url: '{{route("rol.destroy",":id")}}'.replace(':id',id),
+                   headers: {
+                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+                   success: function(response) {
+                       Swal.fire({
+                           position: 'center',
+                           icon: 'success',
+                           title: response.success,
+                           showConfirmButton: false,
+                           timer: 1500
+                       });
+                       setTimeout(function() {
+                           window.location.reload();
+                       }, 1550);
+
+                   },
+                   error: function(errores) {
+                       Swal.fire({
+                           position: 'center',
+                           icon: 'success',
+                           title: errores.error,
+                           showConfirmButton: false,
+                           timer: 1500
+                       });
+                   }
+               });
+
+
+
+
+
+
+
+
+
+
+           }
+       });
+
+
+
+
+   }
 </script>
 
 @if(Session::has('exito'))

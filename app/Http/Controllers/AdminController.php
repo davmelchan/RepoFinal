@@ -62,15 +62,16 @@ class AdminController extends Controller
 
     public function destroy($id)
     {
+
         $rol = Roles::find($id);
         if (!$rol) {
-            return back()->with('Fracaso', 'Rol no encontrado');
+            return response()->json(["error"=>"Rol no encontrado"]);
+
         }
 
         // Actualiza solo el campo 'nombre'
         $rol->update(['Estado' => 0]);
-
-        return back()->with('exito', 'Rol eliminado exitosamente');
+        return response()->json(["success"=>"Rol eliminado exitosamente"]);
     }
 
 
@@ -101,13 +102,13 @@ class AdminController extends Controller
     public function EliminarGenero($id){
         $genero = Genero::find($id);
         if (!$genero) {
-            return back()->with('Fracaso', 'Género no encontrado');
+            return response()->json(["error"=>"Género no encontrado"]);
         }
 
         // Actualiza solo el campo 'nombre'
         $genero->update(['Estado' => 0]);
 
-        return back()->with('exito', 'Género eliminado exitosamente');
+        return response()->json(["success"=>"Género eliminado exitosamente"]);
     }
 
 
@@ -139,13 +140,12 @@ class AdminController extends Controller
     public function EliminarUnidad($id){
         $unidad = Unidad::find($id);
         if (!$unidad) {
-            return back()->with('Fracaso', 'Unidad no encontrada');
+            return response()->json(["error"=>"Unidad no encontrada"]);
         }
 
         // Actualiza solo el campo 'nombre'
         $unidad->update(['Estado' => 0]);
-
-        return back()->with('exito', 'Unidad eliminada exitosamente');
+        return response()->json(["success"=>"Unidad eliminada exitosamente"]);
     }
 
 
@@ -179,13 +179,12 @@ class AdminController extends Controller
     public function EliminarEmpresa($id){
         $empresa = Empresa::find($id);
         if (!$empresa) {
-            return back()->with('Fracaso', 'Centro de práctica no encontrado');
+            return response()->json(["error"=>"Centro de práctica no encontrado"]);
         }
 
         // Actualiza solo el campo 'nombre'
         $empresa->update(['Estado' => 0]);
-
-        return back()->with('exito', 'Centro de práctica eliminado exitosamente');
+        return response()->json(["success"=>"Centro de práctica eliminado exitosamente"]);
 
     }
 
@@ -216,13 +215,13 @@ class AdminController extends Controller
     public function EliminarEvaluacion($id){
         $evaluacion = Evaluacion::find($id);
         if (!$evaluacion) {
-            return back()->with('Fracaso', 'Categoría de evaluación no encontrada');
+            return response()->json(["error"=>"Categoría de evaluación no encontrada"]);
+
         }
 
         // Actualiza solo el campo 'nombre'
         $evaluacion->update(['Estado' => 0]);
-
-        return back()->with('exito', 'Categoría de evaluación eliminada exitosamente');
+        return response()->json(["success"=>"Categoría de evaluación eliminada exitosamente"]);
     }
 
 ////Categoria Supervision
@@ -250,13 +249,14 @@ class AdminController extends Controller
     public function EliminarCatSupervision($id){
         $supervision = CatSupervisiones::find($id);
         if (!$supervision) {
-            return back()->with('Fracaso', 'Categoría de supervisión no encontrada');
+            return response()->json(["error"=>"Categoría de supervisión no encontrada"]);
         }
 
         // Actualiza solo el campo 'nombre'
         $supervision->update(['Estado' => 0]);
 
-        return back()->with('exito', 'Categoría de supervisión eliminada exitosamente');
+        return response()->json(["success"=>"Categoría de supervisión eliminada exitosamente"]);
+
     }
 
     ///Maestros
@@ -317,13 +317,16 @@ class AdminController extends Controller
         $user= User::where('Identificacion', $id)->first();
         $maestro = Maestros::find($id);
         if (!$user) {
-            return back()->with('Fracaso', 'Maestro no encontrado');
+            return response()->json(["error"=>"Maestro no encontrado"]);
+
         }
 
         // Actualiza solo el campo 'nombre'
         $user->update(['Estado' => 0]);
         $maestro->update(['Estado'=> 0]);
-        return back()->with('exito', 'Maestro eliminado exitosamente');
+        return response()->json(["success"=>"Maestro eliminado exitosamente"]);
+
+
     }
 
 
@@ -387,13 +390,13 @@ public function EliminarEstudiante($id){
     $user= User::where('Identificacion', $id)->first();
     $estudiante = Estudiante::find($id);
     if (!$user) {
-        return back()->with('Fracaso', 'Estudiante no encontrado');
+        return response()->json(["error"=>"Estudiante no encontrado"]);
     }
 
     // Actualiza solo el campo 'nombre'
     $user->update(['Estado' => 0]);
     $estudiante->update(['Estado'=> 0]);
-    return back()->with('exito', 'Estudiante eliminado exitosamente');
+    return response()->json(["success"=>"Estudiante eliminado exitosamente"]);
 
 }
 

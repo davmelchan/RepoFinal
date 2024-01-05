@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Centro de práctica</title>
 
@@ -23,8 +24,7 @@
     <!-- Custom styles for this page -->
     <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
+    @include('Administrador/data')
 
 </head>
 
@@ -272,7 +272,7 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-center text-gray-800">Centro de prácticas</h1>
+                <h1 class="h3 mb-2 text-center text-gray-800">Centros de prácticas</h1>
 
                 <button id="btnEmpresa" class="btn btn-primary btn-icon-split my-3">
                         <span class="icon text-white-50">
@@ -288,65 +288,52 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered display responsive nowrap"  id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Centro de prácticas</th>
-                                    <th>Descripción</th>
-                                    <th>Responsable</th>
-                                    <th>Estado</th>
-                                    <th>Opciones</th>
-
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-
-                                    <th>Id</th>
-                                    <th>Centro de prácticas</th>
-                                    <th>Descripción</th>
-                                    <th>Responsable</th>
-                                    <th>Estado</th>
-                                    <th>Opciones</th>
-                                </tr>
-                                </tfoot>
-                                <tbody>
-                                @foreach($centros as $centro)
-                                    @if($centro->Estado==1)
-                                <tr>
-                                    <td>{{$centro->IdEmpresa}}</td>
-                                    <td>{{$centro->Nombre}}</td>
+                        <table id="example" class="table table-striped dt-responsive table-bordered nowrap" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>Opciones</th>
+                                <th>Centro de prácticas</th>
+                                <th>Id</th>
+                                <th>Descripción</th>
+                                <th>Responsable</th>
+                                <th>Estado</th>
 
 
-                                    <td>{{$centro->Descripcion}}</td>
-                                    <td>{{$centro->Responsable}}</td>
-                                    @if($centro->Estado==1)
-                                    <td>Activo</td>
-                                    @else
-                                    <td>No Activo</td>
-                                    @endif
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($centros as $centro)
+                                @if($centro->Estado==1)
+                                    <tr>
+                                        <td class="text-center">
+                                            <button  onclick="editar({{$centro}})"  class="btn btn-unan btn-circle">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
 
-                                        <td>
-                                        <button  onclick="editar({{$centro}})"  class="btn btn-unan btn-circle">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
-
-                                            <form action="{{url('/empresa/'.$centro->IdEmpresa)}}"  class="eliminarFrm btn btn-danger btn-circle" method="post">
-                                                @csrf
-                                                {{method_field('DELETE')}}
-                                                <button type="submit" class="btn btn-danger btn-circle" >
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
+                                            <button onclick="eliminar('{{$centro->IdEmpresa}}')" class="btn btn-danger btn-circle">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
 
                                         </td>
+                                        <td>{{$centro->Nombre}}</td>
+                                        <td>{{$centro->IdEmpresa}}</td>
 
-                                </tr>
-                                    @endif
-                                @endforeach
-                                </tbody>
-                            </table>
+
+
+                                        <td>{{$centro->Descripcion}}</td>
+                                        <td>{{$centro->Responsable}}</td>
+                                        @if($centro->Estado==1)
+                                            <td>Activo</td>
+                                        @else
+                                            <td>No Activo</td>
+                                        @endif
+
+
+                                    </tr>
+                                @endif
+                            @endforeach
+                            </tbody>
+                        </table>
                         </div>
                     </div>
                 </div>
@@ -447,16 +434,16 @@
 <script src="{{asset('js/modalEmpresa.js')}}"></script>
 
 
-    <script>
-
-</script>
-
-
 <script>
-    $('.eliminarFrm').submit(function(e){
-        e.preventDefault();
+
+
+
+
+
+    function eliminar(id){
+
         Swal.fire({
-            title: '¿Estás seguro de eliminar el centro de práctica?',
+            title: '¿Estás seguro de eliminar este centro de prácticas?',
             text: 'Esta acción no se puede deshacer',
             icon: 'warning',
             showCancelButton: true,
@@ -468,14 +455,56 @@
             if (result.isConfirmed) {
                 // Enviar el formulario de eliminación
 
-                this.submit();
+                $.ajax({
+                    type: 'DELETE',
+                    url: '{{route("empresa.destroy",":id")}}'.replace(':id',id),
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: response.success,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1550);
+
+                    },
+                    error: function(errores) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: errores.error,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                });
+
+
+
+
+
+
+
+
+
+
             }
         });
-    });
 
 
 
+
+    }
 </script>
+
+
+
 
 
 

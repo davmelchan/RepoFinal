@@ -267,90 +267,38 @@
 
                     <!-- Content Column -->
 
-
+@foreach($datos as $grupo)
+                        @if($grupo->GruposMaestro->Estado==1)
                     <div class="col-lg-4 mb-2">
                         <!-- Illustrations -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">{{$grupo->GruposMaestro->Nombre}}</h6>
                             </div>
                             <div class="card-body">
-                                <div class="text-center">
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset('img/undraw_posting_photo.svg')}}" alt="...">
-                                </div>
-                                <p>Add some quality, svg illustrations to your project courtesy of <a
-                                        target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                    constantly updated collection of beautiful svg images that you can use
-                                    completely free and without attribution!</p>
-                                <a href="{{url('asignacion')}}" class="btn btn-unan btn-block">Seleccionar
+                                @if(isset($grupo->GruposMaestro->RutaImagen))
+
+                                    <div class="text-center">
+                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
+                                             src="{{asset(Storage::url($grupo->GruposMaestro->RutaImagen))}}" alt="">
+                                    </div>
+
+                                @else
+                                    <div class="text-center">
+                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
+                                             src="{{asset('img/undraw_posting_photo.svg')}}" alt="foto del grupo">
+                                    </div>
+                                @endif
+                                <p>@if($grupo->GruposMaestro->Estado==1)
+                                        <b>Estado: </b> Activo
+                                    @endif</p>
+                                <a href="{{url('/asignacion/'.$grupo->IdGrupo)}}" class="btn btn-unan btn-block">Seleccionar
                                     Grupo</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 mb-2">
-                        <!-- Illustrations -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset('img/undraw_posting_photo.svg')}}" alt="...">
-                                </div>
-                                <p>Add some quality, svg illustrations to your project courtesy of <a
-                                        target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                    constantly updated collection of beautiful svg images that you can use
-                                    completely free and without attribution!</p>
-                                <a href="{{url('asignacion')}}" class="btn btn-unan btn-block">Seleccionar
-                                    Grupo</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 mb-2">
-                        <!-- Illustrations -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset('img/undraw_posting_photo.svg')}}" alt="...">
-                                </div>
-                                <p>Add some quality, svg illustrations to your project courtesy of <a
-                                        target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                    constantly updated collection of beautiful svg images that you can use
-                                    completely free and without attribution!</p>
-                                <a href="{{url('asignacion')}}" class="btn btn-unan btn-block">Seleccionar
-                                    Grupo</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 mb-2">
-                        <!-- Illustrations -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset('img/undraw_posting_photo.svg')}}" alt="...">
-                                </div>
-                                <p>Add some quality, svg illustrations to your project courtesy of <a
-                                        target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                    constantly updated collection of beautiful svg images that you can use
-                                    completely free and without attribution!</p>
-                                <a href="{{url('asignacion')}}" class="btn btn-unan btn-block">
-                                    Seleccionar Grupo</a>
-                            </div>
-                        </div>
-                    </div>
-
-
+                        @endif
+                    @endforeach
                 </div>
 
             </div>

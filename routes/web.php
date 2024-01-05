@@ -46,12 +46,12 @@ Route::middleware(['Roles', 'cache.headers:private'])->group(function () {
     //Crud maestros
     Route::get('/administrador',[AdminController::class,'indexMaestro']);
     Route::post('/administrador',[AdminController::class,'SaveMaestro']);
-    Route::delete('/administrador/{Id}',[AdminController::class,'EliminarMaestro']);
+    Route::delete('/administrador/{id}',[AdminController::class,'EliminarMaestro'])->name("teacher.destroy");
 
     //Crud estudiantes
     Route::get('/estudiante',[AdminController::class,'indexEstudiante']);
     Route::post('/estudiante',[AdminController::class,'GuardarEstudiante']);
-    Route::delete('/estudiante/{Id}',[AdminController::class,'EliminarEstudiante']);
+    Route::delete('/estudiante/{id}',[AdminController::class,'EliminarEstudiante'])->name("student.destroy");
 
     Route::post('/salir',[AdminController::class,'logout'])->name('salir');
 
@@ -62,35 +62,35 @@ Route::middleware(['Roles', 'cache.headers:private'])->group(function () {
     ///Crud Empresa
     Route::get('/empresa',[AdminController::class,'indexEmpresa']);
     Route::post('/empresa',[AdminController::class,'GuardarEmpresa']);
-    Route::delete('/empresa/{IdEmpresa}',[AdminController::class,'EliminarEmpresa']);
+    Route::delete('/empresa/{id}',[AdminController::class,'EliminarEmpresa'])->name('empresa.destroy');
 
 
 
     ////Crud de unidades
     Route::get('/unidades',[AdminController::class,'indexUnidad']);
     Route::post('/unidades',[AdminController::class,'GuardarUnidad']);
-    Route::delete('/unidades/{IdUnidad}',[AdminController::class,'EliminarUnidad']);
+    Route::delete('/unidades/{id}',[AdminController::class,'EliminarUnidad'])->name('unidad.destroy');
 
     ////Crud del genero
     Route::get('/genero',[AdminController::class,'indexGenero'])->name('genero');
     Route::post('/genero',[AdminController::class,'GuardarGenero'])->name('SaveGenero');
-    Route::delete('/genero/{IdGenero}', [AdminController::class, 'EliminarGenero'])->name('genero.destroy');
+    Route::delete('/genero/{id}', [AdminController::class, 'EliminarGenero'])->name('genero.destroy');
 
 
     ////Crud del rol
     Route::get('/rol',[AdminController::class,'indexRol'])->name('rol');
     Route::post('/rol',[AdminController::class,'GuardarRol'])->name('SaveRol');
-    Route::delete('/rol/{IdRol}', [AdminController::class, 'destroy'])->name('rol.destroy');
+    Route::delete('/rol/{id}', [AdminController::class, 'destroy'])->name('rol.destroy');
 
     ////Crud de categoria evaluacion
     Route::get('/categoriaEvaluacion',[AdminController::class,'indexEvaluacion']);
     Route::post('/categoriaEvaluacion',[AdminController::class,'GuardarEvaluacion']);
-    Route::delete('/categoriaEvaluacion/{IdAspecto}',[AdminController::class,'EliminarEvaluacion']);
+    Route::delete('/categoriaEvaluacion/{id}',[AdminController::class,'EliminarEvaluacion'])->name("catevaluacion.destroy");
 
     ///Crud de categoria supervision
     Route::get('/categoriaSupervision',[AdminController::class,'indexSupervision']);
     Route::post('/categoriaSupervision',[AdminController::class,'GuardarCatSupervision']);
-    Route::delete('/categoriaSupervision/{IdValoracion}',[AdminController::class,'EliminarCatSupervision']);
+    Route::delete('/categoriaSupervision/{id}',[AdminController::class,'EliminarCatSupervision'])->name('supervision.destroy');
 
 });
 
@@ -111,15 +111,23 @@ Route::middleware(['maestro', 'cache.headers:private'])->group(function(){
     Route::post('/maestro',[MaestroController::class,'GuardarGrupoMaestro'])->name('GrupoSave');
     Route::delete('/maestro/{id}',[MaestroController::class,'GrupoEliminar'])->name('Grupodelete');
 
+    Route::get('/evaluacionasignada',[MaestroController::class,'indexEvaluaciones']);
+    Route::get('/asignacion/{id}',[MaestroController::class,'indexasignaciones']);
+    Route::post('/asignacion/{id}/guardar',[MaestroController::class,'GuardarEvaluaciones'])->name('AsignacionSave');
+    Route::delete('/asignacion/{id}',[MaestroController::class,'EvaluacionEliminar']);
 
     Route::post('/logout',[MaestroController::class,'logoutMaestro'])->name('logoutDocente');
     Route::view('/alumnosgrupo','Maestro/subpage/alumnosgrupo');
     Route::view('/evidencia','Maestro/evidencia');
     Route::view('/alumnoevidencia','Maestro/subpage/alumnoevidencia');
     Route::view('/archivos','Maestro/subpage/archivo');
-    Route::view('/evaluacionasignada','Maestro/evaluacionasignada');
-    Route::view('/asignacion','Maestro/subpage/asignadas');
+
+
 });
+
+Route::view('/EstudianteView','Estudiante/index');
+Route::view('/EstudianteSupervision','Estudiante/indexsupervision');
+Route::view('/EstudianteEvidencia','Estudiante/estudianteEvidencia');
 
 
 

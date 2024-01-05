@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Unidades</title>
 
     <!-- Custom fonts for this template -->
@@ -18,11 +18,11 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
+
 
     <!-- Custom styles for this page -->
     <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
-
+    @include('Administrador/data')
 </head>
 
 <body id="page-top">
@@ -272,7 +272,7 @@
         <div class="container-fluid">
 
             <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-center text-gray-800">Unidades de practica de formación profesional</h1>
+            <h1 class="h3 mb-2 text-center text-gray-800">Unidades de prácticas de formación profesional</h1>
 
             <button href="#" class="btn btn-primary btn-icon-split my-3">
                         <span class="icon text-white-50">
@@ -288,54 +288,45 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <table id="example" class="table table-striped dt-responsive table-bordered nowrap" cellspacing="0" width="100%">
                             <thead>
                             <tr>
-                                <th>Id</th>
-                                <th>Nombre</th>
-                                <th>Estado</th>
                                 <th>Opciones</th>
+                                <th>Nombre</th>
+                                <th>Id</th>
+                                <th>Estado</th>
+
 
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Estado</th>
-                                <th>Opciones</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             @foreach($unidades as $unidad)
                                 @if($unidad->Estado==1)
-                            <tr>
-                                <td>{{$unidad->IdUnidad}}</td>
-                                <td>{{$unidad->Nombre}}</td>
-                                @if($unidad->Estado==1)
-                                    <td>Activo</td>
-                                @else
-                                    <td>No activo</td>
+                                    <tr>
+                                        <td class="text-center">
+                                            <button onclick="editar({{$unidad}})"  class="btn btn-unan btn-circle">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+
+
+
+                                            <button onclick="eliminar('{{$unidad->IdUnidad }}')" class="btn btn-danger btn-circle">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+
+
+
+
+                                        </td>
+                                        <td>{{$unidad->Nombre}}</td>
+                                        <td>{{$unidad->IdUnidad}}</td>
+                                        @if($unidad->Estado==1)
+                                            <td>Activo</td>
+                                        @else
+                                            <td>No activo</td>
+                                        @endif
+                                    </tr>
                                 @endif
-
-
-                                <td>
-                                    <button onclick="editar({{$unidad}})"  class="btn btn-unan btn-circle">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </button>
-                                    <form method="post" action="{{url('/unidades/'.$unidad->IdUnidad)}}" class="form-eliminar btn btn-danger btn-circle" >
-                                        @csrf
-                                        {{method_field('DELETE')}}
-                                        <button type="submit" class="btn btn-danger btn-circle">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-
-
-
-                                </td>
-                            </tr>
-                            @endif
                             @endforeach
                             </tbody>
                         </table>
@@ -427,29 +418,69 @@
 <script src="{{asset('js/modalunidad.js')}}"></script>
 
 <script>
-    $('.form-eliminar').submit(function(e){
-        e.preventDefault();
-        Swal.fire({
-            title: '¿Estás seguro de eliminar la unidad?',
-            text: 'Esta acción no se puede deshacer',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Enviar el formulario de eliminación
+function eliminar(id){
 
-                this.submit();
-            }
-        });
-    });
+Swal.fire({
+title: '¿Estás seguro de eliminar esta unidad?',
+text: 'Esta acción no se puede deshacer',
+icon: 'warning',
+showCancelButton: true,
+confirmButtonColor: '#3085d6',
+cancelButtonColor: '#d33',
+confirmButtonText: 'Eliminar',
+cancelButtonText: 'Cancelar'
+}).then((result) => {
+if (result.isConfirmed) {
+// Enviar el formulario de eliminación
+
+$.ajax({
+type: 'DELETE',
+url: '{{route("unidad.destroy",":id")}}'.replace(':id',id),
+headers: {
+'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+},
+success: function(response) {
+Swal.fire({
+position: 'center',
+icon: 'success',
+title: response.success,
+showConfirmButton: false,
+timer: 1500
+});
+setTimeout(function() {
+window.location.reload();
+}, 1550);
+
+},
+error: function(errores) {
+Swal.fire({
+position: 'center',
+icon: 'success',
+title: errores.error,
+showConfirmButton: false,
+timer: 1500
+});
+}
+});
 
 
 
+
+
+
+
+
+
+
+}
+});
+
+
+
+
+}
 </script>
+
 
 
 

@@ -27,7 +27,7 @@
     <link href=" {{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
     <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
-
+    <link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
 
 
 </head>
@@ -220,7 +220,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Nombre usuario</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ session('datos')->first()->Nombres }} {{ session('datos')->first()->Apellidos }}</span>
                             <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
                         </a>
                         <!-- Dropdown - User Information -->
@@ -254,34 +254,67 @@
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
+
             <div class="container-fluid">
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Grupos de prácticas</h1>
-                    <a id="btnAsignacion" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
+                    <h1 class="h3 mb-0 text-gray-800">Evaluaciones asignadas</h1>
+                    <a id="btnAsignacion" class="btn btn-success btn-icon-split">
+                                        <span class="icon text-white-50">
+                                           <i class="fa-solid fa-plus" style="color: #ffffff;"></i>
+                                        </span>
+                        <span class="text">Crear evaluación</span>
+                    </a>
 
-                        <i class="fa-solid fa-plus" style="color: #ffffff;"></i>
-                        Agregar asignación</a>
                 </div>
-
+<div class="row">
+                @foreach($datos as $evaluacion)
+                    @if($evaluacion->Estado==1)
                 <div class="col-md-6">
                     <div class="tile">
                         <div class="tile-title-w-btn">
-                            <h3 class="title">All Items</h3>
-                            <div class="btn-group"><a class="btn btn-unan" id="btnEditar"><i
-                                        class="fa-solid fa-pen-to-square"></i></a><a class="btn btn-unan"
-                                                                                     onclick="eliminar()"><i class="fa-solid fa-trash"></i></a></div>
+                            <h3 class="title">{{$evaluacion->Nombre}}</h3>
+                            <div class="btn-group">
+                                <button class="btn rounded btn-unan" onclick="editar({{$evaluacion}})"><i
+                                        class="fa-solid fa-pen-to-square"></i></button>
+
+                                <form method="post" action="{{url('/asignacion/'.$evaluacion->IdEvaluacion)}}" class="ml-1 rounded btn-danger form-eliminar">
+                                    @csrf
+                                    {{method_field('DELETE')}}
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+
+
+
+                            </div>
                         </div>
                         <div class="tile-body">
-                            <b>Card with button group </b><br>
-                            Hey there, I am a very simple card. I am good at containing small bits of information. I
-                            am quite convenient because I require little markup to use effectively.
+                            <b>Descripción</b><br>
+                            {{$evaluacion->Descripcion}}
+                            <br>
+                            <b>Tipo de evaluación</b><br>
+                            {{$evaluacion->TipoEvaluacion->Nombre}}
+                            <br>
+                            <b>Unidad</b><br>
+                            {{$evaluacion->UnidadesEvaluacion->Nombre}}
+                            <br>
+                            <b>Fecha de creación</b><br>
+                            {{$evaluacion->FechaCreacion}}
+                            <br>
+                            <b>Estado</b><br>
+                            @if($evaluacion->Estado==1)
+                                Activo
+                            @endif
 
                         </div>
                     </div>
                 </div>
-
-            </div>
+        @endif
+                @endforeach
+</div>
+</div>
 
 
             <!-- /.container-fluid -->
@@ -310,27 +343,6 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">¿Estas seguro de cerrar sesión?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Haz clic en el boton "<strong>confirmar</strong>" para cerrar sesión.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <a class="btn btn-danger" href="{{url('/')}}">Confirmar</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <!--Formulario para agregar grupo-->
 <div id="ModalAsignacion" class="modal fade"  tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -343,7 +355,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="formulario" method="post">
+                    @csrf
                     <div class="form-group" hidden>
                         <label for="IdEvaluacion" class="col-form-label">Identificador:</label>
                         <div class="input-group">
@@ -361,40 +374,44 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-fw fa-book-open"></i>
                                 </span>
-                            <input type="text" class="form-control" id="Titulo" name="Titulo">
+                            <input type="text" required class="form-control" id="Titulo" name="Titulo">
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="FechaEvaluacion" class="col-form-label">Fecha de evaluacion:</label>
-                        <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fas fa-fw fa-book-open"></i>
-                                </span>
-                            <input type="date" class="form-control" id="FechaEvaluacion" name="FechaEvaluacion">
-                        </div>
-                    </div>
+
+
+
+                            <div class="form-group">
+                                <label for="UnidadId" class="col-form-label">Unidad:</label>
+                                <div class="input-group">
+                                    <select name="UnidadId"   id="UnidadId" required class="form-control company" style="display: none; width: 100%" multiple="multiple" >
+                                        <optgroup label="Unidades">
+                                            <option value="" disabled selected>Seleccione una unidad</option>
+                                            @foreach($unidades as $unidad)
+                                                @if($unidad->Estado==1)
+                                                    <option value="{{$unidad->IdUnidad}}">{{$unidad->Nombre}}</option>
+                                                @endif
+                                            @endforeach
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+
+
 
                     <div class="form-group">
-                        <label for="Puntaje" class="col-form-label">Puntaje:</label>
+                        <label for="TipoId" class="col-form-label">Tipo de evaluación:</label>
                         <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fas fa-fw fa-book-open"></i>
-                                </span>
-                            <input type="number" min="0" max="20" class="form-control" id="Puntaje" name="Puntaje">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="IdUnidad" class="col-form-label">Unidad:</label>
-                        <div class="input-group">
-
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="TipoEvaluacion" class="col-form-label">Tipo de evaluacion:</label>
-                        <div class="input-group">
+                            <select name="TipoId" id="TipoId" required class="form-control company" style="display: none; width: 100%" multiple="multiple" >
+                                <optgroup label="Tipo de evaluación">
+                                    <option value="" disabled selected>Seleccione el tipo de evaluación</option>
+                                    @foreach($tipoUnidad as $tipo)
+                                        @if($tipo->Estado==1)
+                                    <option value="{{$tipo->IdCatEvaluacion}}">{{$tipo->Nombre}}</option>
+                                        @endif
+                                            @endforeach
+                                </optgroup>
+                            </select>
                         </div>
                     </div>
 
@@ -404,41 +421,24 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-fw fa-book-open"></i>
                                 </span>
-                            <textarea class="form-control" id="Descripcion" onresize="false" name="Descripcion" cols="30" rows="10"></textarea>
+                            <textarea class="form-control" required id="Descripcion" onresize="false" name="Descripcion" cols="30" rows="10"></textarea>
 
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="IdGrupo" class="col-form-label">Grupo:</label>
-                        <div class="input-group">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Estado" class="col-form-label">Estado:</label>
+                    <div class="form-group" hidden>
+                        <label for="grupoId" class="col-form-label">Grupo:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
-                                    <i class="fas fa-fw fa-book-open"></i>
+                                    <i class="fa-solid fa-user"></i>
                                 </span>
-                            <select class="form-control" id="Estado" name="Estado">
-                                <option value="0">Inactivo</option>
-                                <option value="1">Activo</option>
-                            </select>
-
+                            <input type="text" class="form-control" required id="grupoId" name="grupoId" value="{{$idGrupo}}">
                         </div>
                     </div>
-
-
-
-
-
-
-
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" id="btnGuardar" class="btn btn-primary">Guardar</button>
+                <button type="button" id="btnGuardar" onclick="guardarGrupo()" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 
             </div>
@@ -452,6 +452,89 @@
 
 
 @include('footer')
-<script src="{{asset('js/modalAsignacion.js')}}"></script>
+<script src="{{asset('js/modalEvaluacion.js')}}"></script>
+<script src="{{asset('js/select2.full.min.js')}}"></script>
 </body>
+
+<script>
+
+
+
+    $('.form-eliminar').submit(function(e){
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Estás seguro de eliminar esta evaluación?',
+            text: 'Esta acción no se puede deshacer',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+
+                this.submit();
+            }
+        });
+    });
+
+
+    function guardarGrupo(){
+        var formData = new FormData($('#formulario')[0]);
+
+        // Realiza la llamada AJAX
+        $.ajax({
+            type: 'POST',
+            url: '{{ route('AsignacionSave',['id'=>$idGrupo])}}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // Si la llamada es exitosa, puedes cerrar el modal, mostrar un mensaje, etc.
+
+                console.log(response);
+                 Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: response.success,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+               setTimeout(function() {
+                    window.location.reload();
+                }, 1550);
+
+
+            },
+            error: function(xhr) {
+                Swal.fire(
+                    'Error',
+                    xhr.responseJSON.errors,
+                    'error'
+                )
+
+
+
+            }
+        })
+
+    }
+
+
+</script>
+@if(Session::has('exito'))
+    <script>
+        Swal.fire(
+            'Completado',
+            '{{Session::get('exito')}}',
+            'success'
+        )
+    </script>
+@endif
+
+
+
 </html>

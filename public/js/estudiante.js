@@ -1,3 +1,31 @@
+var tabla;
+$(document).ready(function()
+    {
+
+
+
+        tabla =  $('.table').dataTable({
+            responsive:true,
+
+
+
+        });
+
+    }
+);
+
+$(window).resize(function () {
+    // Destruir DataTables
+    tabla.destroy();
+
+    // Volver a inicializar DataTables
+    tabla = $('.table').DataTable({
+        responsive: true,
+        // Otras opciones...
+    });
+});
+
+
 const btnUsuario = document.getElementById("btnUsuarios");
 const modal = document.getElementById("ModalUsuarios");
 const mymodal = new bootstrap.Modal(modal);
@@ -22,7 +50,7 @@ btnUsuario.addEventListener("click",function(e){
 
 function editar(info){
     mymodal.show();
-    console.log(info)
+
     $(".company").select2({
         dropdownParent: $("#formulario"),
         maximumSelectionLength: 1

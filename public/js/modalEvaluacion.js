@@ -17,16 +17,24 @@ btnAsignacion.addEventListener("click", function () {
 
 });
 
-/*Modal para editar la informacion*/
-const btnEditar = document.getElementById("btnEditar");
-const modalEditar = document.getElementById("ModalAsignacion");
-const mymodal2 = new bootstrap.Modal(modalEditar);
+function editar(info)
+{
 
-btnEditar.addEventListener("click", function () {
     btnGuardar.innerHTML = "Actualizar";
-    mymodal2.show();
+    mymodal.show();
+    $(".company").select2({
+        dropdownParent: $("#formulario"),
+        maximumSelectionLength: 1
+    });
+    $('#IdEvaluacion').val(info.IdEvaluacion);
+    $('#Titulo').val(info.Nombre);
+    $('#UnidadId').val(info.IdUnidad).trigger("change");
+    $('#TipoId').val(info.IdTipo).trigger("change");
+    $('#grupoId').val(info.IdGrupo);
+    $('#Descripcion').val(info.Descripcion);
     titulo2.innerText = "Actualizar Evaluación";
-});
+
+}
 
 /*Modal de eliminar la informacion*/
 function eliminar(){

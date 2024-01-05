@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <title>Categoría evaluación</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Categorías evaluación</title>
 
     <!-- Custom fonts for this template -->
     <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -18,11 +18,11 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{asset('css/sb-admin-2.css')}}/" rel="stylesheet">
+
 
     <!-- Custom styles for this page -->
     <link href="{{'vendor/datatables/dataTables.bootstrap4.min.css'}}" rel="stylesheet">
-
+    @include('Administrador/data')
 </head>
 
 <body id="page-top">
@@ -76,7 +76,7 @@
                 <span>Unidades</span></a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item active">
             <a class="nav-link" href="{{url('categoriaEvaluacion')}}">
                 <i class="fas fa-fw fa-clipboard"></i>
                 <span>Categorías evaluación</span></a>
@@ -269,7 +269,7 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-center text-gray-800"> Categoría de evaluación de las prácticas de formación
+                <h1 class="h3 mb-2 text-center text-gray-800"> Categorías de evaluación de las prácticas de formación
                     profesional</h1>
 
                 <button id="btnAspecto" class="btn btn-primary btn-icon-split my-3">
@@ -286,53 +286,46 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Nombre</th>
-                                    <th>Estado</th>
-                                    <th>Opciones</th>
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Nombre Aspecto</th>
-                                    <th>Estado</th>
-                                    <th>Opciones</th>
-                                </tr>
-                                </tfoot>
-                                <tbody>
-                                @foreach($categorias as $categoria)
-                                    @if($categoria->Estado==1)
-                                <tr>
-                                    <td>{{$categoria->IdCatEvaluacion}}</td>
-                                    <td>{{$categoria->Nombre}}</td>
-                                    @if($categoria->Estado == 1)
-                                        <td>Activo</td>
-                                    @else
-                                        <td>No Activo</td>
-                                    @endif
-                                    <td>
-                                        <button id="btnEditar" onclick="editar({{$categoria}})" class="btn btn-unan btn-circle">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
-                                        <form  class="btn btn-danger btn-circle form-eliminar" action="{{url('/aspectoevaluacion/'.$categoria->IdCatEvaluacion)}}" method="post">
-                                        @csrf
-                                        {{method_field('DELETE')}}
-                                        <button type="submit" class="btn btn-danger btn-circle">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                        </form>
+                        <table id="example" class="table table-striped dt-responsive table-bordered nowrap" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>Opciones</th>
+                                <th>Nombre</th>
+                                <th>Id</th>
+                                <th>Estado</th>
 
-                                    </td>
-                                </tr>
-                                    @endif
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($categorias as $categoria)
+                                @if($categoria->Estado==1)
+                                    <tr>
+                                        <td class="text-center">
+                                            <button id="btnEditar" onclick="editar({{$categoria}})" class="btn btn-unan btn-circle">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+
+                                            <button onclick="eliminar('{{$categoria->IdCatEvaluacion }}')" class="btn btn-danger btn-circle">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+
+
+                                        </td>
+                                        <td>{{$categoria->Nombre}}</td>
+                                        <td>{{$categoria->IdCatEvaluacion}}</td>
+
+                                        @if($categoria->Estado == 1)
+                                            <td>Activo</td>
+                                        @else
+                                            <td>No Activo</td>
+                                        @endif
+
+                                    </tr>
+                                @endif
+                            @endforeach
+                            </tbody>
+                        </table>
+</div>
                     </div>
                 </div>
 
@@ -415,10 +408,10 @@
 <script src="{{asset('js/modalAspecto.js')}}"></script>
 
 <script>
-    $('.form-eliminar').submit(function(e){
-        e.preventDefault();
+    function eliminar(id){
+
         Swal.fire({
-            title: '¿Estás seguro de eliminar la categoría de evaluación?',
+            title: '¿Estás seguro de eliminar esta categoría de evaluación?',
             text: 'Esta acción no se puede deshacer',
             icon: 'warning',
             showCancelButton: true,
@@ -428,13 +421,55 @@
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
+                // Enviar el formulario de eliminación
+
+                $.ajax({
+                    type: 'DELETE',
+                    url: '{{route("catevaluacion.destroy",":id")}}'.replace(':id',id),
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: response.success,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1550);
+
+                    },
+                    error: function(errores) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: errores.error,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                });
 
 
-                this.submit();
+
+
+
+
+
+
+
+
             }
         });
-    });
 
+
+
+
+    }
+</script>
 </script>
 
 

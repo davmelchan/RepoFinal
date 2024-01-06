@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\MaestroController;
 use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
@@ -125,9 +126,15 @@ Route::middleware(['maestro', 'cache.headers:private'])->group(function(){
 
 });
 
-Route::view('/EstudianteView','Estudiante/index');
-Route::view('/EstudianteSupervision','Estudiante/indexsupervision');
-Route::view('/EstudianteEvidencia','Estudiante/estudianteEvidencia');
+Route::middleware(['EstudianteAcess', 'cache.headers:private'])->group(function(){
+    Route::get('/EstudianteView',[EstudianteController::class,'index']);
+    Route::get('/EstudianteSupervision',[EstudianteController::class,'indexSupervision']);
+    Route::get('/EstudianteEvidencia',[EstudianteController::class,'indexEvidencia']);
+    Route::get('/setting',[EstudianteController::class,'indexSetting'])->name('Setting');
+    Route::post('/logout',[EstudianteController::class,'logoutAlumno'])->name('logoutAlumno');
+});
+
+
 
 
 

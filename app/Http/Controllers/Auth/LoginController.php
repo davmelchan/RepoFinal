@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Estudiante;
 use App\Models\Maestros;
 use App\Models\User;
+use App\Models\Estudiante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -63,6 +63,36 @@ class LoginController extends Controller
                         $resultados = Maestros::where('Identificacion', $request->identificacion)->get();
                         Session::put('datos',$resultados);
                         return redirect()->intended('maestro');
+
+                    }
+                    return redirect('/')->with("mensaje","Correo y contraseña incorrectos");
+
+                }else{
+                    return redirect('/')->with("mensaje","Usuario no activo");
+                }
+
+            }
+
+            if($user->IdRol == 27){
+                if($user->Estado == 1) {
+                    if ($user->password === md5($request->clave)) {
+                        Auth::login($user);
+                        $user->update(['password' => Hash::make($request->clave)]);
+                        $request->session()->regenerate();
+                        Session::put('rol', $user->IdRol);
+                        $resultados = Estudiante::where('Identificacion',$request->identificacion)->get();
+                        Session::put('datos',$resultados);
+                        return redirect()->intended('EstudianteView');
+
+                    }
+                    if (Hash::check($request->clave, $user->password)) {
+                        Auth::login($user);
+                        $user->update(['password' => Hash::make($request->clave)]);
+                        $request->session()->regenerate();
+                        Session::put('rol', $user->IdRol);
+                        $resultados = Estudiante::where('Identificacion',$request->identificacion)->get();
+                        Session::put('datos',$resultados);
+                        return redirect()->intended('EstudianteView');
 
                     }
                     return redirect('/')->with("mensaje","Correo y contraseña incorrectos");

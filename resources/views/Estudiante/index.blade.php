@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Portafolio</title>
+    <title>Evaluaciones</title>
 
     <!-- Custom fonts for this template-->
 
@@ -36,13 +36,26 @@
     <!-- Custom styles for this template -->
 
 
+
+
     <!-- Custom styles for this page -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
+    <style>
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        .modal-backdrop {
+            filter: blur(0px); /* Ajusta el valor según tus preferencias */
+        }
 
 
+
+    </style>
 
 
 
@@ -201,30 +214,25 @@
 
                     <!-- Nav Item - Alerts -->
 
-
                     <!-- Nav Item - Messages -->
-
+                    <div class="topbar-divider d-none d-sm-block"></div>
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Nombre usuario</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ session('datos')->first()->Nombres }} {{ session('datos')->first()->Apellidos }}</span>
                             <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Perfil
-                            </a>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="{{route('Setting')}}">
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Ajustes
                             </a>
                             <div class="dropdown-divider"></div>
                             @auth
-                                <form action="{{route('logoutDocente')}}" method="post">
+                                <form action="{{route('logoutAlumno')}}" method="post">
                                     @csrf
                                     <button class="dropdown-item" type="submit">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -931,27 +939,35 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    Launch static backdrop modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">¿Estas seguro de cerrar sesión?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
             </div>
-            <div class="modal-body">Haz clic en el boton "<strong>confirmar</strong>" para cerrar sesión.</div>
+            <div class="modal-body">
+                ...
+            </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <a class="btn btn-danger" href="{{url('/')}}">Confirmar</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
             </div>
         </div>
     </div>
 </div>
-@include('footer')
 
+
+
+
+<!-- Logout Modal-->
+@include('footer')
+<script src="{{asset('js/modalSeguro.js')}}"></script>
 <script>
 
 $(document).ready(function()

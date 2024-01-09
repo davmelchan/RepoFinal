@@ -6647,14 +6647,19 @@ a.close.disabled {
   width: 100vw;
   height: 100vh;
   background-color: #000;
+
 }
 
 .modal-backdrop.fade {
-  opacity: 0;
+
+    opacity: 0;
 }
 
+
 .modal-backdrop.show {
-  opacity: 0.5;
+
+  opacity: 0.8;
+
 }
 
 .modal-header {

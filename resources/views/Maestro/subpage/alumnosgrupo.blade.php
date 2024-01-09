@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Portafolio</title>
+    <title>Listado alumnos</title>
 
     <!-- Custom fonts for this template-->
 
@@ -34,11 +34,12 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
+
 
     <!-- Custom styles for this page -->
-    <link href=" {{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
+    @include('Administrador/data')
 
 
 
@@ -233,7 +234,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Nombre usuario</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ session('datos')->first()->Nombres }} {{ session('datos')->first()->Apellidos }}</span>
                             <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
                         </a>
                         <!-- Dropdown - User Information -->
@@ -270,48 +271,48 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-center text-gray-800">Alumnos del grupo XXXX</h1>
+                <h1 class="h3 mb-2 text-center text-gray-800">Alumnos del grupo {{$resultado->Nombre}}</h1>
 
 
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4 mt-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Usuarios</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Listado de alumnos</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+                            <table id="example" class="table table-striped dt-responsive table-bordered nowrap" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
-                                    <th>Carnet</th>
+                                    <th>Identificación</th>
                                     <th>Nombre</th>
                                     <th>Apellido</th>
-                                    <th>Correo</th>
-                                    <th>Telefono</th>
+                                    <th>Género</th>
+                                    <th>Teléfono</th>
+                                    <th>Dirección</th>
                                     <th>Empresa</th>
+                                    <th>Descripción</th>
+                                    <th>Responsable</th>
                                 </tr>
                                 </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>Carnet</th>
-                                    <th>Nombre</th>
-                                    <th>Apellido</th>
-                                    <th>Correo</th>
-                                    <th>Telefono</th>
-                                    <th>Empresa</th>
 
-                                </tr>
-                                </tfoot>
                                 <tbody>
-                                <tr>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                    <td>Edinburgh</td>
-                                    <td>61</td>
-                                    <td>2011/04/25</td>
-                                    <td>$320,800</td>
-                                </tr>
+                                @foreach($alumnos as $alumno)
+                                    <tr>
+                                        <th>{{$alumno->Identificacion}}</th>
+                                        <th>{{$alumno->Nombres}}</th>
+                                        <th>{{$alumno->Apellidos}}</th>
+                                        <th>{{$alumno->Genero->Nombre}}</th>
+                                        <th>{{$alumno->Direccion}}</th>
+                                        <th>{{$alumno->Telefono}}</th>
+                                        <th>{{$alumno->Empresa->Nombre}}</th>
+                                        <th>{{$alumno->Empresa->Descripcion}}</th>
+                                        <th>{{$alumno->Empresa->Responsable}}</th>
+
+                                    </tr>
+                                @endforeach
 
                                 </tbody>
                             </table>
@@ -367,7 +368,44 @@
         </div>
     </div>
 </div>
-@include('footer')
+@include('Administrador/footer')
+<script>
+
+    var tabla;
+    $(document).ready(function()
+        {
+
+
+
+            tabla =  $('#example').dataTable({
+                responsive:true,
+
+
+
+            });
+
+        }
+    );
+
+
+
+    $(window).resize(function () {
+        // Destruir DataTables
+        tabla.destroy();
+
+        // Volver a inicializar DataTables
+        tabla = $('.table').DataTable({
+            responsive: true,
+            // Otras opciones...
+        });
+    });
+
+
+
+
+
+</script>
+
 
 </body>
 </html>

@@ -9,6 +9,7 @@ use App\Models\GrupoMaestro;
 use App\Models\Grupos;
 use App\Models\GrupoxMaestro;
 use App\Models\Unidad;
+use App\Models\Estudiante;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
@@ -31,6 +32,13 @@ use Illuminate\Support\Str;
             $datos= GrupoxMaestro::where('IdMaestro', '=',session('datos')->first()->Identificacion)->get();
 
             return view('Maestro/maestro',compact('datos'));
+        }
+
+        public function listadoAlumno ($id){
+            $resultado = GrupoMaestro::where('Identificacion', '=', $id)->first();
+            $alumnos= Estudiante::where('idGrupo', '=', $id)->get();
+            return view('Maestro/subpage/alumnosgrupo',compact('resultado','alumnos'));
+
         }
 
         public function indexEvaluaciones(){

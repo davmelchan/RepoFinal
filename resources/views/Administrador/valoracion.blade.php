@@ -388,7 +388,7 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-fw fa-list"></i>
                                 </span>
-                            <input type="text" class="form-control" id="NombreValoracion" name="NombreValoracion">
+                            <input type="text" class="form-control" required id="NombreValoracion" name="NombreValoracion">
                         </div>
                     </div>
 

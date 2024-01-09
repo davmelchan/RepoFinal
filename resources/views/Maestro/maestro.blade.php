@@ -274,7 +274,7 @@
                         <!-- Illustrations -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">{{$grupo->GruposMaestro->Nombre}}</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">{{$grupo->GruposMaestro->Nombre}} </h6>
                             </div>
                             <div class="card-body">
                                 @if(isset($grupo->GruposMaestro->RutaImagen))
@@ -303,7 +303,7 @@
                                         </button>
                                         <div class="dropdown-menu animated--fade-in"
                                              aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="{{url('alumnosgrupo')}}">
+                                            <a class="dropdown-item" href="{{route('AlumnoListado',['id'=>$grupo->IdGrupo])}}">
                                                 <i class="fa-solid fa-eye"></i>
                                                 Ver alumnos
                                             </a>

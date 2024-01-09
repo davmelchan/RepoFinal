@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('IdGrupo');
             $table->dateTime('FechaCreacion');
             $table->boolean('Estado');
+            $table->integer('Puntaje')->nullable();
 
             $table->primary(['IdEvaluacion'], 'PK_Tb_Evaluaciones');
         });

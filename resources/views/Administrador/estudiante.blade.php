@@ -358,8 +358,13 @@
                                         @else
                                             <td>Sin foto</td>
                                         @endif
+                                            @if(empty($estudiante->Empresa->Nombre))
+                                                <td>No asignado</td>
+                                        @else
+                                            <td>{{$estudiante->Empresa->Nombre}}</td>
+                                            @endif
 
-                                        <td>{{$estudiante->Empresa->Nombre}}</td>
+
                                         @if($estudiante->idGrupo!=0)
                                             <td>{{$estudiante->idGrupo}}</td>
 
@@ -427,7 +432,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="formulario" method="POST">
+                <form id="formulario" method="POST" action="{{route('SaveStudent')}}">
                     @csrf
                     <div class="form-group">
                         <label for="NombreEstudiante" class="col-form-label">Nombres del estudiante:</label>
@@ -477,7 +482,7 @@
                     <div class="form-group">
                         <label for="Empresa" class="col-form-label">Centro de práctica:</label>
                         <div class="input-group">
-                                                      <select name="Empresa" id="Empresa" required class="form-control company" style="display: none; width: 100%" multiple="multiple" >
+                                                      <select name="Empresa" id="Empresa" class="form-control company" style="display: none; width: 100%" multiple="multiple" >
                                 <optgroup label="Centros de prácticas">
                                     @foreach($empresas as $empresa)
                                         @if($empresa->Estado==1)
@@ -496,7 +501,7 @@
                                 <span class="input-group-text">
                                 <i class="fa-solid fa-user"></i>
                             </span>
-                            <input type="text" required class="form-control" id="identificador" name="identificador">
+                            <input type="text" minlength="8" maxlength="8" required class="form-control" id="identificador" name="identificador">
                         </div>
                     </div>
 
@@ -516,14 +521,14 @@
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-phone"></i>
                                 </span>
-                            <input type="text" required class="form-control" name="Telefono" id="Telefono">
+                            <input type="tel" required class="form-control" minlength="8" maxlength="8" name="Telefono" id="Telefono">
                         </div>
                     </div>
 
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" id="btnGuardar" form="formulario" class="btn btn-primary">Guardar</button>
+                <button type="button" id="btnGuardar" onclick="guardarGrupo('{{route('SaveStudent')}}')" form="formulario" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
             </div>
         </div>

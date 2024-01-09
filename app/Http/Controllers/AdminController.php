@@ -13,10 +13,12 @@ use App\Models\User;
 use App\Models\Estudiante;
 use Carbon\Carbon;
 use Couchbase\Role;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -343,9 +345,28 @@ class AdminController extends Controller
     }
 
     public function GuardarEstudiante(Request $request){
+
+
+
+
         $verificar = Estudiante::find($request->identificador);
         $user= User::where('Identificacion', $request->identificador)->first();
         if(!$verificar){
+                $campo=[
+                    "NombreEstudiante"=>'required|string',
+                    "ApellidoEstudiante"=>'required|string',
+                    "Direccion"=>'required|string',
+                    "Genero"=>'required',
+                    "identificador"=>'required|string',
+                    "Clave"=>'required|string',
+                    "Telefono"=>'required',
+                ];
+                $vacios = Validator::make($request->all(),$campo);
+                if ($vacios->fails()) {
+                    return response()->json(['errors' => "Digite lo espacios en blanco"],422);
+                }
+
+
             $fechaHoy = Carbon::now();
             $fechaFormateada = $fechaHoy->format('Y-m-d');
 
@@ -358,24 +379,55 @@ class AdminController extends Controller
             $estudiante =['Identificacion'=>$request->identificador,'Direccion'=>$request->Direccion,'idEmpresa'=>$request->Empresa
                 ,'idGenero'=>$request->Genero,'Estado'=>1,'Nombres'=>$request->NombreEstudiante,'Apellidos'=>$request->ApellidoEstudiante,'Telefono'=>$request->Telefono];
             Estudiante::insert($estudiante);
-
-            return back()->with('exito', 'Estudiante almacenado exitosamente');
+            return response()->json(['success'=>'Estudiante almacenado exitosamente']);
 
 
         }
 
         if(isset($request->Clave)){
+            $campo=[
+                "NombreEstudiante"=>'required|string',
+                "ApellidoEstudiante"=>'required|string',
+                "Direccion"=>'required|string',
+                "Genero"=>'required',
+                "identificador"=>'required|string',
+                "Clave"=>'required|string',
+                "Telefono"=>'required',
+            ];
+            $vacios = Validator::make($request->all(),$campo);
+            if ($vacios->fails()) {
+                return response()->json(['errors' => "Digite lo espacios en blanco"],422);
+            }
+
+
+
+
+
 
             $verificar->update(['Identificacion'=>$request->identificador,'Direccion'=>$request->Direccion,'idEmpresa'=>$request->Empresa
                 ,'idGenero'=>$request->Genero,'Estado'=>1,'Nombres'=>$request->NombreEstudiante,'Apellidos'=>$request->ApellidoEstudiante,'Telefono'=>$request->Telefono]);
             $user->update(['password'=>md5($request->Clave)]);
-            return back()->with('exito', 'Estudiante actualizado exitosamente');
+            return response()->json(['success'=>'Estudiante actualizado exitosamente']);
+
 
         }else{
 
+            $campo=[
+                "NombreEstudiante"=>'required|string',
+                "ApellidoEstudiante"=>'required|string',
+                "Direccion"=>'required|string',
+                "Genero"=>'required',
+                "identificador"=>'required|string',
+                "Telefono"=>'required',
+            ];
+            $vacios = Validator::make($request->all(),$campo);
+            if ($vacios->fails()) {
+                return response()->json(['errors' => "Digite lo espacios en blanco"],422);
+            }
+
             $verificar->update(['Identificacion'=>$request->identificador,'Direccion'=>$request->Direccion,'idEmpresa'=>$request->Empresa
                 ,'idGenero'=>$request->Genero,'Estado'=>1,'Nombres'=>$request->NombreEstudiante,'Apellidos'=>$request->ApellidoEstudiante,'Telefono'=>$request->Telefono]);
-            return back()->with('exito', 'Estudiante actualizado exitosamente');
+            return response()->json(['success'=>'Estudiante actualizado exitosamente']);
         }
 
 

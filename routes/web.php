@@ -51,7 +51,7 @@ Route::middleware(['Roles', 'cache.headers:private'])->group(function () {
 
     //Crud estudiantes
     Route::get('/estudiante',[AdminController::class,'indexEstudiante']);
-    Route::post('/estudiante',[AdminController::class,'GuardarEstudiante']);
+    Route::post('/estudiante',[AdminController::class,'GuardarEstudiante'])->name('SaveStudent');
     Route::delete('/estudiante/{id}',[AdminController::class,'EliminarEstudiante'])->name("student.destroy");
 
     Route::post('/salir',[AdminController::class,'logout'])->name('salir');
@@ -118,7 +118,8 @@ Route::middleware(['maestro', 'cache.headers:private'])->group(function(){
     Route::delete('/asignacion/{id}',[MaestroController::class,'EvaluacionEliminar']);
 
     Route::post('/logout',[MaestroController::class,'logoutMaestro'])->name('logoutDocente');
-    Route::view('/alumnosgrupo','Maestro/subpage/alumnosgrupo');
+    Route::get('/alumnosgrupo/{id}',[MaestroController::class,'listadoAlumno'])->name('AlumnoListado');
+
     Route::view('/evidencia','Maestro/evidencia');
     Route::view('/alumnoevidencia','Maestro/subpage/alumnoevidencia');
     Route::view('/archivos','Maestro/subpage/archivo');
@@ -128,10 +129,12 @@ Route::middleware(['maestro', 'cache.headers:private'])->group(function(){
 
 Route::middleware(['EstudianteAcess', 'cache.headers:private'])->group(function(){
     Route::get('/EstudianteView',[EstudianteController::class,'index']);
+    Route::post('/EstudianteView',[EstudianteController::class,'comprobar'])->name("corroborar");
+
     Route::get('/EstudianteSupervision',[EstudianteController::class,'indexSupervision']);
     Route::get('/EstudianteEvidencia',[EstudianteController::class,'indexEvidencia']);
     Route::get('/setting',[EstudianteController::class,'indexSetting'])->name('Setting');
-    Route::post('/logout',[EstudianteController::class,'logoutAlumno'])->name('logoutAlumno');
+    Route::post('/out',[EstudianteController::class,'logoutAlumno'])->name('logoutAlumno');
 });
 
 

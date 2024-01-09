@@ -12,7 +12,7 @@ class Evaluaciones extends Model
     protected $table = 'Tb_Evaluaciones';
     protected $primaryKey = 'IdEvaluacion';
     public $timestamps = false;
-    protected $fillable= ['Nombre','Descripcion','IdUnidad','IdTipo','IdGrupo','FechaCreacion','Estado'];
+    protected $fillable= ['Nombre','Descripcion','IdUnidad','IdTipo','IdGrupo','FechaCreacion','Estado','Puntaje'];
 
     public function UnidadesEvaluacion(){
         return $this->hasOne(Unidad::class,'IdUnidad','IdUnidad');

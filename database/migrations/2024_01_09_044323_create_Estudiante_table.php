@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('Direccion');
             $table->integer('idGenero');
             $table->integer('idEmpresa')->nullable();
-            $table->integer('idGrupo')->nullable();
+            $table->string('idGrupo')->nullable();
             $table->text('rutaImagen')->nullable();
             $table->char('Estado', 10);
             $table->string('Telefono', 9);

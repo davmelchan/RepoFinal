@@ -129,8 +129,11 @@ Route::middleware(['maestro', 'cache.headers:private'])->group(function(){
     Route::post('/SupervisionVista/guardar',[MaestroController::class,'GuardarSupervision'])->name('SaveSupervision');
     Route::delete('/SupervisionVista/{id}',[MaestroController::class,'EliminarSupervision'])->name('SupervisionDestroy');
 
-    Route::view('/evidencia','Maestro/evidencia');
+    Route::get('/evidencia',[MaestroController::class,'indexEvidencia']);
+    Route::get('/Evidencialistado/{id}',[MaestroController::class,'EvidenciaListado']);
     Route::view('/alumnoevidencia','Maestro/subpage/alumnoevidencia');
+    Route::get('/EvidenciaVista/{id}',[MaestroController::class,'EvidenciaVista'])->name('ViewEvidencia');
+
     Route::view('/archivos','Maestro/subpage/archivo');
 
 

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,45 +19,16 @@
         rel="stylesheet">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800&display=swap"
-          rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
-        rel="stylesheet">
-
-
-
-
-    <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
-    {{--
-    "../vendor/fontawesome-free/css/all.min.css"
-    "../css/sb-admin-2.css"
-
-    --}}
-    <script src="https://kit.fontawesome.com/4ae6dfa596.js" crossorigin="anonymous"></script>
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
+
 
     <!-- Custom styles for this page -->
     <link href=" {{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
-
-
-    <!-- Custom styles for this template -->
-    <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
-
-    <!-- Custom styles for this page -->
-    <link href=" {{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
     <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
-
-    <!-- Custom styles for this template-->
-
+    <link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
+    @include('Administrador/data')
 
 </head>
 
@@ -69,7 +41,7 @@
     <ul class="navbar-nav bg-unan sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('maestro')}}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
             <div class="sidebar-brand-icon ">
                 <i class="fa-solid fa-briefcase"></i>
             </div>
@@ -89,7 +61,7 @@
 
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item ">
             <a class="nav-link" href="{{url('maestro')}}">
                 <i class="fas fa-fw fa-user"></i>
                 <span>Grupos</span></a>
@@ -110,7 +82,7 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="{{url('evaluacionasignada')}}">Asignadas</a>
-                    <a class="collapse-item" href="../ECompletadas.html">Completadas</a>
+                    <a class="collapse-item" href="{{url('evaluacioncorregida')}}">Completadas</a>
                 </div>
             </div>
         </li>
@@ -154,13 +126,13 @@
     -->
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item ">
             <a class="nav-link" href="{{url('Supervision')}}">
                 <i class="fas fa-fw fa-building"></i>
-                <span>Supervision</span></a>
+                <span>Supervisión</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="../ReporteAlumnos.html">
+            <a class="nav-link" href="ReporteAlumnos.html">
                     <span class="material-symbols-outlined">
                         query_stats
                     </span>
@@ -279,53 +251,78 @@
 
             </nav>
             <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+
             <div class="container-fluid">
-
-                <!-- Page Heading -->
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Evidencias</h1>
-
-
-                    <input type="file" class="d-none" name="file" id="file">
-                    <a id="btnFile" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                            class="fas fa-download fa-sm text-white-50"></i> Subir archivos</a>
-
-                </div>
-
-                <div class="col-xxl-6">
-                    <div class="card file-manager-recent-item">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <i class="material-icons-outlined text-primary align-middle mr-3">code</i>
-                                <a href="#" class="file-manager-recent-item-title flex-fill">Documento 1.pdf</a>
-                                <span class="p-h-sm font-weight-bold">167kb</span>
-                                <span class="p-h-sm text-muted">09.14.21</span>
-
-
-                                    <button class="btn btn-success dropdown-toggle" type="button"
-                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-                                        Opciones
-                                    </button>
-
-
-                                <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#">Guardar</a>
-                                    <a class="dropdown-item" href="#">Eliminar</a>
-                                </div>
+                <h1 class="h3 mb-2 text-center text-gray-800">Listado del grupo  <strong>{{$resultado->Nombre}}</strong></h1>
 
 
 
-                            </div>
+                <div class="card shadow mb-4 mt-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Listado de estudiantes</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="example" class="table table-striped dt-responsive table-bordered nowrap" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Identificación</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Empresa</th>
+                                    <th>Opciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($alumnos as $alumno)
+                                    <tr>
+
+
+                                        <th>{{$alumno->Identificacion}}</th>
+                                        <th>{{$alumno->Nombres}}</th>
+                                        <th>{{$alumno->Apellidos}}</th>
+                                        @if(empty($alumno->Empresa->Nombre))
+                                            <th>No disponible</th>
+                                        @else
+                                            <th>{{$alumno->Empresa->Nombre}}</th>
+                                        @endif
+
+
+
+                                        <td class="text-center">
+                                            <a href="{{route('ViewEvidencia',['id'=>$alumno->Identificacion])}}" class="btn btn-success btn-icon-split">
+                                        <span class="icon text-white-50">
+                                            <i class="fa-solid fa-eye" style="color: #ffffff;"></i>
+                                        </span>
+                                                <span class="text">Ver evidencias</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-
                 </div>
+
+
+
+
+
+
+
+
+
+
+                <!-- DataTales Example -->
+
+
 
 
 
             </div>
-            <!-- Begin Page Content -->
 
 
             <!-- /.container-fluid -->
@@ -354,26 +351,60 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">¿Estas seguro de cerrar sesión?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Haz clic en el boton "<strong>confirmar</strong>" para cerrar sesión.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <a class="btn btn-danger" href="{{url('/')}}">Confirmar</a>
-            </div>
-        </div>
-    </div>
-</div>
-@include('footer')
-<script src="{{asset('js/archivo.js')}}"></script>
+<!--Formulario para agregar grupo-->
+
+
+
+
+
+
+
+@include('Administrador/footer')
+<script src="{{asset('js/select2.full.min.js')}}"></script>
 </body>
+
+<script>
+
+    var tabla;
+    $(document).ready(function()
+        {
+
+
+
+            tabla =  $('.table').dataTable({
+                responsive:true,
+
+
+
+            });
+
+        }
+    );
+
+    $(window).resize(function () {
+        // Destruir DataTables
+        tabla.destroy();
+
+        // Volver a inicializar DataTables
+        tabla = $('.table').DataTable({
+            responsive: true,
+            // Otras opciones...
+        });
+    });
+
+
+
+</script>
+@if(Session::has('exito'))
+    <script>
+        Swal.fire(
+            'Completado',
+            '{{Session::get('exito')}}',
+            'success'
+        )
+    </script>
+@endif
+
+
+
 </html>

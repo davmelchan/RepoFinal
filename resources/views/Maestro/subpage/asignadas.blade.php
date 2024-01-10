@@ -128,7 +128,7 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link" href="{{url('Supervisión')}}">
+            <a class="nav-link" href="{{url('Supervision')}}">
                 <i class="fas fa-fw fa-building"></i>
                 <span>Supervisión</span></a>
         </li>

@@ -12,6 +12,7 @@ use App\Models\GrupoxMaestro;
 use App\Models\Supervisiones;
 use App\Models\Unidad;
 use App\Models\Estudiante;
+use App\Models\EvidenciaEstudiante;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
@@ -63,6 +64,15 @@ use Illuminate\Support\Str;
 
         }
 
+        public function indexEvidencia(){
+            $datos= GrupoxMaestro::where('IdMaestro', '=',session('datos')->first()->Identificacion)->get();
+            foreach ($datos as $dato) {
+                $dato->conteo = Estudiante::where('idGrupo', '=', $dato->IdGrupo)->count();
+            }
+            return view('Maestro/evidencia',compact('datos'));
+
+        }
+
 
         public function indexasignaciones($id){
 
@@ -88,6 +98,28 @@ use Illuminate\Support\Str;
 
 
         }
+
+        public function EvidenciaListado($id){
+
+            $resultado = GrupoMaestro::where('Identificacion', '=', $id)->first();
+            $alumnos= Estudiante::where('idGrupo', '=', $id)->get();
+            return view('Maestro/subpage/ListadoEvidencia',compact('resultado','alumnos'));
+
+        }
+
+        public function EvidenciaVista($id){
+
+            $evidencias = EvidenciaEstudiante::where('idEstudiante','=', $id)->get();
+            foreach ($evidencias as $evidencia) {
+                $fecha = $evidencia->EvidenciasBusqueda->Fecha;
+                $evidencia->EvidenciasBusqueda->Fecha = Carbon::parse($fecha)->format('d/m/Y');
+
+            }
+
+            return view('Maestro/subpage/EvideciaView',compact('evidencias'));
+
+        }
+
 
         public function SupervisionVista($id){
             $resultado = Estudiante::where('Identificacion' , '=' , $id)->first();

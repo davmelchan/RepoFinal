@@ -20,4 +20,8 @@ class EvidenciaEstudiante extends Model
     ];
 
 
+    public function EvidenciasBusqueda(){
+        return $this->hasOne(Evidencias::class,'idEvidencia','idEvidencia');
+    }
+
 }

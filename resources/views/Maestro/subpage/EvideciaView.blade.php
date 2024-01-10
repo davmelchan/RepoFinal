@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Portafolio</title>
 
     <!-- Custom fonts for this template-->
@@ -18,17 +18,10 @@
         rel="stylesheet">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800&display=swap"
-          rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
-        rel="stylesheet">
 
+    <!-- Custom styles for this template-->
 
-
-
+    <!-- Custom fonts for this template-->
     <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
     {{--
     "../vendor/fontawesome-free/css/all.min.css"
@@ -41,21 +34,15 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
+
 
     <!-- Custom styles for this page -->
-    <link href=" {{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    @include('Administrador/data')
 
 
 
-    <!-- Custom styles for this template -->
-    <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
 
-    <!-- Custom styles for this page -->
-    <link href=" {{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
-    <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
-
-    <!-- Custom styles for this template-->
 
 
 </head>
@@ -69,7 +56,7 @@
     <ul class="navbar-nav bg-unan sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('maestro')}}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('EstudianteView')}}">
             <div class="sidebar-brand-icon ">
                 <i class="fa-solid fa-briefcase"></i>
             </div>
@@ -89,7 +76,7 @@
 
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item ">
             <a class="nav-link" href="{{url('maestro')}}">
                 <i class="fas fa-fw fa-user"></i>
                 <span>Grupos</span></a>
@@ -110,7 +97,7 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="{{url('evaluacionasignada')}}">Asignadas</a>
-                    <a class="collapse-item" href="../ECompletadas.html">Completadas</a>
+                    <a class="collapse-item" href="{{url('evaluacioncorregida')}}">Completadas</a>
                 </div>
             </div>
         </li>
@@ -154,18 +141,58 @@
     -->
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item ">
             <a class="nav-link" href="{{url('Supervision')}}">
                 <i class="fas fa-fw fa-building"></i>
-                <span>Supervision</span></a>
+                <span>Supervisión</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="../ReporteAlumnos.html">
+            <a class="nav-link" href="ReporteAlumnos.html">
                     <span class="material-symbols-outlined">
                         query_stats
                     </span>
                 <span>Reportes alumnos</span></a>
         </li>
+
+
+        <!--    <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Components</span>
+            </a>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Custom Components:</h6>
+                    <a class="collapse-item" href="buttons.html">Buttons</a>
+                    <a class="collapse-item" href="cards.html">Cards</a>
+                </div>
+            </div>
+        </li>
+-->
+        <!-- Nav Item - Utilities Collapse Menu -->
+        <!--         <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                aria-expanded="true" aria-controls="collapseUtilities">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span>Utilities</span>
+            </a>
+            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Custom Utilities:</h6>
+                    <a class="collapse-item" href="utilities-color.html">Colors</a>
+                    <a class="collapse-item" href="utilities-border.html">Borders</a>
+                    <a class="collapse-item" href="utilities-animation.html">Animations</a>
+                    <a class="collapse-item" href="utilities-other.html">Other</a>
+                </div>
+            </div>
+        </li>
+    -->
+
+        <!-- Nav Item - Pages Collapse Menu -->
+
+
 
 
 
@@ -248,7 +275,17 @@
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ session('datos')->first()->Nombres }} {{ session('datos')->first()->Apellidos }}</span>
-                            <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
+                            @if(isset(session('datos')->first()->rutaImagen))
+
+                                <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
+
+                            @else
+
+                                <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
+
+                            @endif
+
+
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -263,7 +300,7 @@
                             </a>
                             <div class="dropdown-divider"></div>
                             @auth
-                                <form action="{{route('logoutDocente')}}" method="post">
+                                <form action="{{route('logoutAlumno')}}" method="post">
                                     @csrf
                                     <button class="dropdown-item" type="submit">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -279,53 +316,62 @@
 
             </nav>
             <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
             <div class="container-fluid">
 
-                <!-- Page Heading -->
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Evidencias</h1>
+                <h1 class="h3 mb-2 text-center text-gray-800">Evidencias realizadas en el centro de prácticas</h1>
 
-
-                    <input type="file" class="d-none" name="file" id="file">
-                    <a id="btnFile" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                            class="fas fa-download fa-sm text-white-50"></i> Subir archivos</a>
-
-                </div>
-
-                <div class="col-xxl-6">
-                    <div class="card file-manager-recent-item">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <i class="material-icons-outlined text-primary align-middle mr-3">code</i>
-                                <a href="#" class="file-manager-recent-item-title flex-fill">Documento 1.pdf</a>
-                                <span class="p-h-sm font-weight-bold">167kb</span>
-                                <span class="p-h-sm text-muted">09.14.21</span>
-
-
-                                    <button class="btn btn-success dropdown-toggle" type="button"
-                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-                                        Opciones
-                                    </button>
-
-
-                                <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#">Guardar</a>
-                                    <a class="dropdown-item" href="#">Eliminar</a>
-                                </div>
-
-
-
-                            </div>
-                        </div>
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4 mt-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Lista de evidencias</h6>
                     </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                        <table id="example" class="table table-striped table-bordered nowrap" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Descripcion</th>
+                                <th>Empresa</th>
+                                <th>Archivo</th>
+                                <th>Fecha</th>
 
+                                <th>Opciones</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($evidencias as $evidencia)
+                                @if($evidencia->Estado==1)
+                                    <tr>
+                                        <td>{{$evidencia->EvidenciasBusqueda->Nombre}}</td>
+                                        <td>{{$evidencia->EvidenciasBusqueda->Descripcion}}</td>
+                                        <td>{{$evidencia->EvidenciasBusqueda->EvidenciasEstudiante->Nombre}}</td>
+                                        <td>{{$evidencia->EvidenciasBusqueda->NombreArchivo}}</td>
+                                        <td>{{$evidencia->EvidenciasBusqueda->Fecha}}</td>
+                                        <td class="text-center">
+                                            <a href="{{asset(Storage::url($evidencia->EvidenciasBusqueda->RutaArchivo))}}" download="{{$evidencia->EvidenciasBusqueda->NombreArchivo}}" class="btn btn-success btn-circle">
+                                                <i class="fa-solid fa-download"></i>
+                                            </a>
+
+
+
+
+                                        </td>
+
+                                    </tr>
+                                @endif
+                            @endforeach
+                            </tbody>
+
+                        </table>
+                        </div>
+                        </div>
                 </div>
-
-
 
             </div>
-            <!-- Begin Page Content -->
 
 
             <!-- /.container-fluid -->
@@ -354,26 +400,24 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">¿Estas seguro de cerrar sesión?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Haz clic en el boton "<strong>confirmar</strong>" para cerrar sesión.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <a class="btn btn-danger" href="{{url('/')}}">Confirmar</a>
-            </div>
-        </div>
-    </div>
-</div>
-@include('footer')
-<script src="{{asset('js/archivo.js')}}"></script>
+
+
+
+@include('Administrador/footer')
+
+<script>
+
+    $(document).ready(function()
+        {
+            $('#example').dataTable({
+                responsive:true
+            });
+
+
+        }
+    );
+</script>
+
+
 </body>
 </html>

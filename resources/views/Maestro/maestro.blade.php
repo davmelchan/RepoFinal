@@ -124,7 +124,7 @@
                 <span>Supervisión</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="ReporteAlumnos.html">
+            <a class="nav-link" href="{{url('reportes')}}">
                     <span class="material-symbols-outlined">
                         query_stats
                     </span>
@@ -197,7 +197,7 @@
                 <form
                     class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                     <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar grupo"
                                aria-label="Search" id="barraBusqueda" aria-describedby="basic-addon2">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="button">
@@ -222,7 +222,7 @@
                             <form class="form-inline mr-auto w-100 navbar-search">
                                 <div class="input-group">
                                     <input type="text" class="form-control bg-light border-0 small"
-                                           placeholder="Search for..." id="barraBusqueda" aria-label="Search"
+                                           placeholder="Buscar grupo" id="barraBusqueda2" aria-label="Search"
                                            aria-describedby="basic-addon2">
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" type="button">
@@ -303,9 +303,9 @@
 
                     @foreach($datos as $grupo)
                         @if($grupo->GruposMaestro->Estado==1)
-                    <div class="col-lg-4 mb-2">
+                    <div class="col-lg-4 mb-2 objeto">
                         <!-- Illustrations -->
-                        <div class="card shadow mb-4 objeto">
+                        <div class="card shadow mb-4 ">
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">{{$grupo->GruposMaestro->Nombre}} </h6>
                             </div>

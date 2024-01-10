@@ -1,3 +1,8 @@
+
+
+
+
+
 const btnSupervision = document.getElementById("btnEvidencia");
 const modal = document.getElementById("ModalEvidencia");
 const mymodal = new bootstrap.Modal(modal);

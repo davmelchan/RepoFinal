@@ -133,7 +133,7 @@ Route::middleware(['maestro', 'cache.headers:private'])->group(function(){
     Route::get('/Evidencialistado/{id}',[MaestroController::class,'EvidenciaListado']);
     Route::view('/alumnoevidencia','Maestro/subpage/alumnoevidencia');
     Route::get('/EvidenciaVista/{id}',[MaestroController::class,'EvidenciaVista'])->name('ViewEvidencia');
-
+    Route::view('/reportes','Maestro/subpage/reporte');
     Route::view('/archivos','Maestro/subpage/archivo');
 
 

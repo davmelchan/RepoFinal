@@ -46,6 +46,7 @@
         </a>
 
         <!-- Divider -->
+        <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
@@ -58,7 +59,7 @@
 
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item ">
             <a class="nav-link" href="{{url('maestro')}}">
                 <i class="fas fa-fw fa-user"></i>
                 <span>Grupos</span></a>
@@ -70,22 +71,20 @@
                 <span>Evidencias</span></a>
         </li>
 
-
-
-        <li class="nav-item active">
-            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-               aria-controls="collapseTwo">
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+               aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fa-solid fa-folder"></i>
                 <span>Evaluaciones</span>
             </a>
-            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo"
-                 data-parent="#accordionSidebar">
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item " href="{{url('evaluacionasignada')}}">Asignadas</a>
-                    <a class="collapse-item active" href="{{url('evaluacioncorregida')}}">Completadas</a>
+                    <a class="collapse-item" href="{{url('evaluacionasignada')}}">Asignadas</a>
+                    <a class="collapse-item" href="{{url('evaluacioncorregida')}}">Completadas</a>
                 </div>
             </div>
         </li>
+
 
 
 
@@ -125,7 +124,7 @@
     -->
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item active">
             <a class="nav-link" href="{{url('Supervision')}}">
                 <i class="fas fa-fw fa-building"></i>
                 <span>Supervisión</span></a>
@@ -201,45 +200,12 @@
                 </button>
 
                 <!-- Topbar Search -->
-                <form
-                    class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar grupo"
-                               aria-label="Search" id="barraBusqueda" aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
 
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
 
                     <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                    <li class="nav-item dropdown no-arrow d-sm-none">
-                        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-search fa-fw"></i>
-                        </a>
-                        <!-- Dropdown - Messages -->
-                        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                             aria-labelledby="searchDropdown">
-                            <form class="form-inline mr-auto w-100 navbar-search">
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-light border-0 small"
-                                           placeholder="Buscar grupo" id="barraBusqueda2" aria-label="Search"
-                                           aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button">
-                                            <i class="fas fa-search fa-sm"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </li>
+
 
                     <!-- Nav Item - Alerts -->
 
@@ -288,63 +254,13 @@
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-center mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Evaluaciones asignadas</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Informacion acerca de las prácticas de formación profesional</h1>
                 </div>
 
                 <!-- Content Row -->
 
 
                 <!-- Content Row -->
-                <div class="row" id="contenedor">
-
-                    <!-- Content Column -->
-
-                    @foreach($datos as $grupo)
-                        @if($grupo->GruposMaestro->Estado==1)
-                            <div class="col-lg-4 mb-2 objeto">
-                                <!-- Illustrations -->
-                                <div class="card shadow mb-4">
-                                    <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">{{$grupo->GruposMaestro->Nombre}}</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        @if(isset($grupo->GruposMaestro->RutaImagen))
-
-                                            <div class="text-center">
-                                                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                                     src="{{asset(Storage::url($grupo->GruposMaestro->RutaImagen))}}" alt="">
-                                            </div>
-
-                                        @else
-                                            <div class="text-center">
-                                                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                                     src="{{asset('img/undraw_posting_photo.svg')}}" alt="foto del grupo">
-                                            </div>
-                                        @endif
-                                        <p>
-                                            @if($grupo->conteo>0)
-                                                <b>Numero de estudiantes: </b>{{$grupo->conteo}}
-                                            @else
-                                                <b>Numero de estudiantes: </b>0
-                                            @endif
-                                                <br>
-
-
-                                            @if($grupo->GruposMaestro->Estado==1)
-                                                <b>Estado: </b> Activo
-                                            @endif
-
-
-                                        </p>
-
-                                        <a href="{{url('/calificaciones/'.$grupo->IdGrupo)}}" class="btn btn-unan btn-block">Seleccionar
-                                            Grupo</a>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                    @endforeach
-                </div>
 
             </div>
             <!-- /.container-fluid -->
@@ -374,25 +290,8 @@
 </a>
 
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">¿Estas seguro de cerrar sesión?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Haz clic en el boton "<strong>confirmar</strong>" para cerrar sesión.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <a class="btn btn-danger" href="{{url('/')}}">Confirmar</a>
-            </div>
-        </div>
-    </div>
-</div>
+
 @include('footer')
-<script src="{{asset('js/barraBusqueda.js')}}"></script>
+
 </body>
 </html>

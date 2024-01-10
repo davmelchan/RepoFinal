@@ -12,15 +12,20 @@
     <title>Portafolio</title>
 
     <!-- Custom fonts for this template-->
-    <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-    <!-- Custom styles for this template-->
+    <!-- Custom styles for this template -->
     <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href=" {{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+
+    <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+
 
 </head>
 
@@ -59,26 +64,28 @@
                 <span>Grupos</span></a>
         </li>
 
-        <li class="nav-item active">
+        <li class="nav-item">
             <a class="nav-link" href="{{url('evidencia')}}">
                 <i class="fas fa-fw fa-clipboard"></i>
                 <span>Evidencias</span></a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-               aria-expanded="true" aria-controls="collapseTwo">
+
+
+        <li class="nav-item active">
+            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+               aria-controls="collapseTwo">
                 <i class="fa-solid fa-folder"></i>
                 <span>Evaluaciones</span>
             </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo"
+                 data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{url('evaluacionasignada')}}">Asignadas</a>
-                    <a class="collapse-item" href="ECompletadas.html">Completadas</a>
+                    <a class="collapse-item " href="{{url('evaluacionasignada')}}">Asignadas</a>
+                    <a class="collapse-item active" href="{{url('evaluacioncorregida')}}">Completadas</a>
                 </div>
             </div>
         </li>
-
 
 
 
@@ -249,8 +256,7 @@
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-center mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Evidencias</h1>
-
+                    <h1 class="h3 mb-0 text-gray-800">Evaluaciones asignadas</h1>
                 </div>
 
                 <!-- Content Row -->
@@ -261,90 +267,51 @@
 
                     <!-- Content Column -->
 
+                    @foreach($datos as $grupo)
+                        @if($grupo->GruposMaestro->Estado==1)
+                            <div class="col-lg-4 mb-2">
+                                <!-- Illustrations -->
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">{{$grupo->GruposMaestro->Nombre}}</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        @if(isset($grupo->GruposMaestro->RutaImagen))
 
-                    <div class="col-lg-4 mb-2">
-                        <!-- Illustrations -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset('img/undraw_posting_photo.svg')}}" alt="foto del grupo">
-                                </div>
-                                <p>Add some quality, svg illustrations to your project courtesy of <a
-                                        target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                    constantly updated collection of beautiful svg images that you can use
-                                    completely free and without attribution!</p>
-                                <a href="{{url('alumnoevidencia')}}" class="btn btn-unan btn-block">Seleccionar
-                                    Grupo</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 mb-2">
-                        <!-- Illustrations -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset('img/undraw_posting_photo.svg')}}" alt="...">
-                                </div>
-                                <p>Add some quality, svg illustrations to your project courtesy of <a
-                                        target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                    constantly updated collection of beautiful svg images that you can use
-                                    completely free and without attribution!</p>
-                                <a href="{{url('alumnoevidencia')}}" class="btn btn-unan btn-block">Seleccionar
-                                    Grupo</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 mb-2">
-                        <!-- Illustrations -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset('img/undraw_posting_photo.svg')}}" alt="...">
-                                </div>
-                                <p>Add some quality, svg illustrations to your project courtesy of <a
-                                        target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                    constantly updated collection of beautiful svg images that you can use
-                                    completely free and without attribution!</p>
-                                <a href="{{url('alumnoevidencia')}}" class="btn btn-unan btn-block">Seleccionar
-                                    Grupo</a>
-                            </div>
-                        </div>
-                    </div>
+                                            <div class="text-center">
+                                                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
+                                                     src="{{asset(Storage::url($grupo->GruposMaestro->RutaImagen))}}" alt="">
+                                            </div>
 
-                    <div class="col-lg-4 mb-2">
-                        <!-- Illustrations -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset('img/undraw_posting_photo.svg')}}" alt="...">
-                                </div>
-                                <p>Add some quality, svg illustrations to your project courtesy of <a
-                                        target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                    constantly updated collection of beautiful svg images that you can use
-                                    completely free and without attribution!</p>
-                                <a href="{{url('alumnoevidencia')}}" class="btn btn-unan btn-block">
-                                    Seleccionar Grupo</a>
-                            </div>
-                        </div>
-                    </div>
+                                        @else
+                                            <div class="text-center">
+                                                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
+                                                     src="{{asset('img/undraw_posting_photo.svg')}}" alt="foto del grupo">
+                                            </div>
+                                        @endif
+                                        <p>
+                                            @if($grupo->conteo>0)
+                                                <b>Numero de estudiantes: </b>{{$grupo->conteo}}
+                                            @else
+                                                <b>Numero de estudiantes: </b>0
+                                            @endif
+                                                <br>
 
 
+                                            @if($grupo->GruposMaestro->Estado==1)
+                                                <b>Estado: </b> Activo
+                                            @endif
+
+
+                                        </p>
+
+                                        <a href="{{url('/calificaciones/'.$grupo->IdGrupo)}}" class="btn btn-unan btn-block">Seleccionar
+                                            Grupo</a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
                 </div>
 
             </div>

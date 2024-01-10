@@ -97,7 +97,7 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="{{url('evaluacionasignada')}}">Asignadas</a>
-                    <a class="collapse-item" href="../ECompletadas.html">Completadas</a>
+                    <a class="collapse-item" href="{{url('evaluacioncorregida')}}">Completadas</a>
                 </div>
             </div>
         </li>
@@ -142,9 +142,9 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link" href="../Supervision.html">
+            <a class="nav-link" href="{{url('Supervision')}}">
                 <i class="fas fa-fw fa-building"></i>
-                <span>Supervision</span></a>
+                <span>Supervisión</span></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="../ReporteAlumnos.html">
@@ -307,9 +307,16 @@
                                         <th>{{$alumno->Genero->Nombre}}</th>
                                         <th>{{$alumno->Direccion}}</th>
                                         <th>{{$alumno->Telefono}}</th>
-                                        <th>{{$alumno->Empresa->Nombre}}</th>
-                                        <th>{{$alumno->Empresa->Descripcion}}</th>
-                                        <th>{{$alumno->Empresa->Responsable}}</th>
+                                        @if(empty($alumno->Empresa->Nombre))
+                                            <th>No disponible</th>
+                                            <th>No disponible</th>
+                                            <th>No disponible</th>
+                                        @else
+                                            <th>{{$alumno->Empresa->Nombre}}</th>
+                                            <th>{{$alumno->Empresa->Descripcion}}</th>
+                                            <th>{{$alumno->Empresa->Responsable}}</th>
+
+                                        @endif
 
                                     </tr>
                                 @endforeach

@@ -74,7 +74,7 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="{{url('evaluacionasignada')}}">Asignadas</a>
-                    <a class="collapse-item" href="ECompletadas.html">Completadas</a>
+                    <a class="collapse-item" href="{{url('evaluacioncorregida')}}">Completadas</a>
                 </div>
             </div>
         </li>
@@ -119,9 +119,9 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link" href="Supervision.html">
+            <a class="nav-link" href="{{url('Supervision')}}">
                 <i class="fas fa-fw fa-building"></i>
-                <span>Supervision</span></a>
+                <span>Supervisión</span></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="ReporteAlumnos.html">
@@ -291,6 +291,12 @@
                                     </div>
                                 @endif
                                 <p><b>Codigo: </b>  {{$grupo->IdGrupo}}<br>
+                                    @if($grupo->conteo>0)
+                                        <b>Numero de estudiantes: </b>  {{$grupo->conteo}}<br>
+                                    @else
+                                        <b>Numero de estudiantes: </b> 0<br>
+                                    @endif
+
                                     @if($grupo->GruposMaestro->Estado==1)
                                     <b>Estado: </b> Activo
                                     @endif

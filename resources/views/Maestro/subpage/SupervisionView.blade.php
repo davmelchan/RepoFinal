@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,19 +9,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Portafolio</title>
 
     <!-- Custom fonts for this template-->
-    <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-    <!-- Custom styles for this template-->
-    <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+
+
+    <!-- Custom styles for this page -->
+    <link href=" {{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+
+    <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
+    @include('Administrador/data')
 
 </head>
 
@@ -33,7 +41,7 @@
     <ul class="navbar-nav bg-unan sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('maestro')}}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
             <div class="sidebar-brand-icon ">
                 <i class="fa-solid fa-briefcase"></i>
             </div>
@@ -53,13 +61,13 @@
 
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item ">
             <a class="nav-link" href="{{url('maestro')}}">
                 <i class="fas fa-fw fa-user"></i>
                 <span>Grupos</span></a>
         </li>
 
-        <li class="nav-item active">
+        <li class="nav-item">
             <a class="nav-link" href="{{url('evidencia')}}">
                 <i class="fas fa-fw fa-clipboard"></i>
                 <span>Evidencias</span></a>
@@ -74,7 +82,7 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="{{url('evaluacionasignada')}}">Asignadas</a>
-                    <a class="collapse-item" href="ECompletadas.html">Completadas</a>
+                    <a class="collapse-item" href="{{url('evaluacioncorregida')}}">Completadas</a>
                 </div>
             </div>
         </li>
@@ -118,7 +126,7 @@
     -->
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item active">
             <a class="nav-link" href="{{url('Supervision')}}">
                 <i class="fas fa-fw fa-building"></i>
                 <span>Supervisión</span></a>
@@ -245,109 +253,107 @@
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
+
             <div class="container-fluid">
 
-                <!-- Page Heading -->
-                <div class="d-sm-flex align-items-center justify-content-center mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Evidencias</h1>
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Historial de supervisiones</h1>
+                    <a id="btnSupervision" class="btn btn-success btn-icon-split">
+                                        <span class="icon text-white-50">
+                                           <i class="fa-solid fa-plus" style="color: #ffffff;"></i>
+                                        </span>
+                        <span class="text">Agregar supervisión</span>
+                    </a>
 
                 </div>
 
-                <!-- Content Row -->
+
+                <div class="card shadow mb-4 mt-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="example" class="table table-striped dt-responsive table-bordered nowrap" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Opciones</th>
+                                    <th>Estudiante</th>
+                                    <th>Empresa</th>
+                                    <th>Fecha</th>
+                                    <th>Tipo</th>
+                                    <th>Observación</th>
+                                    <th>Estado</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($informaciones as $informacion)
+                                @if($informacion->Estado==1)
+
+                                <tr>
+                                    <td class="text-center">
+                                        <button id="btnEditar" onclick="editar({{$informacion}})"  class="btn btn-unan btn-circle">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
 
 
-                <!-- Content Row -->
-                <div class="row">
 
-                    <!-- Content Column -->
+                                        <button onclick="eliminar('{{$informacion->idSupervision}}','{{route("SupervisionDestroy",":id")}}')" class="btn btn-danger btn-circle">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
 
 
-                    <div class="col-lg-4 mb-2">
-                        <!-- Illustrations -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset('img/undraw_posting_photo.svg')}}" alt="foto del grupo">
-                                </div>
-                                <p>Add some quality, svg illustrations to your project courtesy of <a
-                                        target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                    constantly updated collection of beautiful svg images that you can use
-                                    completely free and without attribution!</p>
-                                <a href="{{url('alumnoevidencia')}}" class="btn btn-unan btn-block">Seleccionar
-                                    Grupo</a>
-                            </div>
+
+
+
+                                    </td>
+                                    <th>{{$resultado->Nombres}} {{$resultado->Apellidos}}</th>
+                                    <th>{{$resultado->Empresa->Nombre}}</th>
+                                    <th>{{$informacion->FechaSupervision}}
+                                    <th>{{$informacion->catSupervision->Nombre}}
+
+
+
+                                    <th>{{$informacion->Observacion}}</th>
+                                <td>Activo</td>
+                                </tr>
+                                @endif
+                                @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="col-lg-4 mb-2">
-                        <!-- Illustrations -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset('img/undraw_posting_photo.svg')}}" alt="...">
-                                </div>
-                                <p>Add some quality, svg illustrations to your project courtesy of <a
-                                        target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                    constantly updated collection of beautiful svg images that you can use
-                                    completely free and without attribution!</p>
-                                <a href="{{url('alumnoevidencia')}}" class="btn btn-unan btn-block">Seleccionar
-                                    Grupo</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 mb-2">
-                        <!-- Illustrations -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset('img/undraw_posting_photo.svg')}}" alt="...">
-                                </div>
-                                <p>Add some quality, svg illustrations to your project courtesy of <a
-                                        target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                    constantly updated collection of beautiful svg images that you can use
-                                    completely free and without attribution!</p>
-                                <a href="{{url('alumnoevidencia')}}" class="btn btn-unan btn-block">Seleccionar
-                                    Grupo</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 mb-2">
-                        <!-- Illustrations -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                         src="{{asset('img/undraw_posting_photo.svg')}}" alt="...">
-                                </div>
-                                <p>Add some quality, svg illustrations to your project courtesy of <a
-                                        target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                    constantly updated collection of beautiful svg images that you can use
-                                    completely free and without attribution!</p>
-                                <a href="{{url('alumnoevidencia')}}" class="btn btn-unan btn-block">
-                                    Seleccionar Grupo</a>
-                            </div>
-                        </div>
-                    </div>
-
-
                 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <!-- DataTales Example -->
+
+
+
+
 
             </div>
+
+
             <!-- /.container-fluid -->
 
         </div>
@@ -374,25 +380,174 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+<!--Formulario para agregar supervision-->
+
+<div id="ModalSupervision" class="modal fade"  tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">¿Estas seguro de cerrar sesión?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
+                <h5 class="modal-title" id="exampleModalLabel">Agregar datos de supervisión</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">Haz clic en el boton "<strong>confirmar</strong>" para cerrar sesión.</div>
+            <div class="modal-body">
+                <form id="formulario" method="POST" action="{{route('SaveSupervision')}}">
+                    @csrf
+
+                    <div class="form-group" hidden>
+                        <label for="IdSupervision" class="col-form-label">Identificador:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            <input type="text"   class="form-control" id="IdSupervision" name="IdSupervision">
+                        </div>
+                    </div>
+
+                    <div class="form-group" hidden>
+                        <label for="IdEstudiante" class="col-form-label">Identificador:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            <input type="text" required class="form-control" id="IdEstudiante" name="IdEstudiante" value="{{$identificador}}">
+                        </div>
+                    </div>
+
+                    <div class="form-group" hidden>
+                        <label for="IdDocente" class="col-form-label">Identificador:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            <input type="text" required class="form-control" id="IdDocente" name="IdDocente" value="{{session('datos')->first()->Identificacion }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group" hidden>
+                        <label for="IdEmpresa" class="col-form-label">Identificador:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            <input type="text" required class="form-control" id="IdEmpresa" name="IdEmpresa" value="{{$resultado->idEmpresa}}">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="FechaAgregar" class="col-form-label">Fecha:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            <input type="date" required class="form-control" id="FechaAgregar" name="FechaAgregar" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="TipoSupervision" class="col-form-label">Tipo de supervisión:</label>
+                        <div class="input-group" id="SeleccionarGenero">
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            <select name="TipoSupervision" required id="TipoSupervision" class="form-control TipoSupervision">
+
+                                @foreach($tipoSupervision as $tipo)
+                                    @if($tipo->Estado==1)
+                                    <option value="{{$tipo->IdCatSupervision}}">{{$tipo->Nombre}}</option>
+                                    @endif
+                                        @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Observacion" class="col-form-label">Observación:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </span>
+                            <textarea type="text" required style="resize: none" class="form-control" rows="4" cols="50" id="Observacion" name="Observacion"></textarea>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <a class="btn btn-danger" href="{{url('/')}}">Confirmar</a>
+                <button type="button" id="btnGuardar" onclick="guardarGrupo('{{route('SaveSupervision')}}')" form="formulario" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
 </div>
-@include('footer')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@include('Administrador/footer')
+<script src="{{asset('js/select2.full.min.js')}}"></script>
+<script src="{{asset('js/modalSupervision.js')}}"></script>
 </body>
+
+<script>
+
+    var tabla;
+    $(document).ready(function()
+        {
+
+
+
+            tabla =  $('.table').dataTable({
+                responsive:true,
+
+
+
+            });
+
+        }
+    );
+
+    $(window).resize(function () {
+        // Destruir DataTables
+        tabla.destroy();
+
+        // Volver a inicializar DataTables
+        tabla = $('.table').DataTable({
+            responsive: true,
+            // Otras opciones...
+        });
+    });
+
+
+
+</script>
+@if(Session::has('exito'))
+    <script>
+        Swal.fire(
+            'Completado',
+            '{{Session::get('exito')}}',
+            'success'
+        )
+    </script>
+@endif
+
+
+
 </html>

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CatSupervisiones;
 use App\Models\Evaluacion;
 use App\Models\Evaluaciones;
 use App\Models\Grupo;
 use App\Models\GrupoMaestro;
 use App\Models\Grupos;
 use App\Models\GrupoxMaestro;
+use App\Models\Supervisiones;
 use App\Models\Unidad;
 use App\Models\Estudiante;
 use Carbon\Carbon;
@@ -30,6 +32,9 @@ use Illuminate\Support\Str;
         public function indexGrupo(){
 
             $datos= GrupoxMaestro::where('IdMaestro', '=',session('datos')->first()->Identificacion)->get();
+            foreach ($datos as $dato) {
+                $dato->conteo = Estudiante::where('idGrupo', '=', $dato->IdGrupo)->count();
+            }
 
             return view('Maestro/maestro',compact('datos'));
         }
@@ -43,8 +48,22 @@ use Illuminate\Support\Str;
 
         public function indexEvaluaciones(){
             $datos= GrupoxMaestro::where('IdMaestro', '=',session('datos')->first()->Identificacion)->get();
+            foreach ($datos as $dato) {
+                $dato->conteo = Estudiante::where('idGrupo', '=', $dato->IdGrupo)->count();
+            }
             return view('Maestro/evaluacionasignada',compact('datos'));
         }
+
+        public function indexSupervisiones(){
+            $datos= GrupoxMaestro::where('IdMaestro', '=',session('datos')->first()->Identificacion)->get();
+            foreach ($datos as $dato) {
+                $dato->conteo = Estudiante::where('idGrupo', '=', $dato->IdGrupo)->count();
+            }
+            return view('Maestro/supervisiones',compact('datos'));
+
+        }
+
+
         public function indexasignaciones($id){
 
             $idGrupo = $id;
@@ -59,6 +78,46 @@ use Illuminate\Support\Str;
             return view('Maestro/subpage/asignadas',compact('idGrupo','unidades','tipoUnidad','datos'));
 
         }
+
+
+        public function SupervisionListado($id){
+
+            $resultado = GrupoMaestro::where('Identificacion', '=', $id)->first();
+            $alumnos= Estudiante::where('idGrupo', '=', $id)->get();
+            return view('Maestro/subpage/ListadoSupervision',compact('resultado','alumnos'));
+
+
+        }
+
+        public function SupervisionVista($id){
+            $resultado = Estudiante::where('Identificacion' , '=' , $id)->first();
+            $identificador= $id;
+            $tipoSupervision = CatSupervisiones::all();
+            $informaciones= Supervisiones::where('idEstudiante', '=',$identificador)->get();
+            foreach ($informaciones as $supervision) {
+                $fecha = $supervision->FechaSupervision;
+                $supervision->FechaSupervision = Carbon::parse($fecha)->format('d/m/Y');
+
+            }
+            return view('Maestro/subpage/SupervisionView',compact('resultado','informaciones','identificador','tipoSupervision'));
+
+        }
+
+            public function indexEvaCorregida(){
+
+                $datos= GrupoxMaestro::where('IdMaestro', '=',session('datos')->first()->Identificacion)->get();
+                foreach ($datos as $dato) {
+                    $dato->conteo = Estudiante::where('idGrupo', '=', $dato->IdGrupo)->count();
+                }
+                return view('Maestro/evaluacioncorregida',compact('datos'));
+            }
+
+
+            public function CorreccionCalificacion($id){
+
+                return view('Maestro/subpage/corregidas');
+
+            }
 
 
         public function GuardarGrupoMaestro(Request $request){
@@ -207,6 +266,79 @@ use Illuminate\Support\Str;
 
             Evaluaciones::insert($evaluacion);
             return response()->json(["success"=>"Evaluación almacenada de manera exitosa"]);
+        }
+
+        public function GuardarSupervision(Request $request){
+            $campo=[
+                "Observacion"=>'required|string',
+                "FechaAgregar"=>'required'
+            ];
+
+            $validator = Validator::make($request->all(), $campo);
+
+            if($validator->fails()) {
+                return response()->json(['errors' => "Digite lo espacios en blanco"],422);
+            }
+
+            $company=[
+                "IdEmpresa"=>'required'
+            ];
+
+            $validation = Validator::make($request->all(), $company);
+
+            if($validation->fails()) {
+                return response()->json(['errors' => "Estudiante no tiene centro de practica disponible"],422);
+            }
+
+
+
+            if(empty($request->IdSupervision)){
+                $fechacarbon = Carbon::parse($request->FechaAgregar);
+                $fechaFormateada = $fechacarbon->format('Y-m-d');
+                $supervision=['idEstudiante'=>$request->IdEstudiante, 'idDocente' =>$request->IdDocente
+                    ,'IdTipoSupervision'=>$request->TipoSupervision,'IdEmpresa'=>$request->IdEmpresa,'FechaSupervision'=>$fechaFormateada
+                    ,'Observacion'=>$request->Observacion, 'Estado'=>1];
+
+                Supervisiones::insert($supervision);
+                return response()->json(["success"=>"Supervisión almacenada de manera exitosa"]);
+
+            }else{
+                $fechacarbon = Carbon::parse($request->FechaAgregar);
+                $fechaFormateada = $fechacarbon->format('Y-m-d');
+                $supervision= Supervisiones::find($request->IdSupervision);
+                $parametros = ['idEstudiante'=>$request->IdEstudiante, 'idDocente' =>$request->IdDocente
+                    ,'IdTipoSupervision'=>$request->TipoSupervision,'IdEmpresa'=>$request->IdEmpresa,'FechaSupervision'=>$fechaFormateada
+                    ,'Observacion'=>$request->Observacion, 'Estado'=>1];
+                $supervision->update($parametros);
+                return response()->json(['success' => "Supervision actualizada exitosamente"]);
+
+
+
+
+
+
+
+            }
+
+
+
+
+
+
+        }
+
+        public function EliminarSupervision($id){
+            $supervision = Supervisiones::find($id);
+            if (!$supervision) {
+                return response()->json(['errors'=>'Supervisión no encontrada',422]);
+
+            }
+
+            // Actualiza solo el campo 'nombre'
+            $supervision->update(['Estado' => 0]);
+
+            return response()->json(['success'=>'Supervisión eliminada exitosamente']);
+
         }
 
         public function EvaluacionEliminar($id){

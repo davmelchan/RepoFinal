@@ -83,7 +83,7 @@
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item active" href="{{url('evaluacionasignada')}}">Asignadas</a>
-                    <a class="collapse-item" href="../ECompletadas.html">Completadas</a>
+                    <a class="collapse-item" href="{{url('evaluacioncorregida')}}">Completadas</a>
                 </div>
             </div>
         </li>
@@ -128,9 +128,9 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link" href="../Supervision.html">
+            <a class="nav-link" href="{{url('Supervisión')}}">
                 <i class="fas fa-fw fa-building"></i>
-                <span>Supervision</span></a>
+                <span>Supervisión</span></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="../ReporteAlumnos.html">

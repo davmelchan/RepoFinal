@@ -82,7 +82,7 @@
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item active" href="{{url('evaluacionasignada')}}">Asignadas</a>
-                    <a class="collapse-item" href="ECompletadas.html">Completadas</a>
+                    <a class="collapse-item" href="{{url('evaluacioncorregida')}}">Completadas</a>
                 </div>
             </div>
         </li>
@@ -126,9 +126,9 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link" href="Supervision.html">
+            <a class="nav-link" href="{{url('Supervision')}}">
                 <i class="fas fa-fw fa-building"></i>
-                <span>Supervision</span></a>
+                <span>Supervisión</span></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="ReporteAlumnos.html">
@@ -218,7 +218,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Nombre usuario</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ session('datos')->first()->Nombres }} {{ session('datos')->first()->Apellidos }}</span>
                             <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
                         </a>
                         <!-- Dropdown - User Information -->
@@ -289,7 +289,19 @@
                                              src="{{asset('img/undraw_posting_photo.svg')}}" alt="foto del grupo">
                                     </div>
                                 @endif
-                                <p>@if($grupo->GruposMaestro->Estado==1)
+                                <p>
+                                    @if($grupo->conteo>0)
+                                        <b>Numero de estudiantes: </b>{{$grupo->conteo}}
+                                    @else
+                                        <b>Numero de estudiantes: </b>0
+                                    @endif
+                                    <br>
+
+
+
+
+
+                                @if($grupo->GruposMaestro->Estado==1)
                                         <b>Estado: </b> Activo
                                     @endif</p>
                                 <a href="{{url('/asignacion/'.$grupo->IdGrupo)}}" class="btn btn-unan btn-block">Seleccionar

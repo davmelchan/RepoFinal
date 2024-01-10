@@ -117,8 +117,17 @@ Route::middleware(['maestro', 'cache.headers:private'])->group(function(){
     Route::post('/asignacion/{id}/guardar',[MaestroController::class,'GuardarEvaluaciones'])->name('AsignacionSave');
     Route::delete('/asignacion/{id}',[MaestroController::class,'EvaluacionEliminar']);
 
+    Route::get('/evaluacioncorregida',[MaestroController::class,'indexEvaCorregida']);
+    Route::get('/calificaciones/{id}',[MaestroController::class,'CorreccionCalificacion']);
+
+
     Route::post('/logout',[MaestroController::class,'logoutMaestro'])->name('logoutDocente');
     Route::get('/alumnosgrupo/{id}',[MaestroController::class,'listadoAlumno'])->name('AlumnoListado');
+    Route::get('/Supervision',[MaestroController::class,'indexSupervisiones']);
+    Route::get('/Supervisionlistado/{id}',[MaestroController::class,'SupervisionListado']);
+    Route::get('/SupervisionVista/{id}',[MaestroController::class,'SupervisionVista'])->name('ViewSupervision');
+    Route::post('/SupervisionVista/guardar',[MaestroController::class,'GuardarSupervision'])->name('SaveSupervision');
+    Route::delete('/SupervisionVista/{id}',[MaestroController::class,'EliminarSupervision'])->name('SupervisionDestroy');
 
     Route::view('/evidencia','Maestro/evidencia');
     Route::view('/alumnoevidencia','Maestro/subpage/alumnoevidencia');

@@ -142,6 +142,9 @@ Route::middleware(['EstudianteAcess', 'cache.headers:private'])->group(function(
 
     Route::get('/EstudianteSupervision',[EstudianteController::class,'indexSupervision']);
     Route::get('/EstudianteEvidencia',[EstudianteController::class,'indexEvidencia']);
+    Route::post('/EstudianteEvidencia',[EstudianteController::class,'GuardarEvidencia'])->name('EvidenciaSave');
+    Route::delete('/EstudianteEvidencia/{id}',[EstudianteController::class,'EliminarEvidencia'])->name('EvidenciaDestroy');
+
     Route::get('/setting',[EstudianteController::class,'indexSetting'])->name('Setting');
     Route::post('/out',[EstudianteController::class,'logoutAlumno'])->name('logoutAlumno');
 });

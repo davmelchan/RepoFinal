@@ -22,5 +22,14 @@ class Supervisiones extends Model
     {
         return $this->hasOne(CatSupervisiones::class,'IdCatSupervision','IdTipoSupervision');
     }
+    public function Maestros()
+    {
+        return $this->hasOne(Maestros::class,'Identificacion','idDocente');
+    }
+
+    public function Company()
+    {
+        return $this->hasOne(Empresa::class,'IdEmpresa','idEmpresa');
+    }
 
 }

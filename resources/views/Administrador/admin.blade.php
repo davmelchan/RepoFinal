@@ -340,7 +340,7 @@
                                                 <button id="btnEditar" onclick="editar({{$maestro}})" class="btn btn-unan btn-circle">
                                                     <i class="fa-solid fa-pen-to-square"></i>
                                                 </button>
-                                                <button onclick="eliminar('{{$maestro->Identificacion }}')" class="btn btn-danger btn-circle">
+                                                <button onclick="eliminar('{{route("teacher.destroy",":id")}}','{{$maestro->Identificacion }}')" class="btn btn-danger btn-circle">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
 
@@ -420,6 +420,15 @@
             <div class="modal-body">
                 <form id="formulario" method="POST">
                     @csrf
+                    <div class="form-group" hidden>
+                        <label for="idform" class="col-form-label idform">Identificador:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            <input type="text" class="form-control" id="idform" name="idform">
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label for="NombreMaestro" class="col-form-label">Nombres:</label>
@@ -472,7 +481,7 @@
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-user"></i>
                                 </span>
-                            <input type="text" class="form-control" required id="identificador" name="identificador">
+                            <input type="text" class="form-control" required id="identificador" minlength="8" maxlength="8" name="identificador">
                         </div>
                     </div>
 
@@ -492,7 +501,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" id="btnGuardar" form="formulario" class="btn btn-primary">Guardar</button>
+                <button type="button" id="btnGuardar" form="formulario" onclick ="guardar('{{route('SaveTeacher')}}')" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
@@ -505,74 +514,6 @@
 <script src="{{asset('js/modal.js')}}"></script>
 
 
-<script>
-
-
-
-
-
-    function eliminar(id){
-
-        Swal.fire({
-            title: '¿Estás seguro de eliminar este maestro?',
-            text: 'Esta acción no se puede deshacer',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Enviar el formulario de eliminación
-
-                $.ajax({
-                    type: 'DELETE',
-                    url: '{{route("teacher.destroy",":id")}}'.replace(':id',id),
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: response.success,
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        setTimeout(function() {
-                            window.location.reload();
-                        }, 1550);
-
-                    },
-                    error: function(errores) {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: errores.error,
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    }
-                });
-
-
-
-
-
-
-
-
-
-
-            }
-        });
-
-
-
-
-    }
-</script>
 
 
 

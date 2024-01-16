@@ -35,7 +35,7 @@ class LoginController extends Controller
                     return redirect()->intended('administrador');//->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
 
                 }
-                    return redirect('/')->with("mensaje","Correo y contraseña incorrectos");
+                    return redirect('/')->with("mensaje","Identificación y contraseña no coinciden");
 
                 }else{
                     return redirect('/')->with("mensaje","Usuario no activo");
@@ -65,7 +65,7 @@ class LoginController extends Controller
                         return redirect()->intended('maestro');
 
                     }
-                    return redirect('/')->with("mensaje","Correo y contraseña incorrectos");
+                    return redirect('/')->with("mensaje","Identificación y contraseña no coinciden");
 
                 }else{
                     return redirect('/')->with("mensaje","Usuario no activo");
@@ -73,7 +73,7 @@ class LoginController extends Controller
 
             }
 
-            if($user->IdRol == 27){
+            if($user->IdRol == 29){
                 if($user->Estado == 1) {
                     if ($user->password === md5($request->clave)) {
                         Auth::login($user);
@@ -95,7 +95,7 @@ class LoginController extends Controller
                         return redirect()->intended('EstudianteView');
 
                     }
-                    return redirect('/')->with("mensaje","Correo y contraseña incorrectos");
+                    return redirect('/')->with("mensaje","Identificación y contraseña no coinciden");
 
                 }else{
                     return redirect('/')->with("mensaje","Usuario no activo");

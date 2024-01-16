@@ -13,14 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('Tb_empresa', function (Blueprint $table) {
-            $table->increments('IdEmpresa');
-            $table->string('Nombre', 50);
+        Schema::create('Evidencias_Tb', function (Blueprint $table) {
+            $table->increments('idEvidencia');
+            $table->string('Nombre');
             $table->text('Descripcion');
-            $table->string('Responsable', 50);
+            $table->integer('idEmpresa');
+            $table->date('Fecha');
+            $table->text('RutaArchivo');
             $table->boolean('Estado');
+            $table->text('NombreArchivo');
 
-            $table->primary(['IdEmpresa'], 'PK_Tb_empresa');
+            $table->primary(['idEvidencia'], 'PK_Evidencias_Tb');
         });
     }
 
@@ -31,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Tb_empresa');
+        Schema::dropIfExists('Evidencias_Tb');
     }
 };

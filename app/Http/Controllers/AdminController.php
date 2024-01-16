@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\CatSupervisiones;
 use App\Models\Empresa;
 use App\Models\Evaluacion;
+use App\Models\Evaluaciones;
 use App\Models\Genero;
 use App\Models\Maestros;
 use App\Models\Roles;
+use App\Models\Supervisiones;
 use App\Models\Unidad;
 use App\Models\User;
 use App\Models\Estudiante;
@@ -66,14 +68,19 @@ class AdminController extends Controller
     {
 
         $rol = Roles::find($id);
+        $usuarios = User::where('IdRol', $id)->get();
         if (!$rol) {
             return response()->json(["error"=>"Rol no encontrado"]);
 
         }
-
-        // Actualiza solo el campo 'nombre'
+        if ($usuarios->isNotEmpty()) {
+            return response()->json(["error"=>"Rol no se ha podido eliminar" ],500);
+        }
         $rol->update(['Estado' => 0]);
         return response()->json(["success"=>"Rol eliminado exitosamente"]);
+
+
+
     }
 
 
@@ -103,14 +110,24 @@ class AdminController extends Controller
     }
     public function EliminarGenero($id){
         $genero = Genero::find($id);
+        $usuariosM = Maestros::where('idGenero', $id)->get();
+        $usuariosE = Estudiante::where('idGenero',$id)->get();
         if (!$genero) {
             return response()->json(["error"=>"Género no encontrado"]);
         }
 
-        // Actualiza solo el campo 'nombre'
-        $genero->update(['Estado' => 0]);
+        if ($usuariosM->isNotEmpty()) {
+            return response()->json(["error"=>"Género no se ha podido eliminar" ],500);
+        }
+        if ($usuariosE->isNotEmpty()) {
+            return response()->json(["error"=>"Género no se ha podido eliminar" ],500);
+        }
 
+        $genero->update(['Estado' => 0]);
         return response()->json(["success"=>"Género eliminado exitosamente"]);
+
+
+
     }
 
 
@@ -141,11 +158,18 @@ class AdminController extends Controller
     }
     public function EliminarUnidad($id){
         $unidad = Unidad::find($id);
+        $checkEvaluacion = Evaluaciones::where('IdUnidad',$id)->get();
         if (!$unidad) {
             return response()->json(["error"=>"Unidad no encontrada"]);
         }
+        if($checkEvaluacion->isNotEmpty()){
 
-        // Actualiza solo el campo 'nombre'
+            return response()->json(["error"=>"Unidad no se ha podido eliminar" ],500);
+
+
+        }
+
+
         $unidad->update(['Estado' => 0]);
         return response()->json(["success"=>"Unidad eliminada exitosamente"]);
     }
@@ -157,34 +181,83 @@ class AdminController extends Controller
         return view('Administrador/empresa',$datos);
     }
     public function GuardarEmpresa(Request $request){
+
         if(isset($request->IdEmpresa)){
+
+        $campos=[
+        "NombreEmpresa"=>'required|string',
+        "Descripcion"=>'required|string',
+        "Responsable"=>'required|string',
+        "Telefono"=>'required'
+        ];
+
+        $cellphone =[
+            "Telefono"=>'min:8'
+        ];
+
+            $vacios = Validator::make($request->all(),$campos);
+            if ($vacios->fails()) {
+                return response()->json(['errors' => "Digite lo espacios en blanco"],422);
+            }
+
+            $cellphoneVerify = Validator::make($request->all(),$cellphone);
+            if ($cellphoneVerify->fails()) {
+                return response()->json(['errors' => "El campo teléfono debe contener 8 digitos"],422);
+            }
+
+
+
 
             $empresa = Empresa::find($request->IdEmpresa);
             if (!$empresa) {
-                return back()->with('Fracaso', 'Unidad no encontrada');
+                return response()->json(['errors' => "Centro de prácticas no se ha encontrado"],422);
             }
 
             // Actualiza solo el campo 'nombre'
             $empresa->update(['Nombre' => $request->NombreEmpresa,'Descripcion'=>$request->Descripcion,
-            'Responsable'=>$request->Responsable]);
-
-            return back()->with('exito', 'Centro de práctica actualizado exitosamente');
+            'Responsable'=>$request->Responsable,'TelResponsable'=>$request->Telefono]);
+            return response()->json(['success'=>"Centro de prácticas actualizado exitosamente"]);
         }
 
+        $campos=[
+            "NombreEmpresa"=>'required|string',
+            "Descripcion"=>'required|string',
+            "Responsable"=>'required|string',
+            "Telefono"=>'required'
+        ];
+
+        $cellphone =[
+            "Telefono"=>'min:8'
+        ];
+
+        $vacios = Validator::make($request->all(),$campos);
+        if ($vacios->fails()) {
+            return response()->json(['errors' => "Digite lo espacios en blanco"],422);
+        }
+
+        $cellphoneVerify = Validator::make($request->all(),$cellphone);
+        if ($cellphoneVerify->fails()) {
+            return response()->json(['errors' => "El campo teléfono debe contener 8 digitos"],422);
+        }
 
         $empresa = ['Nombre' => $request->NombreEmpresa, 'Descripcion'=> $request->Descripcion,
-            'Responsable'=>$request->Responsable,'Estado' => 1];
+            'Responsable'=>$request->Responsable,'TelResponsable'=>$request->Telefono,'Estado' => 1];
         Empresa::insert($empresa);
-        return back()->with('exito', 'Centro de prácticas guardado exitosamente');
+        return response()->json(['success'=>"Centro de prácticas guardado exitosamente"]);
     }
 
     public function EliminarEmpresa($id){
         $empresa = Empresa::find($id);
+        $usuariosE = Estudiante::where('idGenero',$id)->get();
         if (!$empresa) {
             return response()->json(["error"=>"Centro de práctica no encontrado"]);
         }
+        if ($usuariosE->isNotEmpty()) {
+            return response()->json(["error"=>"Centro de prácticas no se ha podido eliminar" ],500);
+        }
 
-        // Actualiza solo el campo 'nombre'
+
+
         $empresa->update(['Estado' => 0]);
         return response()->json(["success"=>"Centro de práctica eliminado exitosamente"]);
 
@@ -216,10 +289,18 @@ class AdminController extends Controller
     }
     public function EliminarEvaluacion($id){
         $evaluacion = Evaluacion::find($id);
+        $checkEvaluacion = Evaluaciones::where('IdTipo',$id)->get();
         if (!$evaluacion) {
             return response()->json(["error"=>"Categoría de evaluación no encontrada"]);
 
         }
+        if($checkEvaluacion->isNotEmpty()){
+
+            return response()->json(["error"=>"Categoría de evaluación no se ha podido eliminar" ],500);
+
+
+        }
+
 
         // Actualiza solo el campo 'nombre'
         $evaluacion->update(['Estado' => 0]);
@@ -250,11 +331,16 @@ class AdminController extends Controller
 
     public function EliminarCatSupervision($id){
         $supervision = CatSupervisiones::find($id);
+        $sup = Supervisiones::where('IdTipoSupervision',$id)->get();
         if (!$supervision) {
             return response()->json(["error"=>"Categoría de supervisión no encontrada"]);
         }
 
-        // Actualiza solo el campo 'nombre'
+
+        if ($sup->isNotEmpty()) {
+            return response()->json(["error"=>"Categoría supervisión no se ha podido eliminar" ],500);
+        }
+
         $supervision->update(['Estado' => 0]);
 
         return response()->json(["success"=>"Categoría de supervisión eliminada exitosamente"]);
@@ -271,42 +357,115 @@ class AdminController extends Controller
 
 
     public function SaveMaestro(Request $request){
-        $verificar = Maestros::find($request->identificador);
-        $user= User::where('Identificacion', $request->identificador)->first();
-        if(!$verificar){
-            $fechaHoy = Carbon::now();
-            $fechaFormateada = $fechaHoy->format('Y-m-d');
 
-            $usuario = ['Identificacion'=>$request->identificador,'password'=>md5($request->Clave)
-                ,'FechaCreacion'=>$fechaFormateada,'Estado'=>1,'IdRol'=>26];
-            User::insert($usuario);
+        if(empty($request->idform)){
+
+            $verificar = Maestros::find($request->identificador);
+            $user= User::where('Identificacion', $request->identificador)->first();
 
 
+            $campos=[
 
-            $maestro =['Identificacion'=>$request->identificador,'especialidad'=>$request->Especialidad
-                ,'IdGenero'=>$request->IdGenero,'Estado'=>1,'Nombres'=>$request->NombreMaestro,'Apellidos'=>$request->ApellidoMaestro];
-            Maestros::insert($maestro);
+            "NombreMaestro"=>'required|string',
+            "ApellidoMaestro"=>'required|string',
+            "IdGenero"=>'required',
+            "Especialidad"=>'required|string',
+                "identificador"=>'required|string',
+            ];
+            $identidad = [
+                "identificador"=>'min:8',
+            ];
 
-            return back()->with('exito', 'Maestro almacenado exitosamente');
+
+            $vacios = Validator::make($request->all(),$campos);
+            if ($vacios->fails()) {
+                return response()->json(['errors' => "Digite lo espacios en blanco"],422);
+            }
+
+
+            $verify = Validator::make($request->all(),$identidad);
+            if ($verify->fails()) {
+                return response()->json(['errors' => "El campo identificacion debe tener minimo 8 caracteres"],422);
+            }
+            if(isset($request->Clave)){
+
+                $verificar->update(['especialidad' => $request->Especialidad,'idGenero'=>$request->IdGenero,
+                    'Nombres'=>$request->NombreMaestro,'Apellidos'=>$request->ApellidoMaestro]);
+
+                $user->update(['password' => md5($request->Clave)]);
+                return response()->json(['success'=> 'Maestro actualizado exitosamente']);
+
+            }else{
+
+                $verificar->update(['especialidad' => $request->Especialidad,'idGenero'=>$request->IdGenero,
+                    'Nombres'=>$request->NombreMaestro,'Apellidos'=>$request->ApellidoMaestro]);
+
+                return response()->json(['success'=> 'Maestro actualizado exitosamente']);
+            }
+
+
+        }
+        else{
+            $verificar = Maestros::find($request->identificador);
+            $campos=[
+
+                "NombreMaestro"=>'required|string',
+                "ApellidoMaestro"=>'required|string',
+                "IdGenero"=>'required',
+                "Especialidad"=>'required|string',
+                "identificador"=>'required|string',
+                "Clave"=>'required'
+            ];
+
+            $identidad = [
+                "identificador"=>'min:8',
+            ];
+
+            $vacios = Validator::make($request->all(),$campos);
+            if ($vacios->fails()) {
+                return response()->json(['errors' => "Digite lo espacios en blanco"],422);
+            }
+
+            $verify = Validator::make($request->all(),$identidad);
+            if ($verify->fails()) {
+                return response()->json(['errors' => "El campo identificacion debe tener minimo 8 caracteres"],422);
+            }
+
+
+
+
+
+            if(!$verificar){
+                $fechaHoy = Carbon::now();
+                $fechaFormateada = $fechaHoy->format('Y-m-d');
+
+                $usuario = ['Identificacion'=>$request->identificador,'password'=>md5($request->Clave)
+                    ,'FechaCreacion'=>$fechaFormateada,'Estado'=>1,'IdRol'=>26];
+                User::insert($usuario);
+
+
+
+                $maestro =['Identificacion'=>$request->identificador,'especialidad'=>$request->Especialidad
+                    ,'IdGenero'=>$request->IdGenero,'Estado'=>1,'Nombres'=>$request->NombreMaestro,'Apellidos'=>$request->ApellidoMaestro];
+                Maestros::insert($maestro);
+                return response()->json(['success'=> 'Maestro almacenado exitosamente']);
+
+            }else{
+
+                return response()->json(['errors' => "Usuario ya existente"],422);
+            }
 
 
 
         }
 
-        if(isset($request->Clave)){
 
-            $verificar->update(['especialidad' => $request->Especialidad,'idGenero'=>$request->IdGenero,
-                'Nombres'=>$request->NombreMaestro,'Apellidos'=>$request->ApellidoMaestro]);
 
-            $user->update(['password' => md5($request->Clave)]);
-            return back()->with('exito', 'Maestro actualizado exitosamente');
 
-        }else{
 
-            $verificar->update(['especialidad' => $request->Especialidad,'idGenero'=>$request->IdGenero,
-                'Nombres'=>$request->NombreMaestro,'Apellidos'=>$request->ApellidoMaestro]);
-            return back()->with('exito', 'Maestro actualizado exitosamente');
-        }
+
+
+
 
 
 
@@ -346,12 +505,10 @@ class AdminController extends Controller
 
     public function GuardarEstudiante(Request $request){
 
-
-
-
-        $verificar = Estudiante::find($request->identificador);
-        $user= User::where('Identificacion', $request->identificador)->first();
-        if(!$verificar){
+        if(empty($request->idform)){
+            $verificar = Estudiante::find($request->identificador);
+            $user= User::where('Identificacion', $request->identificador)->first();
+            if(isset($request->Clave)){
                 $campo=[
                     "NombreEstudiante"=>'required|string',
                     "ApellidoEstudiante"=>'required|string',
@@ -361,10 +518,115 @@ class AdminController extends Controller
                     "Clave"=>'required|string',
                     "Telefono"=>'required',
                 ];
+                $cellphone =[
+                    "Telefono"=>'min:8'
+                ];
+                $identidad = [
+                    "identificador"=>'min:8',
+                ];
                 $vacios = Validator::make($request->all(),$campo);
                 if ($vacios->fails()) {
                     return response()->json(['errors' => "Digite lo espacios en blanco"],422);
                 }
+                $verify = Validator::make($request->all(),$identidad);
+                if ($verify->fails()) {
+                    return response()->json(['errors' => "El campo identificacion debe tener minimo 8 caracteres"],422);
+                }
+
+
+
+                $cellphoneVerify = Validator::make($request->all(),$cellphone);
+                if ($cellphoneVerify->fails()) {
+                    return response()->json(['errors' => "El campo teléfono debe contener 8 digitos"],422);
+                }
+
+
+
+
+
+
+
+                $verificar->update(['Identificacion'=>$request->identificador,'Direccion'=>$request->Direccion,'idEmpresa'=>$request->Empresa
+                    ,'idGenero'=>$request->Genero,'Estado'=>1,'Nombres'=>$request->NombreEstudiante,'Apellidos'=>$request->ApellidoEstudiante,'Telefono'=>$request->Telefono]);
+                $user->update(['password'=>md5($request->Clave)]);
+                return response()->json(['success'=>'Estudiante actualizado exitosamente']);
+
+
+            }
+            else{
+
+                $campo=[
+                    "NombreEstudiante"=>'required|string',
+                    "ApellidoEstudiante"=>'required|string',
+                    "Direccion"=>'required|string',
+                    "Genero"=>'required',
+                    "identificador"=>'required|string',
+                    "Telefono"=>'required',
+                ];
+                $cellphone =[
+                    "Telefono"=>'min:8'
+                ];
+                $identidad = [
+                    "identificador"=>'min:8',
+                ];
+                $vacios = Validator::make($request->all(),$campo);
+                if ($vacios->fails()) {
+                    return response()->json(['errors' => "Digite lo espacios en blanco"],422);
+                }
+
+                $cellphoneVerify = Validator::make($request->all(),$cellphone);
+                if ($cellphoneVerify->fails()) {
+                    return response()->json(['errors' => "El campo teléfono debe contener 8 digitos"],422);
+                }
+
+                $verify = Validator::make($request->all(),$identidad);
+                if ($verify->fails()) {
+                    return response()->json(['errors' => "El campo identificacion debe tener minimo 8 caracteres"],422);
+                }
+
+                $verificar->update(['Identificacion'=>$request->identificador,'Direccion'=>$request->Direccion,'idEmpresa'=>$request->Empresa
+                    ,'idGenero'=>$request->Genero,'Estado'=>1,'Nombres'=>$request->NombreEstudiante,'Apellidos'=>$request->ApellidoEstudiante,'Telefono'=>$request->Telefono]);
+                return response()->json(['success'=>'Estudiante actualizado exitosamente']);
+            }
+
+
+
+
+
+        }else{
+            $verificar = Estudiante::find($request->identificador);
+            if($verificar){
+                return response()->json(['errors' => "Este usuario ya existe"],422);
+            }
+
+            $campo=[
+                "NombreEstudiante"=>'required|string',
+                "ApellidoEstudiante"=>'required|string',
+                "Direccion"=>'required|string',
+                "Genero"=>'required',
+                "identificador"=>'required|string',
+                "Clave"=>'required|string',
+                "Telefono"=>'required',
+            ];
+            $cellphone =[
+                "Telefono"=>'min:8'
+            ];
+            $identidad = [
+                "identificador"=>'min:8',
+            ];
+            $vacios = Validator::make($request->all(),$campo);
+            if ($vacios->fails()) {
+                return response()->json(['errors' => "Digite lo espacios en blanco"],422);
+            }
+
+            $cellphoneVerify = Validator::make($request->all(),$cellphone);
+            if ($cellphoneVerify->fails()) {
+                return response()->json(['errors' => "El campo teléfono debe contener 8 digitos"],422);
+            }
+            $verify = Validator::make($request->all(),$identidad);
+            if ($verify->fails()) {
+                return response()->json(['errors' => "El campo identificacion debe tener minimo 8 caracteres"],422);
+            }
 
 
             $fechaHoy = Carbon::now();
@@ -381,54 +643,12 @@ class AdminController extends Controller
             Estudiante::insert($estudiante);
             return response()->json(['success'=>'Estudiante almacenado exitosamente']);
 
-
         }
 
-        if(isset($request->Clave)){
-            $campo=[
-                "NombreEstudiante"=>'required|string',
-                "ApellidoEstudiante"=>'required|string',
-                "Direccion"=>'required|string',
-                "Genero"=>'required',
-                "identificador"=>'required|string',
-                "Clave"=>'required|string',
-                "Telefono"=>'required',
-            ];
-            $vacios = Validator::make($request->all(),$campo);
-            if ($vacios->fails()) {
-                return response()->json(['errors' => "Digite lo espacios en blanco"],422);
-            }
 
 
 
 
-
-
-            $verificar->update(['Identificacion'=>$request->identificador,'Direccion'=>$request->Direccion,'idEmpresa'=>$request->Empresa
-                ,'idGenero'=>$request->Genero,'Estado'=>1,'Nombres'=>$request->NombreEstudiante,'Apellidos'=>$request->ApellidoEstudiante,'Telefono'=>$request->Telefono]);
-            $user->update(['password'=>md5($request->Clave)]);
-            return response()->json(['success'=>'Estudiante actualizado exitosamente']);
-
-
-        }else{
-
-            $campo=[
-                "NombreEstudiante"=>'required|string',
-                "ApellidoEstudiante"=>'required|string',
-                "Direccion"=>'required|string',
-                "Genero"=>'required',
-                "identificador"=>'required|string',
-                "Telefono"=>'required',
-            ];
-            $vacios = Validator::make($request->all(),$campo);
-            if ($vacios->fails()) {
-                return response()->json(['errors' => "Digite lo espacios en blanco"],422);
-            }
-
-            $verificar->update(['Identificacion'=>$request->identificador,'Direccion'=>$request->Direccion,'idEmpresa'=>$request->Empresa
-                ,'idGenero'=>$request->Genero,'Estado'=>1,'Nombres'=>$request->NombreEstudiante,'Apellidos'=>$request->ApellidoEstudiante,'Telefono'=>$request->Telefono]);
-            return response()->json(['success'=>'Estudiante actualizado exitosamente']);
-        }
 
 
 

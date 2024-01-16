@@ -13,16 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('Evidencias_Tb', function (Blueprint $table) {
-            $table->increments('idEvidencia');
-            $table->string('Nombre');
-            $table->text('Descripcion');
-            $table->integer('idEmpresa');
-            $table->date('Fecha');
-            $table->text('RutaArchivo');
+        Schema::create('EvidenciasXEstudiante', function (Blueprint $table) {
+            $table->increments('IdEvidenciaXEstudiante');
+            $table->integer('idEvidencia');
+            $table->string('idEstudiante');
             $table->boolean('Estado');
 
-            $table->primary(['idEvidencia'], 'PK_Evidencias_Tb');
+            $table->primary(['IdEvidenciaXEstudiante'], 'PK_EvidenciasXEstudiante');
         });
     }
 
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Evidencias_Tb');
+        Schema::dropIfExists('EvidenciasXEstudiante');
     }
 };

@@ -12,5 +12,5 @@ class Empresa extends Model
     protected $table = 'Tb_empresa';
     protected $primaryKey = 'IdEmpresa';
     public $timestamps = false;
-    protected $fillable= ['Nombre', 'Descripcion','Responsable','Estado'];
+    protected $fillable= ['Nombre', 'Descripcion','Responsable','Estado','TelResponsable'];
 }

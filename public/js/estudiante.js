@@ -45,7 +45,7 @@ miInput.addEventListener('input', function() {
 
 let miInput2 = document.getElementById('identificador');
 miInput2.addEventListener('input', function() {
-    let valor = miInput2gi.value;
+    let valor = miInput2.value;
 
     if (valor.length > 8) {
         miInput2.value = valor.slice(0, 8); // Limita la longitud del texto a 10 caracteres
@@ -65,9 +65,10 @@ const mymodal = new bootstrap.Modal(modal);
 let titulo = document.getElementById("exampleModalLabel");
 let btnGuardar= document.getElementById("btnGuardar");
 let password =document.getElementById("Clave");
-
+let inputId = document.getElementById("idform");
 btnUsuario.addEventListener("click",function(e){
-   mymodal.show();
+
+    mymodal.show();
 
    titulo.innerText="Agregar estudiante";
    btnGuardar.innerText="Guardar";
@@ -76,7 +77,9 @@ btnUsuario.addEventListener("click",function(e){
         dropdownParent: $("#formulario"),
         maximumSelectionLength: 1
     });
+
     formulario.reset();
+    inputId.value = 1;
     password.setAttribute("required","required");
     $('#Empresa').val("").trigger("change");
 });
@@ -142,6 +145,8 @@ function editar(info){
         dropdownParent: $("#formulario"),
         maximumSelectionLength: 1
     });
+
+
     titulo.innerText="Actualizar datos del estudiante";
     btnGuardar.innerText="Actualizar";
     $('#NombreEstudiante').val(info.Nombres);
@@ -152,6 +157,69 @@ function editar(info){
    $('#Telefono').val(info.Telefono);
    $('#Empresa').val(info.idEmpresa).trigger("change");
     password.removeAttribute("required");
+
+
+}
+
+
+function eliminar(ruta,id){
+
+    Swal.fire({
+        title: '¿Estás seguro de eliminar este estudiante?',
+        text: 'Esta acción no se puede deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+// Enviar el formulario de eliminación
+
+            $.ajax({
+                type: 'DELETE',
+                url: ruta.replace(':id',id),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: response.success,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1550);
+
+                },
+                error: function(errores) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: errores.error,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+
+
+
+
+
+
+
+
+
+
+        }
+    });
+
+
 
 
 }

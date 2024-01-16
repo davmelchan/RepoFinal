@@ -343,7 +343,7 @@
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </button>
 
-                                            <button onclick="eliminar('{{$estudiante->Identificacion}}')" class="btn btn-danger btn-circle">
+                                            <button onclick="eliminar('{{route("student.destroy",":id")}}','{{$estudiante->Identificacion}}')" class="btn btn-danger btn-circle">
                                                 <i class="fas fa-trash"></i>
                                             </button>
 
@@ -434,6 +434,17 @@
             <div class="modal-body">
                 <form id="formulario" method="POST" action="{{route('SaveStudent')}}">
                     @csrf
+                    <div class="form-group" hidden>
+                        <label for="idform" class="col-form-label idform">Identificador:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            <input type="text" class="form-control" id="idform" name="idform">
+                        </div>
+                    </div>
+
+
                     <div class="form-group">
                         <label for="NombreEstudiante" class="col-form-label">Nombres del estudiante:</label>
                         <div class="input-group">
@@ -521,7 +532,7 @@
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-phone"></i>
                                 </span>
-                            <input type="tel" required class="form-control" minlength="8" maxlength="8" name="Telefono" id="Telefono">
+                            <input type="text" required class="form-control" minlength="8" maxlength="8" name="Telefono" id="Telefono">
                         </div>
                     </div>
 
@@ -540,73 +551,6 @@
 @include('Administrador/footer')
 <script src="{{asset('js/select2.full.min.js')}}"></script>
 <script src="{{asset('js/estudiante.js')}}"></script>
-
-<script>
-function eliminar(id){
-
-Swal.fire({
-title: '¿Estás seguro de eliminar este estudiante?',
-text: 'Esta acción no se puede deshacer',
-icon: 'warning',
-showCancelButton: true,
-confirmButtonColor: '#3085d6',
-cancelButtonColor: '#d33',
-confirmButtonText: 'Eliminar',
-cancelButtonText: 'Cancelar'
-}).then((result) => {
-if (result.isConfirmed) {
-// Enviar el formulario de eliminación
-
-$.ajax({
-type: 'DELETE',
-url: '{{route("student.destroy",":id")}}'.replace(':id',id),
-headers: {
-'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-},
-success: function(response) {
-Swal.fire({
-position: 'center',
-icon: 'success',
-title: response.success,
-showConfirmButton: false,
-timer: 1500
-});
-setTimeout(function() {
-window.location.reload();
-}, 1550);
-
-},
-error: function(errores) {
-Swal.fire({
-position: 'center',
-icon: 'success',
-title: errores.error,
-showConfirmButton: false,
-timer: 1500
-});
-}
-});
-
-
-
-
-
-
-
-
-
-
-}
-});
-
-
-
-
-}
-</script>
-
-
-
 
 
 

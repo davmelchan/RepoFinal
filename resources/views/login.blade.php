@@ -31,7 +31,7 @@
                     @csrf
                         <div class="form-group">
                             <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-user"></span></div>
-                            <input type="text" name="identificacion" class="form-control" autocomplete="off" autofocus placeholder="Identificación" required>
+                            <input type="text" name="identificacion" class="form-control" minlength="8" maxlength="8" id="identificacion" autocomplete="off" autofocus placeholder="Identificación" required>
                         </div>
                         <div class="form-group">
                             <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-lock"></span></div>
@@ -61,6 +61,22 @@
 
     </script>
 @endif
+
+<script >
+    let miInput = document.getElementById('identificacion');
+    miInput.addEventListener('input', function() {
+        let valor = miInput.value;
+
+        if (valor.length > 8) {
+            miInput.value = valor.slice(0, 8); // Limita la longitud del texto a 10 caracteres
+        }
+    });
+
+
+
+
+</script>
+
 
 </body>
 </html>

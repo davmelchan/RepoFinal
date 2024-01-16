@@ -268,76 +268,76 @@
             </nav>
             <!-- End of Topbar -->
 
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
+            <div class="container-fluid">
 
-            <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-center text-gray-800">Unidades de prácticas de formación profesional</h1>
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-center text-gray-800">Unidades de prácticas de formación profesional</h1>
 
-            <button href="#" class="btn btn-primary btn-icon-split my-3">
+                <button href="#" class="btn btn-primary btn-icon-split my-3">
                         <span class="icon text-white-50">
                             <i class="fas fa-fw fa-book-open"></i>
                         </span>
-                <span class="text" id="AddUnidad">Agregar unidad</span>
-            </button>
+                    <span class="text" id="AddUnidad">Agregar unidad</span>
+                </button>
 
-            <!-- DataTales Example -->
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Unidades</h6>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="example" class="table table-striped dt-responsive table-bordered nowrap" cellspacing="0" width="100%">
-                            <thead>
-                            <tr>
-                                <th>Opciones</th>
-                                <th>Nombre</th>
-                                <th>Id</th>
-                                <th>Estado</th>
-
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($unidades as $unidad)
-                                @if($unidad->Estado==1)
-                                    <tr>
-                                        <td class="text-center">
-                                            <button onclick="editar({{$unidad}})"  class="btn btn-unan btn-circle">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </button>
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Unidades</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="example" class="table table-striped dt-responsive table-bordered nowrap" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Opciones</th>
+                                    <th>Nombre</th>
+                                    <th>Id</th>
+                                    <th>Estado</th>
 
 
-
-                                            <button onclick="eliminar('{{$unidad->IdUnidad }}')" class="btn btn-danger btn-circle">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($unidades as $unidad)
+                                    @if($unidad->Estado==1)
+                                        <tr>
+                                            <td class="text-center">
+                                                <button onclick="editar({{$unidad}})"  class="btn btn-unan btn-circle">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </button>
 
 
 
+                                                <button onclick="eliminar('{{route("unidad.destroy",":id")}}','{{$unidad->IdUnidad }}')" class="btn btn-danger btn-circle">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
 
-                                        </td>
-                                        <td>{{$unidad->Nombre}}</td>
-                                        <td>{{$unidad->IdUnidad}}</td>
-                                        @if($unidad->Estado==1)
-                                            <td>Activo</td>
-                                        @else
-                                            <td>No activo</td>
-                                        @endif
-                                    </tr>
-                                @endif
-                            @endforeach
-                            </tbody>
-                        </table>
+
+
+
+                                            </td>
+                                            <td>{{$unidad->Nombre}}</td>
+                                            <td>{{$unidad->IdUnidad}}</td>
+                                            @if($unidad->Estado==1)
+                                                <td>Activo</td>
+                                            @else
+                                                <td>No activo</td>
+                                            @endif
+                                        </tr>
+                                    @endif
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
-        </div>
-        <!-- /.container-fluid -->
 
-    </div>
+        <!-- Begin Page Content -->
+
     <!-- End of Main Content -->
 
     <!-- Footer -->
@@ -417,69 +417,6 @@
 @include('Administrador/footer');
 <script src="{{asset('js/modalunidad.js')}}"></script>
 
-<script>
-function eliminar(id){
-
-Swal.fire({
-title: '¿Estás seguro de eliminar esta unidad?',
-text: 'Esta acción no se puede deshacer',
-icon: 'warning',
-showCancelButton: true,
-confirmButtonColor: '#3085d6',
-cancelButtonColor: '#d33',
-confirmButtonText: 'Eliminar',
-cancelButtonText: 'Cancelar'
-}).then((result) => {
-if (result.isConfirmed) {
-// Enviar el formulario de eliminación
-
-$.ajax({
-type: 'DELETE',
-url: '{{route("unidad.destroy",":id")}}'.replace(':id',id),
-headers: {
-'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-},
-success: function(response) {
-Swal.fire({
-position: 'center',
-icon: 'success',
-title: response.success,
-showConfirmButton: false,
-timer: 1500
-});
-setTimeout(function() {
-window.location.reload();
-}, 1550);
-
-},
-error: function(errores) {
-Swal.fire({
-position: 'center',
-icon: 'success',
-title: errores.error,
-showConfirmButton: false,
-timer: 1500
-});
-}
-});
-
-
-
-
-
-
-
-
-
-
-}
-});
-
-
-
-
-}
-</script>
 
 
 

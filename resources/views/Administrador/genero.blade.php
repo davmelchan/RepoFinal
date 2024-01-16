@@ -33,7 +33,7 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-unan sidebar sidebar-dark accordion" id="accordionSidebar">
+      <ul class="navbar-nav bg-unan sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('administrador')}}">
@@ -67,6 +67,7 @@
         <hr class="sidebar-divider">
 
         <!-- Heading -->
+
         <div class="sidebar-heading">
             Evaluaciones
         </div>
@@ -89,7 +90,6 @@
                 <i class="fas fa-fw fa-list"></i>
                 <span>Categorías de supervisión</span></a>
         </li>
-
 
 
         <!--    <li class="nav-item">
@@ -146,7 +146,7 @@
                 <span>Género</span></a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item ">
             <a class="nav-link" href="{{url('rol')}}">
                 <i class="fas fa-fw fa-user"></i>
                 <span>Rol</span></a>
@@ -198,10 +198,10 @@
 
     </ul>
 
-
     <!-- End of Sidebar -->
 
-    <!-- Content Wrapper -->
+
+
     <div id="content-wrapper" class="d-flex flex-column">
 
         <!-- Main Content -->
@@ -233,7 +233,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrador</span>
-                            <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
+                            <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -269,7 +269,6 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
-                <!-- Page Heading -->
                 <h1 class="h3 mb-2 text-center text-gray-800">Género establecidos para los usuarios</h1>
 
                 <button id="btnGenero" class="btn btn-primary btn-icon-split my-3">
@@ -286,58 +285,57 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                        <table id="example" class="table table-striped dt-responsive table-bordered nowrap" cellspacing="0" width="100%">
-                            <thead>
-                            <tr>
-                                <th>Opciones</th>
-                                <th>Id</th>
-                                <th>Nombre del género</th>
-                                <th>Estado</th>
+                            <table id="example" class="table table-striped dt-responsive table-bordered nowrap" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Opciones</th>
+                                    <th>Id</th>
+                                    <th>Nombre del género</th>
+                                    <th>Estado</th>
 
 
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($genero as $gen)
-                                @if($gen->Estado==1)
-                                    <tr>
-                                        <td class="text-center">
-                                            <button id="btnEditar" onclick="editar({{$gen}})"  class="btn btn-unan btn-circle">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </button>
-
-
-
-                                            <button onclick="eliminar('{{$gen->IdGenero}}')" class="btn btn-danger btn-circle">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($genero as $gen)
+                                    @if($gen->Estado==1)
+                                        <tr>
+                                            <td class="text-center">
+                                                <button id="btnEditar" onclick="editar({{$gen}})"  class="btn btn-unan btn-circle">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </button>
 
 
 
-
-
-                                        </td>
-                                        <td>{{$gen->IdGenero}}</td>
-                                        <td>{{$gen->Nombre}}</td>
-                                        @if($gen->Estado==1)
-                                            <td>Activo</td>
-                                        @else
-                                            <td>No activo</td>
-                                        @endif
+                                                <button onclick="eliminar('{{route("genero.destroy",":id")}}','{{$gen->IdGenero}}')" class="btn btn-danger btn-circle">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
 
 
 
-                                    </tr>
-                                @endif
-                            @endforeach
-                            </tbody>
-                        </table>
+
+
+                                            </td>
+                                            <td>{{$gen->IdGenero}}</td>
+                                            <td>{{$gen->Nombre}}</td>
+                                            @if($gen->Estado==1)
+                                                <td>Activo</td>
+                                            @else
+                                                <td>No activo</td>
+                                            @endif
+
+
+
+                                        </tr>
+                                    @endif
+                                @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
 
-            </div>
-            <!-- /.container-fluid -->
+                <!-- /.container-fluid -->
 
         </div>
         <!-- End of Main Content -->
@@ -353,7 +351,6 @@
         <!-- End of Footer -->
 
     </div>
-    <!-- End of Content Wrapper -->
 
 </div>
 <!-- End of Page Wrapper -->
@@ -415,74 +412,7 @@
 <script src="{{asset('js/modalGenero.js')}}"></script>
 
 
-<script>
 
-
-
-
-
-    function eliminar(id){
-
-        Swal.fire({
-            title: '¿Estás seguro de eliminar este género?',
-            text: 'Esta acción no se puede deshacer',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Enviar el formulario de eliminación
-
-                $.ajax({
-                    type: 'DELETE',
-                    url: '{{route("genero.destroy",":id")}}'.replace(':id',id),
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: response.success,
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        setTimeout(function() {
-                            window.location.reload();
-                        }, 1550);
-
-                    },
-                    error: function(errores) {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: errores.error,
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    }
-                });
-
-
-
-
-
-
-
-
-
-
-            }
-        });
-
-
-
-
-    }
-</script>
 
 
 

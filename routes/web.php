@@ -46,7 +46,7 @@ Route::view('/','login')->name('login');
 Route::middleware(['Roles', 'cache.headers:private'])->group(function () {
     //Crud maestros
     Route::get('/administrador',[AdminController::class,'indexMaestro']);
-    Route::post('/administrador',[AdminController::class,'SaveMaestro']);
+    Route::post('/administrador',[AdminController::class,'SaveMaestro'])->name('SaveTeacher');
     Route::delete('/administrador/{id}',[AdminController::class,'EliminarMaestro'])->name("teacher.destroy");
 
     //Crud estudiantes
@@ -62,7 +62,7 @@ Route::middleware(['Roles', 'cache.headers:private'])->group(function () {
 
     ///Crud Empresa
     Route::get('/empresa',[AdminController::class,'indexEmpresa']);
-    Route::post('/empresa',[AdminController::class,'GuardarEmpresa']);
+    Route::post('/empresa',[AdminController::class,'GuardarEmpresa'])->name('SaveCompany');
     Route::delete('/empresa/{id}',[AdminController::class,'EliminarEmpresa'])->name('empresa.destroy');
 
 

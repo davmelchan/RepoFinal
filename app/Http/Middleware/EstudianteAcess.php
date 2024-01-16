@@ -17,7 +17,7 @@ class EstudianteAcess
     {
         if(isset(auth()->user()->IdRol)){
 
-            if(auth()->user()->IdRol == 27){
+            if(auth()->user()->IdRol == 29){
                 $reponse =$next($request);
                 $reponse->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
                 return $reponse;

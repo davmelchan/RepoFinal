@@ -305,7 +305,7 @@
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </button>
 
-                                            <button onclick="eliminar('{{$categoria->IdCatEvaluacion }}')" class="btn btn-danger btn-circle">
+                                            <button onclick="eliminar('{{route("catevaluacion.destroy",":id")}}','{{$categoria->IdCatEvaluacion }}')" class="btn btn-danger btn-circle">
                                                 <i class="fas fa-trash"></i>
                                             </button>
 
@@ -407,69 +407,6 @@
 @include('Administrador/footer')
 <script src="{{asset('js/modalAspecto.js')}}"></script>
 
-<script>
-    function eliminar(id){
-
-        Swal.fire({
-            title: '¿Estás seguro de eliminar esta categoría de evaluación?',
-            text: 'Esta acción no se puede deshacer',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Enviar el formulario de eliminación
-
-                $.ajax({
-                    type: 'DELETE',
-                    url: '{{route("catevaluacion.destroy",":id")}}'.replace(':id',id),
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: response.success,
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        setTimeout(function() {
-                            window.location.reload();
-                        }, 1550);
-
-                    },
-                    error: function(errores) {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: errores.error,
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    }
-                });
-
-
-
-
-
-
-
-
-
-
-            }
-        });
-
-
-
-
-    }
-</script>
 </script>
 
 

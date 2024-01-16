@@ -68,7 +68,7 @@ class AdminController extends Controller
     {
 
         $rol = Roles::find($id);
-        $usuarios = User::where('IdRol', $id)->get();
+        $usuarios = User::where('IdRol', $id)->where('Estado',1)->get();
         if (!$rol) {
             return response()->json(["error"=>"Rol no encontrado"]);
 
@@ -110,8 +110,8 @@ class AdminController extends Controller
     }
     public function EliminarGenero($id){
         $genero = Genero::find($id);
-        $usuariosM = Maestros::where('idGenero', $id)->get();
-        $usuariosE = Estudiante::where('idGenero',$id)->get();
+        $usuariosM = Maestros::where('idGenero', $id)->where('Estado',1)->get();
+        $usuariosE = Estudiante::where('idGenero',$id)->where('Estado',1)->get();
         if (!$genero) {
             return response()->json(["error"=>"Género no encontrado"]);
         }
@@ -158,14 +158,12 @@ class AdminController extends Controller
     }
     public function EliminarUnidad($id){
         $unidad = Unidad::find($id);
-        $checkEvaluacion = Evaluaciones::where('IdUnidad',$id)->get();
+        $checkEvaluacion = Evaluaciones::where('IdUnidad',$id)->where('Estado',1)->get();
         if (!$unidad) {
             return response()->json(["error"=>"Unidad no encontrada"]);
         }
         if($checkEvaluacion->isNotEmpty()){
-
             return response()->json(["error"=>"Unidad no se ha podido eliminar" ],500);
-
 
         }
 
@@ -248,7 +246,7 @@ class AdminController extends Controller
 
     public function EliminarEmpresa($id){
         $empresa = Empresa::find($id);
-        $usuariosE = Estudiante::where('idGenero',$id)->get();
+        $usuariosE = Estudiante::where('idEmpresa',$id)->where('Estado',1)->get();
         if (!$empresa) {
             return response()->json(["error"=>"Centro de práctica no encontrado"]);
         }
@@ -289,7 +287,7 @@ class AdminController extends Controller
     }
     public function EliminarEvaluacion($id){
         $evaluacion = Evaluacion::find($id);
-        $checkEvaluacion = Evaluaciones::where('IdTipo',$id)->get();
+        $checkEvaluacion = Evaluaciones::where('IdTipo',$id)->where('Estado',1)->get();
         if (!$evaluacion) {
             return response()->json(["error"=>"Categoría de evaluación no encontrada"]);
 
@@ -331,7 +329,7 @@ class AdminController extends Controller
 
     public function EliminarCatSupervision($id){
         $supervision = CatSupervisiones::find($id);
-        $sup = Supervisiones::where('IdTipoSupervision',$id)->get();
+        $sup = Supervisiones::where('IdTipoSupervision',$id)->where('Estado',1)->get();
         if (!$supervision) {
             return response()->json(["error"=>"Categoría de supervisión no encontrada"]);
         }

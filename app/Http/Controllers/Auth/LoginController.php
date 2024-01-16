@@ -27,14 +27,21 @@ class LoginController extends Controller
                     return redirect()->intended('administrador');
 
                 }
-                if(Hash::check($request->clave, $user->password)){
-                    Auth::login($user);
-                    $user->update(['password' => Hash::make($request->clave)]);
-                    $request->session()->regenerate();
-                    Session::put('rol',$user->IdRol );
-                    return redirect()->intended('administrador');//->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+                    if(Hash::needsRehash($user->password)){
 
-                }
+                        return redirect('/')->with("mensaje","Identificación y contraseña no coinciden");
+
+                    }else {
+                        if (Hash::check($request->clave, $user->password)) {
+                            Auth::login($user);
+                            $user->update(['password' => Hash::make($request->clave)]);
+                            $request->session()->regenerate();
+                            Session::put('rol', $user->IdRol);
+                            return redirect()->intended('administrador');//->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+
+                        }
+                    }
+
                     return redirect('/')->with("mensaje","Identificación y contraseña no coinciden");
 
                 }else{
@@ -55,17 +62,28 @@ class LoginController extends Controller
                         return redirect()->intended('maestro');
 
                     }
-                    if (Hash::check($request->clave, $user->password)) {
-                        Auth::login($user);
-                        $user->update(['password' => Hash::make($request->clave)]);
-                        $request->session()->regenerate();
-                        Session::put('rol', $user->IdRol);
-                        $resultados = Maestros::where('Identificacion', $request->identificacion)->get();
-                        Session::put('datos',$resultados);
-                        return redirect()->intended('maestro');
+                    if(Hash::needsRehash($user->password)){
+
+                        return redirect('/')->with("mensaje","Identificación y contraseña no coinciden");
+
+                    }else{
+
+                        if (Hash::check($request->clave, $user->password)) {
+                            Auth::login($user);
+                            $user->update(['password' => Hash::make($request->clave)]);
+                            $request->session()->regenerate();
+                            Session::put('rol', $user->IdRol);
+                            $resultados = Maestros::where('Identificacion', $request->identificacion)->get();
+                            Session::put('datos',$resultados);
+                            return redirect()->intended('maestro');
+
+                        }
+
 
                     }
+
                     return redirect('/')->with("mensaje","Identificación y contraseña no coinciden");
+
 
                 }else{
                     return redirect('/')->with("mensaje","Usuario no activo");
@@ -85,15 +103,22 @@ class LoginController extends Controller
                         return redirect()->intended('EstudianteView');
 
                     }
-                    if (Hash::check($request->clave, $user->password)) {
-                        Auth::login($user);
-                        $user->update(['password' => Hash::make($request->clave)]);
-                        $request->session()->regenerate();
-                        Session::put('rol', $user->IdRol);
-                        $resultados = Estudiante::where('Identificacion',$request->identificacion)->get();
-                        Session::put('datos',$resultados);
-                        return redirect()->intended('EstudianteView');
 
+                    if(Hash::needsRehash($user->password)){
+
+                        return redirect('/')->with("mensaje","Identificación y contraseña no coinciden");
+
+                    }else {
+                        if (Hash::check($request->clave, $user->password)) {
+                            Auth::login($user);
+                            $user->update(['password' => Hash::make($request->clave)]);
+                            $request->session()->regenerate();
+                            Session::put('rol', $user->IdRol);
+                            $resultados = Estudiante::where('Identificacion', $request->identificacion)->get();
+                            Session::put('datos', $resultados);
+                            return redirect()->intended('EstudianteView');
+
+                        }
                     }
                     return redirect('/')->with("mensaje","Identificación y contraseña no coinciden");
 

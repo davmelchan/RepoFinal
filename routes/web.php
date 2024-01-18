@@ -119,6 +119,7 @@ Route::middleware(['maestro', 'cache.headers:private'])->group(function(){
 
     Route::get('/evaluacioncorregida',[MaestroController::class,'indexEvaCorregida']);
     Route::get('/calificaciones/{id}',[MaestroController::class,'CorreccionCalificacion']);
+    Route::post('/calificaciones/{id}/guardar',[MaestroController::class,'CorreccionGuardar'])->name('CorreccionSave');
 
 
     Route::post('/logout',[MaestroController::class,'logoutMaestro'])->name('logoutDocente');

@@ -22,7 +22,9 @@ class Estudiante extends Model
         return $this->hasOne(Empresa::class,'IdEmpresa','idEmpresa');
     }
 
-
+    public function notasVer(){
+        return $this->hasOne(EvaluacionXNotas::class,'idEstudiante','Identificacion');
+    }
 
 
 }

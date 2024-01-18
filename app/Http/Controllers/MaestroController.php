@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CatSupervisiones;
 use App\Models\Evaluacion;
 use App\Models\Evaluaciones;
+use App\Models\EvaluacionXNotas;
 use App\Models\Grupo;
 use App\Models\GrupoMaestro;
 use App\Models\Grupos;
@@ -14,6 +15,7 @@ use App\Models\Unidad;
 use App\Models\Estudiante;
 use App\Models\EvidenciaEstudiante;
 use Carbon\Carbon;
+use Doctrine\DBAL\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
@@ -147,9 +149,79 @@ use Illuminate\Support\Str;
 
             public function CorreccionCalificacion($id){
 
-                return view('Maestro/subpage/corregidas');
+                $estudiantes =    Estudiante::where('idGrupo',$id)->get();
+                $datos= Evaluaciones::where('IdGrupo', '=',$id)->get();
+
+
+                $i = 1;
+                $t = 1;
+                $idgrupo = $id;
+                return view('Maestro/subpage/corregidas',compact('estudiantes','datos','i','idgrupo','t'
+                ));
 
             }
+
+            public function CorreccionGuardar(Request $request){
+                $calificaciones = $request->all('notas');
+
+
+                $count = count($calificaciones);
+
+                foreach ($calificaciones as $calificacion){
+                    foreach ($calificacion as $item){
+
+                        foreach ($item as $d){
+
+                                if(isset($d['notacion'])){
+                                    $id=$d['notacion'];
+                                    $registro = EvaluacionXNotas::where('id', $id)->first();
+                                    $notas =$d['nota'];
+                                    if ($registro) {
+                                        $registro->nota = $notas;
+                                        $registro->save();
+                                    }
+
+
+
+
+                                }else{
+                                    $campos = ['idEstudiante'=>$d['Identificacion'],'idEvaluacion'=>$d['IdEvaluacion'],'nota'=>$d['nota']];
+                                    EvaluacionXNotas::insert($campos);
+                                }
+
+
+
+
+
+
+
+                        }
+
+
+
+                    }
+
+
+                }
+
+
+                return back()->with('exito', 'Calificaciones guardadas exitosamente');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+
 
 
         public function GuardarGrupoMaestro(Request $request){

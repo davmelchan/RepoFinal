@@ -21,5 +21,9 @@ class Evaluaciones extends Model
         return $this->hasOne(Evaluacion::class,'IdCatEvaluacion','IdTipo');
 
     }
+    public function notasVer(){
+
+        return $this->hasOne(EvaluacionXNotas::class,'idEvaluacion','IdEvaluacion');
+    }
 
 }

@@ -291,7 +291,14 @@
                                     <th >Estudiante</th>
                                      @foreach($datos as $data)
                                         @if($data->Estado ==1)
-                                        <th class="col-2">Evaluacion {{$i++}}</th>
+                                        <th class="col-2">
+
+                                            <button type="button" onclick="mostrar('Evaluacion {{$i}}','{{$data->Nombre}}','{{$data->Descripcion}}','{{$data->UnidadesEvaluacion->Nombre}}','{{$data->TipoEvaluacion->Nombre}}')" class="btn btn-unan" >
+                                                Evaluación
+                                            {{$i++}}</th>
+
+                                            </button>
+
                                         @endif
                                      @endforeach
                                 </tr>
@@ -326,7 +333,7 @@
                                                 @endif
                                                     <input type="text" hidden="" name="notas[{{$data->IdEvaluacion}}][ev{{$t}}][IdEvaluacion]" value="{{ $data->IdEvaluacion }}">
                                                 <input type="text" hidden="" name="notas[{{$data->IdEvaluacion}}][ev{{$t}}][Identificacion]" value="{{ $estudiante->Identificacion }}">
-                                                <input class="input-group" required name="notas[{{$data->IdEvaluacion}}][ev{{$t}}][nota]" value="{{$valorNota}}"   type="number" min="0" max="20">
+                                                <input class="input-group" required name="notas[{{$data->IdEvaluacion}}][ev{{$t}}][nota]" value="{{$valorNota}}" id="not"  type="number"  min="0" max="20">
 
 
 
@@ -390,17 +397,74 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-<!--Formulario para agregar grupo-->
+<!--Formulario para ver informacion de la evaluacion-->
+<div id="EvInfo" class="modal fade"  tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tituloModal"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="Titulo" class="col-form-label">Titulo:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-fw fa-book-open"></i>
+                                </span>
+                            <input type="text" readonly class="form-control" id="Titulo" name="Titulo">
+                        </div>
+                    </div>
+                <div class="form-group">
+                    <label for="unidad" class="col-form-label">Unidad:</label>
+                    <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-fw fa-book-open"></i>
+                                </span>
+                        <input type="text" readonly class="form-control" id="unidad" name="unidad">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tipo" class="col-form-label">Tipo de evaluación:</label>
+                    <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-fw fa-book-open"></i>
+                                </span>
+                        <input type="text" readonly class="form-control" id="tipo" name="tipo">
+                    </div>
+                </div>
+
+                    <div class="form-group">
+                        <label for="Descripcion" class="col-form-label">Descripción:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-fw fa-book-open"></i>
+                                </span>
+                            <textarea class="form-control" readonly style="resize: none;" required id="Descripcion" onresize="false" name="Descripcion" cols="30" rows="10"></textarea>
+
+                        </div>
+                    </div>
 
 
 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 
-
+            </div>
+        </div>
+    </div>
+</div>
 
 
 @include('Administrador/footer')
 
 <script src="{{asset('js/select2.full.min.js')}}"></script>
+<script src="{{asset('js/corregida.js')}}"></script>
 
 </body>
 
@@ -410,9 +474,9 @@
     $(document).ready(function()
         {
 
-            $('#miTabla').DataTable().destroy();
+
             var table = $('#miTabla').DataTable({
-                fixedColumns: 1
+
 
             });
 

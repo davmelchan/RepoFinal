@@ -332,13 +332,22 @@ use Illuminate\Support\Str;
 
             $campo=[
                 "Titulo"=>'required|string|max:50',
-                "Descripcion"=>'required|string|max:50'
+                "Descripcion"=>'required|string',
+                "puntaje"=>'min:1 | required',
+
             ];
+            $puntaje=[
+                "puntaje"=>'numeric|between:0,20',
+
+            ];
+
+
             $validator = Validator::make($request->all(), $tipo, $mensaje);
             $validatorUnidad = Validator::make($request->all(), $unidad, $mensaje);
 
 
             $vacios = Validator::make($request->all(),$campo,$mensaje);
+            $puntos = Validator::make($request->all(),$puntaje,$mensaje);
 
             if ($vacios->fails()) {
                 return response()->json(['errors' => "Digite lo espacios en blanco"],422);
@@ -349,12 +358,14 @@ use Illuminate\Support\Str;
             if($validator->fails()) {
                 return response()->json(['errors' => "No ha seleccionado el tipo de evaluación"],422);
             }
-
+            if($puntos->fails()) {
+                return response()->json(['errors' => "El campo puntaje debe guardarse entre 0 y 20"],422);
+            }
 
             if(isset($request->IdEvaluacion)){
                 $evaluacion= Evaluaciones::find($request->IdEvaluacion);
                 $parametros = ['Nombre'=>$request->Titulo,'Descripcion'=>$request->Descripcion
-                    ,'IdUnidad'=>$request->UnidadId,'IdTipo'=>$request->TipoId];
+                    ,'IdUnidad'=>$request->UnidadId,'IdTipo'=>$request->TipoId,'Puntaje'=>$request->puntaje];
                 $evaluacion->update($parametros);
                 return response()->json(['success' => "Evaluación actualizada exitosamente"]);
 
@@ -366,7 +377,7 @@ use Illuminate\Support\Str;
             $fechaFormateada = $fechaHoy->format('Y-m-d');
             $evaluacion=['Nombre'=>$request->Titulo,'Descripcion'=>$request->Descripcion
             ,'IdUnidad'=>$request->UnidadId,'IdTipo'=>$request->TipoId,'IdGrupo'=>$request->grupoId
-            ,'FechaCreacion'=>$fechaFormateada,'Estado'=>1];
+            ,'FechaCreacion'=>$fechaFormateada,'Puntaje'=>$request->puntaje,'Estado'=>1];
 
             Evaluaciones::insert($evaluacion);
             return response()->json(["success"=>"Evaluación almacenada de manera exitosa"]);

@@ -204,12 +204,44 @@
 
                 <!-- Topbar Search -->
 
-
+                <form
+                    class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar grupo"
+                               aria-label="Search" id="barraBusqueda" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
 
                     <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-
+                    <li class="nav-item dropdown no-arrow d-sm-none">
+                        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <!-- Dropdown - Messages -->
+                        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                             aria-labelledby="searchDropdown">
+                            <form class="form-inline mr-auto w-100 navbar-search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control bg-light border-0 small"
+                                           placeholder="Buscar grupo" id="barraBusqueda2" aria-label="Search"
+                                           aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
 
                     <!-- Nav Item - Alerts -->
 
@@ -267,10 +299,10 @@
                     </a>
 
                 </div>
-<div class="row">
+<div class="row" id="contenedor" >
                 @foreach($datos as $evaluacion)
                     @if($evaluacion->Estado==1)
-                <div class="col-md-6">
+                <div class="col-md-6 objeto">
                     <div class="tile">
                         <div class="tile-title-w-btn">
                             <h3 class="title">{{$evaluacion->Nombre}}</h3>
@@ -303,6 +335,13 @@
                             <b>Fecha de creación</b><br>
                             {{$evaluacion->FechaCreacion}}
                             <br>
+                            <b>Puntaje</b><br>
+                            @if(empty($evaluacion->Puntaje))
+                            0
+                            @else
+                                {{$evaluacion->Puntaje}}
+                            @endif
+                                <br>
                             <b>Estado</b><br>
                             @if($evaluacion->Estado==1)
                                 Activo
@@ -421,10 +460,27 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-fw fa-book-open"></i>
                                 </span>
-                            <textarea class="form-control" required id="Descripcion" onresize="false" name="Descripcion" cols="30" rows="10"></textarea>
+                            <textarea class="form-control" style="resize: none;" required id="Descripcion" onresize="false" name="Descripcion" cols="30" rows="10"></textarea>
 
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label for="puntaje" class="col-form-label">Puntaje:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-scroll"></i>
+                                </span>
+                            <input type="number" required class="form-control" id="puntaje" oninput="validarNumero(event)" min="0" max="20" name="puntaje">
+                        </div>
+                    </div>
+
+
+
+
+
+
+
 
                     <div class="form-group" hidden>
                         <label for="grupoId" class="col-form-label">Grupo:</label>

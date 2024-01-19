@@ -1,3 +1,47 @@
+function validarNumero(event) {
+    // Obtener el valor actual del campo de entrada
+    const valorInput = event.target.value;
+
+    // Validar si el último carácter ingresado es un número
+    const esNumero = /^[0-9]*$/.test(valorInput);
+
+    // Si no es un número, establecer el valor a 0
+    if (!esNumero) {
+        event.target.value = 0;
+    }
+}
+$(document).ready(function() {
+    // Manejar el evento de cambio en la barra de búsqueda
+    $('#barraBusqueda').on('input', function() {
+        let filtro = $(this).val().toLowerCase();
+
+        // Filtrar los elementos dentro del contenedor
+        $('#contenedor .objeto').each(function() {
+            let textoElemento = $(this).text().toLowerCase();
+            $(this).toggle(textoElemento.indexOf(filtro) > -1);
+        });
+    });
+    $('#barraBusqueda2').on('input', function() {
+        let filtro = $(this).val().toLowerCase();
+
+        // Filtrar los elementos dentro del contenedor
+        $('#contenedor .objeto').each(function() {
+            let textoElemento = $(this).text().toLowerCase();
+            $(this).toggle(textoElemento.indexOf(filtro) > -1);
+        });
+    });
+
+
+
+});
+
+
+
+
+
+
+
+
 /*Modal para agregar asignaciones */
 
 const btnAsignacion = document.getElementById("btnAsignacion");
@@ -19,7 +63,7 @@ btnAsignacion.addEventListener("click", function () {
 
 function editar(info)
 {
-
+    titulo2.innerHTML = "Actualizar Evaluación";
     btnGuardar.innerHTML = "Actualizar";
     mymodal.show();
     $(".company").select2({
@@ -32,6 +76,8 @@ function editar(info)
     $('#TipoId').val(info.IdTipo).trigger("change");
     $('#grupoId').val(info.IdGrupo);
     $('#Descripcion').val(info.Descripcion);
+
+    $('#puntaje').val(info.Puntaje);
     titulo2.innerText = "Actualizar Evaluación";
 
 }

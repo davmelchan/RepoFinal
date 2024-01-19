@@ -293,7 +293,7 @@
                                         @if($data->Estado ==1)
                                         <th class="col-2">
 
-                                            <button type="button" onclick="mostrar('Evaluacion {{$i}}','{{$data->Nombre}}','{{$data->Descripcion}}','{{$data->UnidadesEvaluacion->Nombre}}','{{$data->TipoEvaluacion->Nombre}}')" class="btn btn-unan" >
+                                            <button type="button" onclick="mostrar('Evaluacion {{$i}}','{{$data->Nombre}}','{{$data->Descripcion}}','{{$data->UnidadesEvaluacion->Nombre}}','{{$data->TipoEvaluacion->Nombre}}','{{$data->Puntaje}}')" class="btn btn-unan" >
                                                 Evaluación
                                             {{$i++}}</th>
 
@@ -448,7 +448,15 @@
 
                         </div>
                     </div>
-
+                <div class="form-group">
+                    <label for="puntaje" class="col-form-label">Puntaje:</label>
+                    <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-scroll"></i>
+                                </span>
+                        <input type="number" readonly required class="form-control" id="puntaje" oninput="validarNumero(event)" min="0" max="20" name="puntaje">
+                    </div>
+                </div>
 
 
             </div>

@@ -11,7 +11,7 @@ miInput.addEventListener('input', function() {
 });
 
 
-function mostrar(titu,tituloEv,descripcion,unidad,tipo){
+function mostrar(titu,tituloEv,descripcion,unidad,tipo,puntos){
     mymodal.show();
 
 
@@ -20,6 +20,7 @@ function mostrar(titu,tituloEv,descripcion,unidad,tipo){
     $('#unidad').val(unidad);
     $('#tipo').val(tipo);
     $('#Descripcion').val(descripcion);
+    $('#puntaje').val(puntos);
 
 
 }

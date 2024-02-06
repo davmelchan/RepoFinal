@@ -156,7 +156,56 @@ use Illuminate\Support\Str;
 
       }
 
+      public function GeneratePdf(Request $request){
+          $horarios=[
+              "HoraEntrada"=>'required',
+              "HoraSalida"=>'required',
 
+          ];
+
+          $validator = Validator::make($request->all(), $horarios);
+          if($validator->fails()){
+              return response()->json(['errors' => "Horario no ingresado"],422);
+          }
+          $dateTime1 = \DateTime::createFromFormat('g:ia', $request->HoraEntrada);
+          $dateTime2 = \DateTime::createFromFormat('g:ia', $request->HoraSalida);
+          if ($dateTime1 === false) {
+              return response()->json(['errors' => "El campo hora de entrada no tiene un formato correcto"],422);
+
+          }
+          if ($dateTime2 === false) {
+              return response()->json(['errors' => "El campo hora de salida no tiene un formato correcto"],422);
+
+          }
+
+
+          if ($dateTime1 > $dateTime2) {
+              return response()->json(['errors' => "El campo hora de entrada no puede ser mayor al campo hora de salida"],422);
+          }
+
+
+          if($request->HoraEntrada == $request->HoraSalida){
+              return response()->json(['errors' => "El campo hora de entrada no puede tener el mismo valor que el del campo horario de salida"],422);
+          }
+
+          $campo=[
+              "Area"=>'required|string',
+              "RolAsignado"=>'required|string',
+              "Observacion"=>'required|string',
+
+          ];
+          $validacion = Validator::make($request->all(), $campo);
+          if($validacion->fails()){
+              return response()->json(['errors' => "Digite los campos vacios"],422);
+          }
+
+
+
+
+
+
+          return response()->json(['success'=>$request->IdDocente]);
+        }
         public function indexEvidencia(){
             $datos= GrupoxMaestro::where('IdMaestro', '=',session('datos')->first()->Identificacion)->get();
             foreach ($datos as $dato) {

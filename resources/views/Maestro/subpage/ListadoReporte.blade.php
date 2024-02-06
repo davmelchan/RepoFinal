@@ -24,11 +24,14 @@
 
 
     <!-- Custom styles for this page -->
+
     <link href=" {{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
     <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
+    <link href="{{asset('vendor/jquery/jquery.timepicker.min.css')}}" rel="stylesheet" type="text/css">
     @include('Administrador/data')
+
 
 </head>
 
@@ -247,12 +250,11 @@
 
 
                                         <td class="text-center">
-                                            <a href="{{route('Maestro.Ver.ReportePdf',['id'=>$alumno->Identificacion])}}" class="btn btn-success btn-icon-split">
-                                        <span class="icon text-white-50">
-                                            <i class="fa-solid fa-square-poll-vertical"></i>
-                                        </span>
-                                                <span class="text">Crear reporte</span>
-                                            </a>
+                                            <button class="btn btn-success" onclick="crearReporte('{{$alumno->Identificacion}}')" >
+                                                <i class="fa-solid fa-square-poll-vertical"></i>
+                                                Crear reporte
+                                            </button>
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -308,48 +310,112 @@
 
 <!--Formulario para agregar grupo-->
 
+<div id="ModalSupervision" class="modal fade"  tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar datos adicionales del reporte</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formulario" method="POST" action="{{route('Maestro.Guardar.ReportePdf')}}">
+                    @csrf
 
+                    <div class="form-group" hidden>
+                        <label for="IdEstudiante" class="col-form-label">Identificador:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            <input type="text" class="form-control" id="IdEstudiante" name="IdEstudiante" >
+                        </div>
+                    </div>
+
+                    <div class="form-group" hidden>
+                        <label for="IdDocente" class="col-form-label">Identificador:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            <input type="text" class="form-control" id="IdDocente" name="IdDocente" value="{{session('datos')->first()->Identificacion}}" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="HoraEntrada" class="col-form-label">Hora de entrada:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                   <i class="fa-solid fa-clock"></i>
+
+                                </span>
+                            <input type="text" id="HoraEntrada" name="HoraEntrada" class="form-control timepicker">
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="HoraSalida" class="col-form-label">Hora de salida:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                   <i class="fa-solid fa-clock"></i>
+                                </span>
+                            <input type="text" id="HoraSalida" name="HoraSalida" class="form-control timepicker">
+
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Area" class="col-form-label">Area asignada:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                               <i class="fa-solid fa-briefcase"></i>
+                                </span>
+                            <input type="text" class="form-control" id="Area" name="Area">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="RolAsignado" class="col-form-label">Rol asignado en el area de trabajo:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-fw fa-book-open"></i>
+                                </span>
+                            <input type="text" class="form-control" id="RolAsignado" name="RolAsignado">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Observacion" class="col-form-label">Observación:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </span>
+                            <textarea type="text" required style="resize: none" class="form-control" rows="4" cols="50" id="Observacion" name="Observacion" maxlength="450"></textarea>
+                        </div>
+                        <div class="text-right" id="contador"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnGuardar" onclick="guardar('{{route('Maestro.Guardar.ReportePdf')}}')"  form="formulario" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
 
 
 @include('Administrador/footer')
-<script src="{{asset('js/select2.full.min.js')}}"></script>
+<script src="{{asset('vendor/jquery/jquery.timepicker.min.js')}}"></script>
+<script src="{{asset('js/ModalResportes.js')}}"></script>
 </body>
-
-<script>
-
-    var tabla;
-    $(document).ready(function()
-        {
-
-
-
-            tabla =  $('.table').dataTable({
-                responsive:true,
-
-
-
-            });
-
-        }
-    );
-
-    $(window).resize(function () {
-        // Destruir DataTables
-        tabla.destroy();
-
-        // Volver a inicializar DataTables
-        tabla = $('.table').DataTable({
-            responsive: true,
-            // Otras opciones...
-        });
-    });
-
-
-
-</script>
 @if(Session::has('exito'))
     <script>
         Swal.fire(

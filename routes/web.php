@@ -152,6 +152,7 @@ Route::middleware(['auth','cache.headers:private'])->group(function(){
 Route::get('/Maestro/ReporteGrupo',[MaestroController::class,'ReporteGrupo'])->name('Maestro.Ver.estadistico');
 Route::get('/Reportelistado/{id}',[MaestroController::class,'ReporteListado'])->name('Maestro.Ver.ReporteListado');
 Route::get('/infoReporte/{id}',[MaestroController::class,'infoPdf'])->name('Maestro.Ver.ReportePdf');
+Route::post('/infoReporte',[MaestroController::class,'GeneratePdf'])->name('Maestro.Guardar.ReportePdf');
 
 Route::post('/ValoracionCentro',[MaestroController::class,'notaCentro'])->name('Maestro.Guardar.NotaCentro');
 

@@ -12,6 +12,7 @@ use App\Models\GrupoMaestro;
 use App\Models\Grupos;
 use App\Models\GrupoxMaestro;
 use App\Models\Maestros;
+use App\Models\Reportes;
 use App\Models\RolesxPermisos;
 use App\Models\Supervisiones;
 use App\Models\Unidad;
@@ -199,12 +200,13 @@ use Illuminate\Support\Str;
               return response()->json(['errors' => "Digite los campos vacios"],422);
           }
 
+          $supervision=['IdAlumno'=>$request->IdEstudiante, 'IdMaestro' =>$request->IdDocente
+              ,'HoraEntrada'=>$request->HoraEntrada,'HoraSalida'=>$request->HoraSalida,'Area'=>$request->Area
+              ,'Observacion'=>$request->Observacion, 'RolAsignado'=>$request->RolAsignado];
 
+          Reportes::insert($supervision);
 
-
-
-
-          return response()->json(['success'=>$request->IdDocente]);
+          return response()->json(['success'=>'Reporte creado de manera exitosa']);
         }
         public function indexEvidencia(){
             $datos= GrupoxMaestro::where('IdMaestro', '=',session('datos')->first()->Identificacion)->get();

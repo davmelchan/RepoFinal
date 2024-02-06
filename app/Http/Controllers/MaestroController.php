@@ -149,9 +149,10 @@ use Illuminate\Support\Str;
           $conteoSupervision = Supervisiones::where('idEstudiante','=',$id)->where('idDocente','=',session('datos')->first()->Identificacion)
               ->where('Estado','=',1)->count();
 
+          $infoReporte = Reportes::where('IdAlumno','=',$id)->where('IdMaestro','=',session('datos')->first()->Identificacion)
+              ->first();
 
-
-          $pdf = Pdf::loadView('Maestro/subpage/reportePdf',compact('fechaCompleta','nomProf','especialidad','consulta','empreEv','conteoNotas','conteoEvidencias','conteoSupervision'));
+          $pdf = Pdf::loadView('Maestro/subpage/reportePdf',compact('fechaCompleta','nomProf','especialidad','consulta','empreEv','conteoNotas','conteoEvidencias','conteoSupervision','infoReporte'));
           return $pdf->stream();
             return view('Maestro/subpage/reportePdf');
 

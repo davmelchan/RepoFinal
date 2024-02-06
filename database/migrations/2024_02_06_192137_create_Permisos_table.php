@@ -14,10 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('Permisos', function (Blueprint $table) {
-            $table->integer('Id');
+            $table->increments('Id');
             $table->text('NombrePermiso');
             $table->text('Ruta');
             $table->text('Icono');
+            $table->string('Titulo', 500)->nullable();
+            $table->text('page')->nullable();
 
             $table->primary(['Id'], 'PK_Permisos');
         });

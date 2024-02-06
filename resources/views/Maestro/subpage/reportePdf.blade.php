@@ -59,14 +59,15 @@
 <div style="color: black" class="row mt-5 ml-5 mr-5">
     <p class="text-left mb-0">Reciba mis más cordiales saludos.</p>
 
+
 </div>
 <div style="color: black" class="row mt-3 ml-5 mr-5">
     <p class="text-justify mb-0">Por este medio presento a <strong>{{$consulta->Nombres}} {{$consulta->Apellidos}}</strong> con carnet
         <strong>{{$consulta->Identificacion}}</strong>, quien es estudiante activo del V año de la carrera de ingles
     de nuestra facultad, y quien ha finalizado sus Prácticas de formación Profesional en el centro de prácticas
-    <strong>{{$consulta->Empresa->Nombre}}</strong> donde realizo sus prácticas en el área de <strong>Nombre del area</strong>
-    desempeñandose en funcion de <strong>Nombre de la funcion desempeñada</strong> cumpliendo sus asignaciones en un total
-        de 120 horas, mismas que fueron desarrolladas en un horario de <strong>Hora de entrada</strong> a <strong>hora de salida</strong>
+    <strong>{{strtolower($consulta->Empresa->Nombre)}}</strong> donde realizo sus prácticas en el área de <strong>{{strtolower($infoReporte->Area)}}</strong>
+    desempeñandose en funcion de <strong>{{strtolower($infoReporte->RolAsignado)}}</strong> cumpliendo sus asignaciones en un total
+        de 120 horas, mismas que fueron desarrolladas en un horario de <strong>{{strtolower($infoReporte->HoraEntrada)}}</strong> a <strong>{{strtolower($infoReporte->HoraSalida)}}</strong>
     obteniendo una valoración de <strong>{{$empreEv->Nota}} %</strong> en conformidad del cumplimiento de sus asignaciones, realizada por el responsable del centro de práctica
         <strong>{{$consulta->Empresa->Responsable}}</strong> de igual manera se obtuvieron los siguientes parametros:</p>
 
@@ -89,18 +90,15 @@
     <p class="text-left mb-3"><strong>OBSERVACIÓN: </strong></p>
 </div>
 
-<div style="background-color: red;position: relative; color: black" class="row mt-3 ml-5 mr-5">
-    <p class="text-justify mb-0">qe4wrjqwejfoiqwjefoiqwjefoiwqjeeofijqweoifjqwifjqoewijfoiwqejfoiwqejfpqwijfopiwqjefoi
-        qe4wrjqwejfoiqwjefoiqwjefoiwqjeeofijqweoifjqwifjqoewijfoiwqejfoiwqejfpqwijfopiwqjefoi
-        qe4wrjqwejfoiqwjefoiqwjefoiwqjeeofijqweoifjqwifjqoewijfoiwqejfoiwqejfpqwijfopiwqjefoi
-        qe4wrjqwejfoiqwjefoiqwjefoiwqjeeofijqweoifjqwifjqoewijfoiwqejfoiwqejfpqwijfopiwqjefoi
-        qe4wrjqwejfoiqwjefoiqwjefoiwqjeeofijqweoifjqwifjqoewijfoiwqejfoiwqejfpqwijfopiwqjefoi
+<div style="color:black" class="row mt-3 ml-5 mr-5">
+    <p class="text-justify mb-0 ">
+        {{$infoReporte->Observacion}}
     </p>
 
 </div>
 <div style="color: black" class="row mt-4 ml-5 mr-5">
     <p class="text-center mb-0">__________________________</p>
-    <p class="text-center mb-0">Nombre del coordinador</p>
+    <p class="text-center mb-0"><strong> Kenya Ortiz</strong></p>
     <p class="text-center mb-0">Coordinador de la carrera de ingles</p>
 </div>
 <footer class="mt-4">

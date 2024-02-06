@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('Maestro', function (Blueprint $table) {
-            $table->foreign(['idGenero'], 'FK_Maestro_Tb_genero')->references(['IdGenero'])->on('Tb_genero')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+        Schema::create('ProcesoXPermiso', function (Blueprint $table) {
+            $table->increments('IdProcesoXPermiso');
+            $table->integer('Proceso_Id');
+            $table->integer('Permiso_Id');
+
+            $table->primary(['IdProcesoXPermiso'], 'PK_ProcesoXPermiso');
         });
     }
 
@@ -25,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('Maestro', function (Blueprint $table) {
-            $table->dropForeign('FK_Maestro_Tb_genero');
-        });
+        Schema::dropIfExists('ProcesoXPermiso');
     }
 };

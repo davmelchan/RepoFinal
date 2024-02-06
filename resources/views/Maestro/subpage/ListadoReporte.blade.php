@@ -250,12 +250,28 @@
 
 
                                         <td class="text-center">
-                                            <button class="btn btn-success" onclick="crearReporte('{{$alumno->Identificacion}}')" >
+
+                                            @php
+
+
+ @endphp
+
+                                            <button class="btn btn-unan" onclick="crearReporte('{{$alumno->Identificacion}}')" >
                                                 <i class="fa-solid fa-square-poll-vertical"></i>
-                                                Crear reporte
+                                                <span class="text">Crear reporte</span>
                                             </button>
 
+                                            <a href="{{route('Maestro.Ver.ReportePdf',['id'=>$alumno->Identificacion])}}" class="btn btn-success btn-icon-split">
+
+                                                <span class="icon text-white-100">
+                                           <i class="fa-solid fa-eye"></i>
+                                        </span>
+
+                                            </a>
                                         </td>
+
+
+
                                     </tr>
                                 @endforeach
                                 </tbody>

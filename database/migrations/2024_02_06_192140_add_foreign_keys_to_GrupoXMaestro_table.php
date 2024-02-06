@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('GrupoXMaestro', function (Blueprint $table) {
             $table->foreign(['IdGrupo'], 'FK_GrupoXMaestro_Grupos')->references(['Identificacion'])->on('Grupos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+            $table->foreign(['IdMaestro'], 'FK_GrupoXMaestro_Usuario')->references(['Identificacion'])->on('usuario')->onUpdate('NO ACTION')->onDelete('NO ACTION');
             $table->foreign(['IdMaestro'], 'FK_GrupoXMaestro_Maestro')->references(['Identificacion'])->on('Maestro')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
@@ -28,6 +29,7 @@ return new class extends Migration
     {
         Schema::table('GrupoXMaestro', function (Blueprint $table) {
             $table->dropForeign('FK_GrupoXMaestro_Grupos');
+            $table->dropForeign('FK_GrupoXMaestro_Usuario');
             $table->dropForeign('FK_GrupoXMaestro_Maestro');
         });
     }

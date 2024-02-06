@@ -11,6 +11,7 @@ use App\Models\Grupo;
 use App\Models\GrupoMaestro;
 use App\Models\Grupos;
 use App\Models\GrupoxMaestro;
+use App\Models\Maestros;
 use App\Models\RolesxPermisos;
 use App\Models\Supervisiones;
 use App\Models\Unidad;
@@ -18,6 +19,8 @@ use App\Models\Estudiante;
 use App\Models\EvidenciaEstudiante;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Jenssegers\Date\Date;
 use Doctrine\DBAL\Exception;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -123,12 +126,31 @@ use Illuminate\Support\Str;
               return redirect()->back();
           }
 
-          $fechaActual = Carbon::now();
+          $datosProf = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
+            $nomProf= $datosProf->Nombres.' '.$datosProf->Apellidos;
+            $especialidad = $datosProf->especialidad;
+          Date::setLocale('es');
+          $empreEv = EvaluacionCentro::where('IdEstudiante','=',$id)->first();
 
-          $fechaLarga = $fechaActual->format('l, j F Y');
 
+          $fechaCompleta = ucfirst(Date::now()->format('l, j F Y'));
           $datos = "cadena de texto";
-          $pdf = Pdf::loadView('Maestro/subpage/reportePdf',compact('fechaLarga'));
+          $conteoNotas =  DB::table('EvaluacionXNotas')
+              ->join('Tb_Evaluaciones', 'EvaluacionXNotas.idEvaluacion', '=', 'Tb_Evaluaciones.IdEvaluacion')
+              ->where('EvaluacionXNotas.idEstudiante', $id)
+              ->where('Tb_Evaluaciones.Estado','=',1)
+              ->count() + 1;
+          $conteoEvidencias =  DB::table('EvidenciasXEstudiante')
+                  ->join('Evidencias_Tb', 'EvidenciasXEstudiante.idEvidencia', '=', 'Evidencias_Tb.idEvidencia')
+                  ->where('EvidenciasXEstudiante.idEstudiante', $id)
+                  ->where('EvidenciasXEstudiante.Estado','=',1)
+                  ->count();
+          $conteoSupervision = Supervisiones::where('idEstudiante','=',$id)->where('idDocente','=',session('datos')->first()->Identificacion)
+              ->where('Estado','=',1)->count();
+
+
+
+          $pdf = Pdf::loadView('Maestro/subpage/reportePdf',compact('fechaCompleta','nomProf','especialidad','consulta','empreEv','conteoNotas','conteoEvidencias','conteoSupervision'));
           return $pdf->stream();
             return view('Maestro/subpage/reportePdf');
 

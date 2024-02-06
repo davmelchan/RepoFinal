@@ -10,7 +10,7 @@
     <!-- Custom styles for this template-->
     <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400;1,700&display=swap')
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400;1,700&display=swap');
 
         /* Estilos para la imagen */
         .imagen-container {
@@ -46,13 +46,66 @@
     </div>
 </div>
 </header>
-<div class="row mt-5">
-    <p>{{$fechaLarga}}</p>
+<div style="color: black" class="row mt-3 ml-5 mr-5">
+    <p class="text-right">{{$fechaCompleta}}</p>
 
 </div>
+<div style="color: black" class="row mt-3 ml-5 mr-5">
+    <p class="text-left mb-0"><strong>{{$nomProf}}</strong></p>
+    <p class="text-left mb-0">{{$especialidad}}</p>
+    <p class="text-left">UNAN-FAREM Carazo</p>
 
-<footer>
+</div>
+<div style="color: black" class="row mt-5 ml-5 mr-5">
+    <p class="text-left mb-0">Reciba mis más cordiales saludos.</p>
 
+</div>
+<div style="color: black" class="row mt-3 ml-5 mr-5">
+    <p class="text-justify mb-0">Por este medio presento a <strong>{{$consulta->Nombres}} {{$consulta->Apellidos}}</strong> con carnet
+        <strong>{{$consulta->Identificacion}}</strong>, quien es estudiante activo del V año de la carrera de ingles
+    de nuestra facultad, y quien ha finalizado sus Prácticas de formación Profesional en el centro de prácticas
+    <strong>{{$consulta->Empresa->Nombre}}</strong> donde realizo sus prácticas en el área de <strong>Nombre del area</strong>
+    desempeñandose en funcion de <strong>Nombre de la funcion desempeñada</strong> cumpliendo sus asignaciones en un total
+        de 120 horas, mismas que fueron desarrolladas en un horario de <strong>Hora de entrada</strong> a <strong>hora de salida</strong>
+    obteniendo una valoración de <strong>{{$empreEv->Nota}} %</strong> en conformidad del cumplimiento de sus asignaciones, realizada por el responsable del centro de práctica
+        <strong>{{$consulta->Empresa->Responsable}}</strong> de igual manera se obtuvieron los siguientes parametros:</p>
+
+</div>
+<div style="color: black" class="row mt-2 ml-5 mr-5">
+    <ul>
+        <li>
+            Supervisiones realizadas: {{$conteoSupervision}}
+        </li>
+        <li>
+            Evidencias guardadas: {{$conteoEvidencias}}
+        </li>
+        <li>
+            Evaluaciones realizadas: {{$conteoNotas}}
+        </li>
+    </ul>
+
+</div>
+<div style="color: black" class="row mt-2 ml-5 mr-5">
+    <p class="text-left mb-3"><strong>OBSERVACIÓN: </strong></p>
+</div>
+
+<div style="background-color: red;position: relative; color: black" class="row mt-3 ml-5 mr-5">
+    <p class="text-justify mb-0">qe4wrjqwejfoiqwjefoiqwjefoiwqjeeofijqweoifjqwifjqoewijfoiwqejfoiwqejfpqwijfopiwqjefoi
+        qe4wrjqwejfoiqwjefoiqwjefoiwqjeeofijqweoifjqwifjqoewijfoiwqejfoiwqejfpqwijfopiwqjefoi
+        qe4wrjqwejfoiqwjefoiqwjefoiwqjeeofijqweoifjqwifjqoewijfoiwqejfoiwqejfpqwijfopiwqjefoi
+        qe4wrjqwejfoiqwjefoiqwjefoiwqjeeofijqweoifjqwifjqoewijfoiwqejfoiwqejfpqwijfopiwqjefoi
+        qe4wrjqwejfoiqwjefoiqwjefoiwqjeeofijqweoifjqwifjqoewijfoiwqejfoiwqejfpqwijfopiwqjefoi
+    </p>
+
+</div>
+<div style="color: black" class="row mt-4 ml-5 mr-5">
+    <p class="text-center mb-0">__________________________</p>
+    <p class="text-center mb-0">Nombre del coordinador</p>
+    <p class="text-center mb-0">Coordinador de la carrera de ingles</p>
+</div>
+<footer class="mt-4">
+
+    <p class="text-center" style="color: #1a2040;   font-size: 20px;  font-family: 'Roboto', sans-serif; font-weight: bold ">¡A la libertad por la Universidad!</p>
 </footer>
 @include('footer')
 </body>

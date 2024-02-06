@@ -137,6 +137,14 @@ Route::middleware(['Comprobar', 'cache.headers:private'])->group(function () {
     Route::delete('/EstudianteEvidencia/{id}',[EstudianteController::class,'EliminarEvidencia'])->name('Estudiante.EvidenciaDestroy');
 
 
+    Route::get('/Maestro/ReporteGrupo',[MaestroController::class,'ReporteGrupo'])->name('Maestro.Ver.GrupoReporte');
+    Route::get('/Reportelistado/{id}',[MaestroController::class,'ReporteListado'])->name('Maestro.Ver.ReporteListado');
+    Route::get('/infoReporte/{id}',[MaestroController::class,'infoPdf'])->name('Maestro.Ver.ReportePdf');
+    Route::post('/infoReporte',[MaestroController::class,'GeneratePdf'])->name('Maestro.Guardar.ReportePdf');
+
+    Route::post('/ValoracionCentro',[MaestroController::class,'notaCentro'])->name('Maestro.Guardar.NotaCentro');
+
+    Route::post('/permisos', [AdminController::class, 'permisosView'])->name('Administrador.permisos.guardar');
 
 
 });
@@ -149,14 +157,6 @@ Route::middleware(['auth','cache.headers:private'])->group(function(){
     Route::post('/out',[EstudianteController::class,'logoutAlumno'])->name('logoutAlumno');
 });
 
-Route::get('/Maestro/ReporteGrupo',[MaestroController::class,'ReporteGrupo'])->name('Maestro.Ver.estadistico');
-Route::get('/Reportelistado/{id}',[MaestroController::class,'ReporteListado'])->name('Maestro.Ver.ReporteListado');
-Route::get('/infoReporte/{id}',[MaestroController::class,'infoPdf'])->name('Maestro.Ver.ReportePdf');
-Route::post('/infoReporte',[MaestroController::class,'GeneratePdf'])->name('Maestro.Guardar.ReportePdf');
-
-Route::post('/ValoracionCentro',[MaestroController::class,'notaCentro'])->name('Maestro.Guardar.NotaCentro');
-
-Route::post('/permisos', [AdminController::class, 'permisosView'])->name('permisos.guardar');
 
 
 

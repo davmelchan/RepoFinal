@@ -81,11 +81,7 @@
             @endif
 
         @endforeach
-        <li class="nav-item">
-            <a class="nav-link" href="{{route('Maestro.Ver.estadistico')}}">
-                <i class="fa-solid fa-chart-simple"></i>
-                <span>Reporte alumnos</span></a>
-        </li>
+
 
 
         <!--  <li class="nav-item">

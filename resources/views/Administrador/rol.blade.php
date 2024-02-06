@@ -262,7 +262,7 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body mx-xl-4 text-center">
-                                                            <form id="formulario-Permiso{{ $rol->IdRol }}" method="post" action="{{route('permisos.guardar')}}">
+                                                            <form id="formulario-Permiso{{ $rol->IdRol }}" method="post" action="{{route('Administrador.permisos.guardar')}}">
                                                                 @csrf
 
                                                                 <div class="form-group" hidden="">

@@ -49,6 +49,10 @@ Procesos::create(['NombreProceso'=>'Listado Evidencia','Ruta'=>'Maestro.Listado.
 Procesos::create(['NombreProceso'=>'Evidencia Individual','Ruta'=>'ViewEvidencia']);
 */
 
+        Permisos::create(['NombrePermiso'=>'Vista Reportes','Ruta'=>'Maestro.Ver.GrupoReporte','Icono'=>'fa-solid fa-chart-simple','Titulo'=>'Reporte alumnos']);
+
+
+
 
 
 

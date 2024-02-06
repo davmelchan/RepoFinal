@@ -65,7 +65,7 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         @foreach($secciones as $seccion)
-            @if($seccion->permisos->Id == 13 )
+            @if($seccion->permisos->Id == 47 )
                 <li class="nav-item active">
                     <a class="nav-link" href="{{route($seccion->permisos->Ruta)}}">
                         <i class="{{$seccion->permisos->Icono}}"></i>
@@ -87,11 +87,7 @@
 
         @endforeach
 
-        <li class="nav-item">
-            <a class="nav-link" href="{{route('Maestro.Ver.estadistico')}}">
-                <i class="fa-solid fa-chart-simple"></i>
-                <span>Reporte alumnos</span></a>
-        </li>
+
 
         <!--  <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"

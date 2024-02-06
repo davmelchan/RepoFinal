@@ -37,9 +37,12 @@ $(window).resize(function () {
 const modal = document.getElementById('ModalSupervision');
 const mymodal = new bootstrap.Modal(modal);
 const form = document.getElementById('formulario');
+const titulo = document.getElementById('exampleModalLabel');
+const btn = document.getElementById('btnGuardar');
 function crearReporte(id){
     mymodal.show();
     form.reset();
+    btn.innerText="Guardar";
     $('#IdEstudiante').val(id);
     function actualizarContador() {
         var textarea = document.getElementById('Observacion');
@@ -67,6 +70,7 @@ function editarReporte(id,info){
     $('#HoraEntrada').val(info.HoraEntrada);
     $('#HoraSalida').val(info.HoraSalida);
     $('#Observacion').val(info.Observacion);
+    btn.innerText="Actualizar";
     function actualizarContador() {
         var textarea = document.getElementById('Observacion');
         var contador = document.getElementById('contador');

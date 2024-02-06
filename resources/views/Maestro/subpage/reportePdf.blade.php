@@ -92,7 +92,7 @@
 
 <div style="color:black" class="row mt-3 ml-5 mr-5">
     <p class="text-justify mb-0 ">
-        {{$infoReporte->Observacion}}
+        {{$infoReporte->Observacion}}.
     </p>
 
 </div>

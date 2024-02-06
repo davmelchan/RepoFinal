@@ -237,7 +237,7 @@
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-center mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Evaluaciones asignadas</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Grupos de prácticas de formación profesional</h1>
                 </div>
 
                 <!-- Content Row -->

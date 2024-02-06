@@ -59,6 +59,30 @@ function crearReporte(id){
 
 }
 
+function editarReporte(id,info){
+    mymodal.show();
+    $('#IdEstudiante').val(id);
+    $('#Area').val(info.Area);
+    $('#RolAsignado').val(info.RolAsignado);
+    $('#HoraEntrada').val(info.HoraEntrada);
+    $('#HoraSalida').val(info.HoraSalida);
+    $('#Observacion').val(info.Observacion);
+    function actualizarContador() {
+        var textarea = document.getElementById('Observacion');
+        var contador = document.getElementById('contador');
+        var maxLength = textarea.getAttribute('maxlength');
+        var longitudActual = textarea.value.length;
+        var caracteresRestantes = maxLength - longitudActual;
+        contador.textContent = caracteresRestantes + ' caracteres restantes';
+    }
+    actualizarContador();
+
+// Vincular el evento de entrada del usuario al textarea
+    var textarea = document.getElementById('Observacion');
+    textarea.addEventListener('input', actualizarContador);
+
+}
+
 function guardar(ruta){
     var formData = new FormData($('#formulario')[0]);
 
@@ -80,11 +104,11 @@ function guardar(ruta){
                 showConfirmButton: false,
                 timer: 1500
             });
-/*
+
             setTimeout(function() {
                 window.location.reload();
             }, 1550);
-*/
+
 
         },
         error: function(xhr) {
@@ -99,3 +123,5 @@ function guardar(ruta){
     })
 
 }
+
+

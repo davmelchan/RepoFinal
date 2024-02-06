@@ -252,22 +252,47 @@
                                         <td class="text-center">
 
                                             @php
+                                                $notaCentro = \App\Models\EvaluacionCentro::where('IdEstudiante', $alumno->Identificacion)
+                                                                                                         ->where('IdMaestro',session('datos')->first()->Identificacion)
+                                                                                                         ->where('IdEmpresa',$alumno->idEmpresa)
+                                                                                                         ->first(); @endphp
+
+                                            @if($notaCentro)
+                                                @php
+                                                    $ReportesRealizados = \App\Models\Reportes::where('IdAlumno', $alumno->Identificacion)
+                                                                                                             ->where('IdMaestro',session('datos')->first()->Identificacion)
+                                                                                                             ->first(); @endphp
+                                                @if(!$ReportesRealizados)
+                                                    <button class="btn btn-unan" onclick="crearReporte('{{$alumno->Identificacion}}')" >
+                                                        <i class="fa-solid fa-square-poll-vertical"></i>
+                                                        <span class="text">Crear reporte</span>
+                                                    </button>
+                                                @else
+                                                    <button class="btn btn-unan" onclick="editarReporte('{{$alumno->Identificacion}}',{{$ReportesRealizados}})" >
+                                                        <i class="fa-solid fa-square-poll-vertical"></i>
+                                                        <span class="text">Editar reporte</span>
+                                                    </button>
 
 
- @endphp
-
-                                            <button class="btn btn-unan" onclick="crearReporte('{{$alumno->Identificacion}}')" >
-                                                <i class="fa-solid fa-square-poll-vertical"></i>
-                                                <span class="text">Crear reporte</span>
-                                            </button>
-
-                                            <a href="{{route('Maestro.Ver.ReportePdf',['id'=>$alumno->Identificacion])}}" class="btn btn-success btn-icon-split">
+                                                    <a href="{{route('Maestro.Ver.ReportePdf',['id'=>$alumno->Identificacion])}}" target="_blank" class="btn btn-success btn-icon-split">
 
                                                 <span class="icon text-white-100">
-                                           <i class="fa-solid fa-eye"></i>
-                                        </span>
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </span>
 
-                                            </a>
+                                                @endif
+
+
+
+
+
+
+                                                </a>
+                                                @else
+                                                No disponible
+
+                                                @endif
+
                                         </td>
 
 

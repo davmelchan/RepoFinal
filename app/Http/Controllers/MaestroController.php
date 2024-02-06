@@ -135,7 +135,6 @@ use Illuminate\Support\Str;
 
 
           $fechaCompleta = ucfirst(Date::now()->format('l, j F Y'));
-          $datos = "cadena de texto";
           $conteoNotas =  DB::table('EvaluacionXNotas')
               ->join('Tb_Evaluaciones', 'EvaluacionXNotas.idEvaluacion', '=', 'Tb_Evaluaciones.IdEvaluacion')
               ->where('EvaluacionXNotas.idEstudiante', $id)
@@ -201,13 +200,26 @@ use Illuminate\Support\Str;
               return response()->json(['errors' => "Digite los campos vacios"],422);
           }
 
+          $verify = Reportes::where('IdAlumno', $request->IdEstudiante)
+              ->where('IdMaestro',session('datos')->first()->Identificacion)
+              ->first();
+
+          if(!$verify){
+              $supervision=['IdAlumno'=>$request->IdEstudiante, 'IdMaestro' =>$request->IdDocente
+                  ,'HoraEntrada'=>$request->HoraEntrada,'HoraSalida'=>$request->HoraSalida,'Area'=>$request->Area
+                  ,'Observacion'=>$request->Observacion, 'RolAsignado'=>$request->RolAsignado];
+
+              Reportes::insert($supervision);
+
+              return response()->json(['success'=>'Reporte creado de manera exitosa']);
+
+          }
           $supervision=['IdAlumno'=>$request->IdEstudiante, 'IdMaestro' =>$request->IdDocente
               ,'HoraEntrada'=>$request->HoraEntrada,'HoraSalida'=>$request->HoraSalida,'Area'=>$request->Area
               ,'Observacion'=>$request->Observacion, 'RolAsignado'=>$request->RolAsignado];
+          $verify->update($supervision);
+          return response()->json(['success'=>'Reporte actualizado de manera exitosa']);
 
-          Reportes::insert($supervision);
-
-          return response()->json(['success'=>'Reporte creado de manera exitosa']);
         }
         public function indexEvidencia(){
             $datos= GrupoxMaestro::where('IdMaestro', '=',session('datos')->first()->Identificacion)->get();

@@ -152,6 +152,16 @@ Route::middleware(['Comprobar', 'cache.headers:private'])->group(function () {
 Route::middleware(['auth','cache.headers:private'])->group(function(){
     Route::get('/setting',[EstudianteController::class,'indexSetting'])->name('Setting');
     Route::post('/setting/{id}',[EstudianteController::class,'SaveImg'])->name('GuardarImg');
+    Route::post('/ajustesInfo/{id}',[EstudianteController::class,'SaveInfoUser'])->name('SaveSettings');
+
+    Route::get('/config',[MaestroController::class,'indexConfiguracion'])->name('Config');
+    Route::post('/config/{id}',[MaestroController::class,'ImagenConfig'])->name('ImgConfig');
+
+
+
+
+
+
     Route::post('/salir',[AdminController::class,'logout'])->name('salir');
     Route::post('/logout',[MaestroController::class,'logoutMaestro'])->name('logoutDocente');
     Route::post('/out',[EstudianteController::class,'logoutAlumno'])->name('logoutAlumno');

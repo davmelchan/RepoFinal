@@ -182,15 +182,20 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{session('datos')->first()->infoUser->Nombres}} {{session('datos')->first()->infoUser->Apellidos}}</span>
 
                             @endif
-                            <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">                        </a>
+                                @if(isset($trap->FotoRuta))
+
+                                    <img class="img-profile rounded-circle" src="{{asset('storage').'/'.$trap->FotoRuta}}">
+
+
+                                @else
+                                    <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
+
+
+                                @endif
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Perfil
-                            </a>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="{{route('Config')}}">
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Ajustes
                             </a>

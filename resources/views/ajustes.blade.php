@@ -80,11 +80,11 @@
         @foreach($secciones as $seccion)
             <!-- Nav Item - Pages Collapse Menu -->
             @if(Route::currentRouteName() == $seccion->permisos->Ruta )
-            <li class="nav-item active">
-                <a class="nav-link" href="{{route($seccion->permisos->Ruta)}}">
-                    <i class="{{$seccion->Icono}}"></i>
-                    <span>{{$seccion->permisos->Titulo}}</span></a>
-            </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{route($seccion->permisos->Ruta)}}">
+                        <i class="{{$seccion->Icono}}"></i>
+                        <span>{{$seccion->permisos->Titulo}}</span></a>
+                </li>
             @else
                 <li class="nav-item">
                     <a class="nav-link" href="{{route($seccion->permisos->Ruta)}}">
@@ -173,10 +173,10 @@
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $resultado->Nombres }} {{ $resultado->Apellidos }}</span>
-                            @if(empty($resultado->rutaImagen))
+                            @if(empty($resultado->FotoRuta))
                                 <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
                             @else
-                                <img class="img-profile rounded-circle" src="{{asset('storage').'/'.$resultado->rutaImagen}}">
+                                <img class="img-profile rounded-circle" src="{{asset('storage').'/'.$resultado->FotoRuta}}">
                             @endif
 
 
@@ -184,10 +184,11 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="{{route('Setting')}}">
+                            <a class="dropdown-item" href="{{route('Config')}}">
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Ajustes
                             </a>
+
                             <div class="dropdown-divider"></div>
                             @auth
                                 <form action="{{route('logoutAlumno')}}" method="post">
@@ -210,97 +211,87 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div class="row">
-                <!-- Profile picture card-->
+                    <!-- Profile picture card-->
                     <div class="col-xl-4">
                         <!-- Profile picture card-->
                         <div class="card mb-4 mb-xl-0">
                             <div class="card-header">Foto de perfil</div>
                             <div class="card-body ">
                                 <div class="text-center">
-                                <!-- Profile picture image-->
-                                    @if(empty($resultado->rutaImagen))
-                                    <a href="#" id="seleccionarImagen">
-                                        <img id="imagenActual" class="text-center img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="{{asset('img/undraw_profile.svg')}}">
+                                    <!-- Profile picture image-->
+                                    @if(empty($resultado->FotoRuta))
+                                        <a href="#" id="seleccionarImagen">
+                                            <img id="imagenActual" class="text-center img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="{{asset('img/undraw_profile.svg')}}">
 
-                                    </a>
+                                        </a>
                                     @else
                                         <a href="#" id="seleccionarImagen">
-                                            <img  id="imagenActual" class="text-center img-fluid px-3 px-sm-4 mt-3 mb-4 " style="width: 25rem;" src="{{asset('storage').'/'.$resultado->rutaImagen}}">
+                                            <img  id="imagenActual" class="text-center img-fluid px-3 px-sm-4 mt-3 mb-4 " style="width: 25rem;" src="{{asset('storage').'/'.$resultado->FotoRuta}}">
 
                                         </a>
                                     @endif
 
                                     <input type="file" id="inputImagen" style="display: none;">
-                                <!-- Profile picture help block-->
-                                <div class="small font-italic text-muted mb-4">JPG or PNG no mayor a 5 MB</div>
-                                <!-- Profile picture upload button-->
+                                    <!-- Profile picture help block-->
+                                    <div class="small font-italic text-muted mb-4">JPG or PNG no mayor a 5 MB</div>
+                                    <!-- Profile picture upload button-->
 
-                                <button onclick="subirImagen('{{route('GuardarImg',":id")}}','{{$resultado->Identificacion}}')" class="btn btn-primary" type="button">Subir foto de perfil</button>
+                                    <button onclick="subirImagen('{{route('ImgConfig',":id")}}','{{$resultado->Identificacion}}')" class="btn btn-primary" type="button">Subir foto de perfil</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-xl-8">
-                    <!-- Account details card-->
-                    <div class="card mb-4">
-                        <div class="card-header">Información del usuario</div>
-                        <div class="card-body">
-                            <form id="formularioUser" method="post">
-                                @csrf
-                                <!-- Form Row-->
-                                <div class="row gx-3 mb-3">
-                                    <!-- Form Group (first name)-->
-                                    <div class="col-md-6">
-                                        <label class="small mb-1" for="inputFirstName">Nombres</label>
-                                        <input class="form-control" readonly id="inputFirstName" type="text" placeholder="Ingrese sus nombres" value="{{$resultado->Nombres}}">
-                                    </div>
-                                    <!-- Form Group (last name)-->
-                                    <div class="col-md-6">
-                                        <label class="small mb-1" for="inputLastName">Apellidos</label>
-                                        <input class="form-control" readonly id="inputLastName" type="text" placeholder="Ingrese sus apellidos" value="{{$resultado->Apellidos}}">
-                                    </div>
-                                </div>
-                                <!-- Form Row        -->
-                                <div class="row gx-3 mb-3">
-                                    <!-- Form Group (organization name)-->
-                                    <div class="col-md-6">
-                                        <label class="small mb-1" for="inputOrgName">Empresa</label>
-                                        <input class="form-control" id="inputOrgName" type="text" placeholder="" readonly value="{{$resultado->Empresa->Nombre}}">
-                                    </div>
-                                    <!-- Form Group (location)-->
-                                    <div class="col-md-6">
-                                        <label class="small mb-1" for="inputTelefono">Teléfono</label>
-                                        <input class="form-control" id="inputTelefono" name="inputTelefono" required type="text" min="8" max="8" placeholder="ingrese numero de teléfono" value="{{$resultado->Telefono}}">
-                                    </div>
-                                </div>
-                                <!-- Form Group (email address)-->
-                                <div class="mb-3">
-                                    <label class="small mb-1" for="Direccion">Dirección</label>
-                                    <textarea class="form-control" style="resize: none;" required id="Direccion" onresize="false" name="Direccion" cols="30" rows="10">{{$resultado->Direccion}}</textarea>
+                        <!-- Account details card-->
+                        <div class="card mb-4">
+                            <div class="card-header">Información del usuario</div>
+                            <div class="card-body">
+                                <form id="formularioUser" method="post">
 
-                                </div>
-                                <!-- Form Row-->
-                                <div class="row gx-3 mb-3">
-                                    <!-- Form Group (phone number)-->
-                                    <div class="col-md-6">
-                                        <label class="small mb-1" for="inputPhone">Identificación</label>
-                                        <input class="form-control" id="inputEmailAddress" type="email" readonly placeholder="Enter your email address" value="{{$resultado->Identificacion}}">
+                                    <!-- Form Row-->
+                                    <div class="row gx-3 mb-3">
+                                        <!-- Form Group (first name)-->
+                                        <div class="col-md-6">
+                                            <label class="small mb-1" for="inputFirstName">Nombres</label>
+                                            <input class="form-control" readonly id="inputFirstName" type="text" placeholder="Ingrese sus nombres" value="{{$resultado->Nombres}}">
+                                        </div>
+                                        <!-- Form Group (last name)-->
+                                        <div class="col-md-6">
+                                            <label class="small mb-1" for="inputLastName">Apellidos</label>
+                                            <input class="form-control" readonly id="inputLastName" type="text" placeholder="Ingrese sus apellidos" value="{{$resultado->Apellidos}}">
+                                        </div>
                                     </div>
-                                    <!-- Form Group (birthday)-->
-                                    <div class="col-md-6">
-                                        <label class="small mb-1" for="inputBirthday">Género</label>
-                                        <input class="form-control" id="inputBirthday" type="text" name="birthday" readonly placeholder="Enter your birthday" value="{{$resultado->Genero->Nombre}}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <button type="button" onclick="guardar('{{route('SaveSettings',":id")}}','{{$resultado->Identificacion}}')" class="btn form-control btn-primary rounded submit px-3">Actualizar</button>
-                                </div>
-                                <!-- Save changes button-->
 
-                            </form>
+                                    <div class="row mb-3">
+
+                                        <div class="col">
+                                            <label class="small mb-1" for="inputEspecialidad">Especialidad</label>
+                                            <input class="form-control" readonly id="inputEspecialidad" name="inputEspecialidad" type="text" placeholder="Ingrese la especialidad" value="{{$resultado->especialidad}}">
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Form Row-->
+                                    <div class="row gx-3 mb-3">
+                                        <!-- Form Group (phone number)-->
+                                        <div class="col-md-6">
+                                            <label class="small mb-1" for="inputPhone">Identificación</label>
+                                            <input class="form-control" id="inputEmailAddress" type="email" readonly placeholder="Enter your email address" value="{{$resultado->Identificacion}}">
+                                        </div>
+                                        <!-- Form Group (birthday)-->
+                                        <div class="col-md-6">
+                                            <label class="small mb-1" for="inputBirthday">Género</label>
+                                            <input class="form-control" id="inputBirthday" type="text" name="birthday" readonly placeholder="Enter your birthday" value="{{$resultado->Genero->Nombre}}">
+                                        </div>
+                                    </div>
+
+                                    <!-- Save changes button-->
+
+                                </form>
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </div>
 
@@ -342,45 +333,11 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">¿Estas seguro de cerrar sesión?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Haz clic en el boton "<strong>confirmar</strong>" para cerrar sesión.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <a class="btn btn-danger" href="{{url('/')}}">Confirmar</a>
-            </div>
-        </div>
-    </div>
-</div>
+
 @include('footer')
 
 
 <script>
-
-    let miInput2 = document.getElementById('inputTelefono');
-    miInput2.addEventListener('input', function() {
-        let valor = miInput2.value;
-
-        if (valor.length > 8) {
-            miInput2.value = valor.slice(0, 8); // Limita la longitud del texto a 10 caracteres
-        }
-
-        // Remover caracteres no numéricos
-
-        // Actualizar el valor del input
-        miInput2.value =  valor.replace(/\D/g, '');
-
-
-    });
 
 
 
@@ -431,47 +388,6 @@
         }
     }
 
-    function guardar(ruta,id){
-        var formData = new FormData($('#formularioUser')[0]);
-
-        // Realiza la llamada AJAX
-        $.ajax({
-            type: 'POST',
-            url: ruta.replace(':id',id),
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                // Si la llamada es exitosa, puedes cerrar el modal, mostrar un mensaje, etc.
-
-
-
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: response.success,
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-
-                setTimeout(function() {
-                    window.location.reload();
-                }, 1550);
-
-
-            },
-            error: function(xhr) {
-                Swal.fire(
-                    'Error',
-                    xhr.responseJSON.errors,
-                    'error'
-                )
-
-
-            }
-        })
-
-    }
 
 
 

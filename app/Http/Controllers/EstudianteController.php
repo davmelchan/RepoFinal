@@ -198,6 +198,10 @@ class EstudianteController extends Controller
 
     }
     public function indexSetting(){
+        $trap = Estudiante::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
+        if(!$trap){
+            return redirect()->back();
+        }
         $resultado = Estudiante::where('Identificacion', '=', session('datos')->first()->Identificacion)->first();
         $rol = Session::get('rol');
         $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
@@ -220,7 +224,7 @@ class EstudianteController extends Controller
 
             $archivo=$request->file("imagen");
             $nombreOriginal = $archivo->getClientOriginalName();
-            $foto = $archivo->store('storage/Fotografia',$nombreOriginal);
+            $foto = $archivo->store('uploads','public');
             $grupo = ['rutaImagen'=>$foto];
             $ruta->update($grupo);
             return response()->json(['success' => 'Foto actualizada exitosamente']);
@@ -237,7 +241,41 @@ class EstudianteController extends Controller
         }
 
     }
+   public function SaveInfoUser($id,Request $request){
 
+
+
+       $campo=[
+           "inputTelefono"=>'required|string',
+           "Direccion"=>'required|string',
+       ];
+       $validator = Validator::make($request->all(), $campo);
+
+
+       if ($validator->fails()) {
+           return response()->json(['errors' => "Digite lo espacios en blanco"],422);
+       }
+
+
+
+       $celular= [
+           "inputTelefono"=>'required|max:8|min:8',
+           ];
+       $tel = Validator::make($request->all(), $celular);
+
+
+       if ($tel->fails()) {
+           return response()->json(['errors' => "El campo telefono debe contener 8 digitos"],422);
+       }
+
+
+        $verificar = Estudiante::where('Identificacion','=',$id)->first();
+        $campos= ['Direccion'=>$request->Direccion,'Telefono'=>$request->inputTelefono];
+        $verificar->update($campos);
+       return response()->json(['success'=>'Datos almacenados exitosamente']);
+
+
+   }
 
 
     public function logoutAlumno (Request $request){

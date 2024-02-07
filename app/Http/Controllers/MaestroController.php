@@ -44,6 +44,7 @@ use Illuminate\Support\Str;
         }
 
         public function indexGrupo(){
+            $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
 
             $datos= GrupoxMaestro::where('IdMaestro', '=',session('datos')->first()->Identificacion)->get();
             foreach ($datos as $dato) {
@@ -52,10 +53,12 @@ use Illuminate\Support\Str;
             $rol = Session::get('rol');
             $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
 
-            return view('Maestro/maestro',compact('datos','secciones'));
+            return view('Maestro/maestro',compact('datos','secciones','trap'));
         }
 
         public function listadoAlumno ($id){
+            $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
+
             $verificacion = GrupoxMaestro::where('IdGrupo','=',$id)->where('IdMaestro','=',session('datos')->first()->Identificacion)
                 ->where('Estado','=',1)->first();
 
@@ -67,43 +70,47 @@ use Illuminate\Support\Str;
             $rol = Session::get('rol');
             $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
 
-            return view('Maestro/subpage/alumnosgrupo',compact('resultado','alumnos','secciones'));
+            return view('Maestro/subpage/alumnosgrupo',compact('resultado','alumnos','secciones','trap'));
 
         }
 
         public function indexEvaluaciones(){
-
+            $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
             $datos= GrupoxMaestro::where('IdMaestro', '=',session('datos')->first()->infoUser->Identificacion )->get();
             foreach ($datos as $dato) {
                 $dato->conteo = Estudiante::where('idGrupo', '=', $dato->IdGrupo)->count();
             }
             $rol = Session::get('rol');
             $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-            return view('Maestro/evaluacionasignada',compact('datos','secciones'));
+            return view('Maestro/evaluacionasignada',compact('datos','secciones','trap'));
         }
 
         public function indexSupervisiones(){
+            $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
+
             $datos= GrupoxMaestro::where('IdMaestro', '=',session('datos')->first()->Identificacion)->get();
             foreach ($datos as $dato) {
                 $dato->conteo = Estudiante::where('idGrupo', '=', $dato->IdGrupo)->count();
             }
             $rol = Session::get('rol');
             $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-            return view('Maestro/supervisiones',compact('datos','secciones'));
+            return view('Maestro/supervisiones',compact('datos','secciones','trap'));
 
         }
 
       public function ReporteGrupo(){
+          $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
           $datos= GrupoxMaestro::where('IdMaestro', '=',session('datos')->first()->Identificacion)->get();
           foreach ($datos as $dato) {
               $dato->conteo = Estudiante::where('idGrupo', '=', $dato->IdGrupo)->count();
           }
           $rol = Session::get('rol');
           $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-          return view('Maestro/ReporteGrupo',compact('datos','secciones'));
+          return view('Maestro/ReporteGrupo',compact('datos','secciones','trap'));
       }
 
       public function ReporteListado($id){
+          $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
           $verificacion = GrupoxMaestro::where('IdGrupo','=',$id)->where('IdMaestro','=',session('datos')->first()->Identificacion)
               ->where('Estado','=',1)->first();
 
@@ -114,10 +121,12 @@ use Illuminate\Support\Str;
           $alumnos= Estudiante::where('idGrupo', '=', $id)->get();
           $rol = Session::get('rol');
           $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-          return view('Maestro/subpage/ListadoReporte',compact('resultado','alumnos','secciones'));
+          return view('Maestro/subpage/ListadoReporte',compact('resultado','alumnos','secciones','trap'));
 
 
       }
+
+
       public function infoPdf($id){
           $consulta = Estudiante::where('Identificacion','=',$id)->first();
           $verificacion = GrupoxMaestro::where('IdMaestro','=',session('datos')->first()->Identificacion)
@@ -221,19 +230,76 @@ use Illuminate\Support\Str;
           return response()->json(['success'=>'Reporte actualizado de manera exitosa']);
 
         }
+        public function indexConfiguracion(){
+            $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
+            if(!$trap){
+                return redirect()->back();
+            }
+            $resultado = Maestros::where('Identificacion', '=', session('datos')->first()->Identificacion)->first();
+            $rol = Session::get('rol');
+
+            $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
+            return view('ajustes',compact('secciones','resultado'));
+
+        }
+
+        public function ImagenConfig(Request $request,$id){
+
+            $imag=[
+                "imagen"=>'required|image|mimes:png,jpg|max:5120',
+            ];
+            $validator = Validator::make($request->all(), $imag);
+            if($validator->fails()) {
+                return response()->json(['errors' => "Formato de archivo no compatible"],422);
+            }
+
+            $ruta= Maestros::where('Identificacion',$id)->first();
+
+            if(isset($ruta->FotoRuta)){
+
+                $archivo=$request->file("imagen");
+                $foto = $archivo->store('uploads','public');
+                $grupo = ['FotoRuta'=>$foto];
+                $ruta->update($grupo);
+                return response()->json(['success' => 'Foto actualizada exitosamente']);
+
+
+
+            }else{
+                $archivo=$request->file("imagen");
+                $nombreOriginal = $archivo->getClientOriginalName();
+                $foto = $archivo->store('uploads','public');
+                $grupo = ['FotoRuta'=>$foto];
+                $ruta->update($grupo);
+                return response()->json(['success' => 'Foto guardada exitosamente']);
+            }
+
+        }
+
+
+
+
+
+
+
+
+
         public function indexEvidencia(){
+            $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
             $datos= GrupoxMaestro::where('IdMaestro', '=',session('datos')->first()->Identificacion)->get();
             foreach ($datos as $dato) {
                 $dato->conteo = Estudiante::where('idGrupo', '=', $dato->IdGrupo)->count();
             }
             $rol = Session::get('rol');
             $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-            return view('Maestro/evidencia',compact('datos','secciones'));
+            return view('Maestro/evidencia',compact('datos','secciones','trap'));
 
         }
 
 
         public function indexasignaciones($id){
+            $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
+
             $verificacion = GrupoxMaestro::where('IdGrupo','=',$id)->where('IdMaestro','=',session('datos')->first()->Identificacion)
             ->where('Estado','=',1)->first();
             if(!$verificacion){
@@ -251,12 +317,14 @@ use Illuminate\Support\Str;
             }
             $rol = Session::get('rol');
             $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-            return view('Maestro/subpage/asignadas',compact('idGrupo','unidades','tipoUnidad','datos','secciones','puntos'));
+            return view('Maestro/subpage/asignadas',compact('idGrupo','unidades','tipoUnidad','datos','secciones','puntos','trap'));
 
         }
 
 
         public function SupervisionListado($id){
+            $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
+
             $verificacion = GrupoxMaestro::where('IdGrupo','=',$id)->where('IdMaestro','=',session('datos')->first()->Identificacion)
                 ->where('Estado','=',1)->first();
 
@@ -267,12 +335,14 @@ use Illuminate\Support\Str;
             $alumnos= Estudiante::where('idGrupo', '=', $id)->get();
             $rol = Session::get('rol');
             $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-            return view('Maestro/subpage/ListadoSupervision',compact('resultado','alumnos','secciones'));
+            return view('Maestro/subpage/ListadoSupervision',compact('resultado','alumnos','secciones','trap'));
 
 
         }
 
         public function EvidenciaListado($id){
+            $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
+
             $verificacion = GrupoxMaestro::where('IdGrupo','=',$id)->where('IdMaestro','=',session('datos')->first()->Identificacion)
                 ->where('Estado','=',1)->first();
 
@@ -283,11 +353,12 @@ use Illuminate\Support\Str;
             $alumnos= Estudiante::where('idGrupo', '=', $id)->get();
             $rol = Session::get('rol');
             $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-            return view('Maestro/subpage/ListadoEvidencia',compact('resultado','alumnos','secciones'));
+            return view('Maestro/subpage/ListadoEvidencia',compact('resultado','alumnos','secciones','trap'));
 
         }
 
         public function EvidenciaVista($id){
+            $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
 
             $consulta = Estudiante::where('Identificacion','=',$id)->first();
             $verificacion = GrupoxMaestro::where('IdMaestro','=',session('datos')->first()->Identificacion)
@@ -304,12 +375,14 @@ use Illuminate\Support\Str;
             }
             $rol = Session::get('rol');
             $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-            return view('Maestro/subpage/EvideciaView',compact('evidencias','secciones'));
+            return view('Maestro/subpage/EvideciaView',compact('evidencias','secciones','trap'));
 
         }
 
 
         public function SupervisionVista($id){
+            $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
+
             $resultado = Estudiante::where('Identificacion' , '=' , $id)->first();
 
             $verificacion = GrupoxMaestro::where('IdMaestro','=',session('datos')->first()->Identificacion)
@@ -329,11 +402,12 @@ use Illuminate\Support\Str;
             }
             $rol = Session::get('rol');
             $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-            return view('Maestro/subpage/SupervisionView',compact('resultado','informaciones','identificador','tipoSupervision','secciones'));
+            return view('Maestro/subpage/SupervisionView',compact('resultado','informaciones','identificador','tipoSupervision','secciones','trap'));
 
         }
 
             public function indexEvaCorregida(){
+                $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
 
                 $datos= GrupoxMaestro::where('IdMaestro', '=',session('datos')->first()->Identificacion)->get();
                 foreach ($datos as $dato) {
@@ -343,11 +417,12 @@ use Illuminate\Support\Str;
                 $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
 
 
-                return view('Maestro/evaluacioncorregida',compact('datos','secciones'));
+                return view('Maestro/evaluacioncorregida',compact('datos','secciones','trap'));
             }
 
 
             public function CorreccionCalificacion($id){
+                $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
 
                 $verificacion = GrupoxMaestro::where('IdGrupo','=',$id)->where('IdMaestro','=',session('datos')->first()->Identificacion)
                     ->where('Estado','=',1)->first();
@@ -365,7 +440,7 @@ use Illuminate\Support\Str;
                 $t = 1;
                 $idgrupo = $id;
                 return view('Maestro/subpage/corregidas',compact('estudiantes','datos','i','idgrupo','t'
-               ,'secciones' ));
+               ,'secciones','trap' ));
                 }
             }
 

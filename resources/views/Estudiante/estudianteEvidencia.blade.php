@@ -214,14 +214,10 @@
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $resultado->Nombres }} {{ $resultado->Apellidos }}</span>
-                            @if(isset(session('datos')->first()->rutaImagen))
-
+                            @if(empty($resultado->rutaImagen))
                                 <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
-
                             @else
-
-                                <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
-
+                                <img class="img-profile rounded-circle" src="{{asset('storage').'/'.$resultado->rutaImagen}}">
                             @endif
 
 

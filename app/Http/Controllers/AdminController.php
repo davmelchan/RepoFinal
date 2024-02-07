@@ -43,6 +43,7 @@ class AdminController extends Controller
 ///Rol
     public function indexRol()
     {
+        $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
 
         $datos = Roles::all();
         $rol = Session::get('rol');
@@ -52,7 +53,7 @@ class AdminController extends Controller
             return Str::startsWith($dato->Ruta, 'Estudiante.');
         });
         $y=1;
-        return view('Administrador/rol',compact('secciones','y','dataPermiso' ,'datos'),['param'=>$this->parametro]);
+        return view('Administrador/rol',compact('secciones','y','dataPermiso' ,'datos','trap'),['param'=>$this->parametro]);
     }
 
     public function GuardarRol(Request $request)
@@ -96,6 +97,7 @@ class AdminController extends Controller
     }
 
     public function permisosView(Request $request){
+
         $rolId = $request->input('pID');
         $variables = $request->input('notas');
         $valoresPosibles = Permisos::pluck('Id')->all();
@@ -154,10 +156,12 @@ class AdminController extends Controller
 
 ///Genero
     public function indexGenero(){
+        $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
+
         $datos['genero'] = Genero::all();
         $rol = Session::get('rol');
         $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-        return view('Administrador/genero', $datos,compact('secciones'));
+        return view('Administrador/genero', $datos,compact('secciones','trap'));
     }
 
     public function GuardarGenero(Request $request){
@@ -203,10 +207,12 @@ class AdminController extends Controller
 
 ////Unidad
     public function indexUnidad(){
+        $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
+
         $datos['unidades'] = Unidad::all();
         $rol = Session::get('rol');
         $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-        return view('Administrador/unidades', $datos,compact('secciones'));
+        return view('Administrador/unidades', $datos,compact('secciones','trap'));
     }
     public function GuardarUnidad(Request $request){
         if(isset($request->IdUnidad)){
@@ -247,10 +253,12 @@ class AdminController extends Controller
 
 ////Empresa
     public function indexEmpresa(){
+        $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
+
         $datos['centros'] = Empresa::all();
         $rol = Session::get('rol');
         $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-        return view('Administrador/empresa',$datos,compact('secciones'));
+        return view('Administrador/empresa',$datos,compact('secciones','trap'));
     }
     public function GuardarEmpresa(Request $request){
 
@@ -339,10 +347,12 @@ class AdminController extends Controller
 
 ////Categoria Evaluacion
     public function indexEvaluacion(){
+        $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
+
         $datos['categorias'] = Evaluacion::all();
         $rol = Session::get('rol');
         $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-        return view('Administrador/AspectosEvaluacion',$datos,compact('secciones'));
+        return view('Administrador/AspectosEvaluacion',$datos,compact('secciones','trap'));
     }
     public function GuardarEvaluacion(Request $request){
         if(isset($request->IdAspecto)){
@@ -383,10 +393,11 @@ class AdminController extends Controller
 
 ////Categoria Supervision
     public function indexSupervision(){
+        $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
         $datos['supervisiones']= CatSupervisiones::all();
         $rol = Session::get('rol');
         $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-        return view('Administrador/valoracion',$datos,compact('secciones'));
+        return view('Administrador/valoracion',$datos,compact('secciones','trap'));
     }
     public function GuardarCatSupervision(Request $request){
         if(isset($request->IdValoracion)){
@@ -426,12 +437,14 @@ class AdminController extends Controller
     ///Maestros
     public function indexMaestro()
     {
+        $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
+
         $maestros = Maestros::all();
         $generos = Genero::all();
         $roles = Roles::all();
         $rol = Session::get('rol');
         $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-        return view('Administrador/admin',compact('maestros'),compact('generos','roles','secciones'));
+        return view('Administrador/admin',compact('maestros'),compact('generos','roles','secciones','trap'));
     }
 
 
@@ -577,12 +590,14 @@ class AdminController extends Controller
 
     ///crud estudiante
     public function indexEstudiante(){
+        $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
+
         $estudiantes = Estudiante::all();
         $generos = Genero::all();
         $empresas = Empresa::all();
         $rol = Session::get('rol');
         $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-        return view('Administrador/estudiante',compact('estudiantes'),compact('generos','secciones','empresas'));
+        return view('Administrador/estudiante',compact('estudiantes'),compact('generos','secciones','empresas','trap'));
 
     }
 

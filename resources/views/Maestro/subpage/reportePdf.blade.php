@@ -41,7 +41,9 @@
 <div class="position-relative" style=" height:10%; width: 100%;" >
     <img src="{{asset('img/logoReporteunan.png')}}" class="imagen-container" width="33%" alt="Logotipo UNAN" >
     <div class="texto-container">
-        <p class="text-right">FACULTAD REGIONAL MULTIDISPLINARIA DE CARAZO   DEPARTAMENTO DE CIENCIAS DE LA EDUCACIÓN</p>
+        <p class="text-right mb-0">CENTRO UNIVERSITARIO REGIONAL</p>
+        <p class="text-right mt-0">DEPARTAMENTO DE CIENCIAS DE LA EDUCACIÓN</p>
+
 
     </div>
 </div>
@@ -53,7 +55,7 @@
 <div style="color: black" class="row mt-3 ml-5 mr-5">
     <p class="text-left mb-0"><strong>{{$nomProf}}</strong></p>
     <p class="text-left mb-0">{{$especialidad}}</p>
-    <p class="text-left">UNAN-FAREM Carazo</p>
+    <p class="text-left">UNAN-CUR Carazo</p>
 
 </div>
 <div style="color: black" class="row mt-5 ml-5 mr-5">
@@ -68,7 +70,7 @@
     <strong>{{strtolower($consulta->Empresa->Nombre)}}</strong> donde realizo sus prácticas en el área de <strong>{{strtolower($infoReporte->Area)}}</strong>
     desempeñandose en funcion de <strong>{{strtolower($infoReporte->RolAsignado)}}</strong> cumpliendo sus asignaciones en un total
         de 120 horas, mismas que fueron desarrolladas en un horario de <strong>{{strtolower($infoReporte->HoraEntrada)}}</strong> a <strong>{{strtolower($infoReporte->HoraSalida)}}</strong>
-    obteniendo una valoración de <strong>{{$empreEv->Nota}} %</strong> en conformidad del cumplimiento de sus asignaciones, realizada por el responsable del centro de práctica
+    obteniendo una valoración de <strong>{{$empreEv->Nota}}%</strong> en conformidad del cumplimiento de sus asignaciones, realizada por el responsable del centro de práctica
         <strong>{{$consulta->Empresa->Responsable}}</strong> de igual manera se obtuvieron los siguientes parametros:</p>
 
 </div>
@@ -99,7 +101,7 @@
 <div style="color: black" class="row mt-4 ml-5 mr-5">
     <p class="text-center mb-0">__________________________</p>
     <p class="text-center mb-0"><strong> Kenya Ortiz</strong></p>
-    <p class="text-center mb-0">Coordinador de la carrera de ingles</p>
+    <p class="text-center mb-0">Coordinador(a) de la carrera de ingles</p>
 </div>
 <footer class="mt-4">
 

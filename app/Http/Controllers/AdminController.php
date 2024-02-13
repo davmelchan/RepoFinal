@@ -731,7 +731,7 @@ class AdminController extends Controller
             $fechaFormateada = $fechaHoy->format('Y-m-d');
 
             $usuario = ['Identificacion'=>$request->identificador,'password'=>md5($request->Clave)
-                ,'FechaCreacion'=>$fechaFormateada,'Estado'=>1,'IdRol'=>$request->Roles];
+                ,'FechaCreacion'=>$fechaFormateada,'Estado'=>1,'IdRol'=>29];
             User::insert($usuario);
 
 

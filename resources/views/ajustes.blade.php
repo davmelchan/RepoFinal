@@ -316,7 +316,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Derechos de Autor &copy; UNAN-FAREM Carazo</span>
+                    <span>Derechos de Autor &copy; UNAN CUR-Carazo</span>
                 </div>
             </div>
         </footer>

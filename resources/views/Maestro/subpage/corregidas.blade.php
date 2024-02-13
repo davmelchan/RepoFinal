@@ -299,6 +299,7 @@
                                                               ->where('idEstudiante', $estudiante->Identificacion)
                                                               ->first();
                                                 $valorNota = $nota ? $nota->nota : '';
+                                                $valInt = intval($valorNota);
                                             @endphp
 
                                             @if($data->Estado == 1)
@@ -316,7 +317,7 @@
                                                     <input type="text" hidden="" name="notas[{{$data->IdEvaluacion}}][ev{{$t}}][IdEvaluacion]" value="{{ $data->IdEvaluacion }}">
                                                 <input type="text" hidden="" name="notas[{{$data->IdEvaluacion}}][ev{{$t}}][Identificacion]" value="{{ $estudiante->Identificacion }}">
                                                 <input class="input-group" required name="notas[{{$data->IdEvaluacion}}][ev{{$t}}][nota]" value="{{$valorNota}}" id="not"  type="number"  min="0" max="{{$data->Puntaje}}">
-                                                <p hidden>{{$i=$i+$valorNota}}</p>
+                                                <p hidden>{{$i=$i+$valInt}}</p>
 
 
 
@@ -367,7 +368,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Derechos de Autor &copy; UNAN-FAREM Carazo</span>
+                    <span>Derechos de Autor &copy; UNAN CUR-Carazo</span>
                 </div>
             </div>
         </footer>

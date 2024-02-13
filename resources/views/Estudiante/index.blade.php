@@ -280,7 +280,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Derechos de Autor &copy; UNAN-FAREM Carazo</span>
+                    <span>Derechos de Autor &copy; UNAN CUR-Carazo</span>
                 </div>
             </div>
         </footer>
@@ -400,7 +400,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" form="formulario" id="btnGuardar" onclick="guardarGrupo('{{route('corroborar')}}')" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+                <button type="button" form="formulario" id="btnGuardar" onclick="guardarGrupo('{{route('Estudiante.corroborar')}}')" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
 
                 @auth
                     <form action="{{route('logoutAlumno')}}" method="post">
@@ -427,7 +427,6 @@
             <div class="modal-body">
                 <form method="post" action="{{route('Estudiante.corroborar')}}" id="formulario">
                     @csrf
-
                     <div class="form-group" hidden>
                         <label for="IdForm" class="col-form-label">Identificador:</label>
                         <div class="input-group">
@@ -460,7 +459,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" form="formulario" id="btnGuardar" onclick="guardarGrupo('{{route('corroborar')}}')" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+                <button type="button" form="formulario" id="btnGuardar" onclick="guardarGrupo('{{route('Estudiante.corroborar')}}')" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
 
                 @auth
                     <form action="{{route('logoutAlumno')}}" method="post">

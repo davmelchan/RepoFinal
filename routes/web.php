@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
     return view('login');
 });*/
 
-Route::post('/',[LoginController::class,'login'])->middleware('guest');
+Route::post('/',[LoginController::class,'login'])->middleware('guest')->name('LoginPost');
 
 /*
  Vistas del rol de administrador

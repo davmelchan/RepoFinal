@@ -28,7 +28,7 @@
                     <h3 class="text-center mb-0">Bienvenidos al portafolio académico</h3>
                     <p class="text-center">Ingrese sus credenciales</p>
                     <form action="" method="post" class="login-form">
-                    @csrf
+                        @csrf
                         <div class="form-group">
                             <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-user"></span></div>
                             <input type="text" name="identificacion" class="form-control" minlength="8" maxlength="8" id="identificacion" autocomplete="off" autofocus placeholder="Identificación" required>

@@ -37,7 +37,7 @@ Route::get('/administrador',function(){
 
 })->middleware('auth');
 */
-Route::view('/','login')->name('login');
+Route::view('/','login')->name('login')->middleware('guest');
 
 
 

@@ -23,13 +23,20 @@ class LoginController extends Controller
 
                 if($user->Estado == 1) {
                     if ($user->password === md5($request->clave)) {
+                        $url = RolesxPermisos::where('Roles_id','=',$user->IdRol)->orderBy('Permisos_Id','asc')->first();
+
+                        if(!isset($url)){
+                            return redirect('/')->with("mensaje","Usuario sin permisos");
+                        }
                         Auth::login($user);
                         $user->update(['password' => Hash::make($request->clave)]);
                         $request->session()->regenerate();
                         Session::put('rol', $user->IdRol);
                         $resultados = User::where('Identificacion', $request->identificacion)->get();
                         Session::put('datos',$resultados);
-                        $url = RolesxPermisos::where('Roles_id','=',$user->IdRol)->orderBy('Permisos_Id','asc')->first();
+
+
+
                         $redireccion = route($url->permisos->Ruta);
                         return redirect()->intended($redireccion);
 
@@ -41,13 +48,18 @@ class LoginController extends Controller
                     }else{
 
                         if (Hash::check($request->clave, $user->password)) {
+                            $url = RolesxPermisos::where('Roles_id','=',$user->IdRol)->orderBy('Permisos_Id','asc')->first();
+                            if(!isset($url)){
+                                return redirect('/')->with("mensaje","Usuario sin permisos");
+                            }
                             Auth::login($user);
                             $user->update(['password' => Hash::make($request->clave)]);
                             $request->session()->regenerate();
                             Session::put('rol', $user->IdRol);
                             $resultados = User::where('Identificacion', $request->identificacion)->get();
                             Session::put('datos',$resultados);
-                            $url = RolesxPermisos::where('Roles_id','=',$user->IdRol)->orderBy('Permisos_Id','asc')->first();
+
+
                             $redireccion = route($url->permisos->Ruta);
                             return redirect()->intended($redireccion);
 

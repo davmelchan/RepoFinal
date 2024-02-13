@@ -1,66 +1,99 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Logo](https://www.articulo66.com/wp-content/uploads/2020/03/150916dptNota1-9photo01-700x375.jpg)
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 💼 Portafolio academico
+Este es un proyecto de caracter académico donde se representara de manera exacta como se realizo el sistema web llamado "Portafolio Académico" además de explicar de manera profunda las funcionalidades y caracteristicas para uso correcto.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 💻 Tecnologias
+Para la creacion de este proyecto se determino primero debe ser un sistema web por lo cual las tecnologias para un buen desarrollo de este sistema son las siguientes:
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## Frontend
 
-## Contributing
+- Html
+- Css
+- JavaScript
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+## Backend
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- PHP 8.1
+## Framework Backend
+- Laravel
+## Framework Frontend
+- Bootstrap 4
+- Datatable
+- SweetAlert2
+- Select2
 
-## Security Vulnerabilities
+## Base de datos
+- SQL Server 2022
+- Lenguaje de consultas SQL
+## 🔐 Usuarios
+Los usuarios clave para la eficiencia del sistema web son:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Administrador
+- Docente
+- Estudiante
 
-## License
+Estos usuarios son los que tienen un rol importante para que se realicen los procedimientos de prácticas de formación profesional lo cual cada uno tiene alcances y limitantes dentro del sistema web.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🔑 Alcances y limitantes de los usuarios
+
+### ✅ Alcances del administrador
+- El Administrador puede "agregar usuarios".
+- El Administrador puede "editar usuarios".
+- El Administrador puede "eliminar usuarios".
+- El Administrador puede "agregar informacion a los catalogos".
+- El Administrador puede "editar informacion de los catalogos".
+- El Administrador puede "eliminar informacion de los catalogos".
+
+### ❌ Limitantes del administrador
+- El administrador no puede crear,ver,editar o eliminar supervisiones.
+- El administrador no puede crear,ver,editar o eliminar evidencias.
+- El administrador no puede crear reportes.
+- El administrador no puede crear,ver, editar o eliminar evaluaciones asignadas.
+- El administrador no puede ver,corregir o actualizar evaluaciones corregidas.
+
+### ✅ Alcances del docente
+- El docente puede ver,crear,editar o eliminar supervisiones.
+- El docente puede ver,crear,editar o eliminar evaluaciones asignadas.
+- El docente puede  ver, corregir y actualizar las evaluaciones corregidas.
+- El docente puede crear reportes.
+- El docente solo puede ver las evidencias de los alumnos asignados.
+
+
+### ❌ Limitantes del docente
+- El docente no puede "agregar usuarios".
+- El docente no puede "editar usuarios".
+- El docente no puede "eliminar usuarios".
+- El docente no puede "agregar informacion a los catalogos".
+- El docente no puede "editar informacion de los catalogos".
+- El docente no puede "eliminar informacion de los catalogos".
+- El docente no puede crear,editar o eliminar evidencias.
+
+
+### ✅ Alcances del alumno
+- El alumno puede crear,editar o eliminar evidencias.
+- El alumno puede ver las supervisiones del maestro asignado.
+- El alumno puede ver las evaluaciones asignadas y su posterior correccion.
+
+### ❌ Limitantes del alumno
+- El alumno no puede "agregar usuarios".
+- El alumno no puede "editar usuarios".
+- El alumno no puede "eliminar usuarios".
+- El alumno no puede "agregar informacion a los catalogos".
+- El alumno no puede "editar informacion de los catalogos".
+- El alumno no puede "eliminar informacion de los catalogos".
+- El alumno no puede crear,editar o eliminar supervisiones.
+- El alumno no puede crear,editar o eliminar evaluaciones asignadas.
+- El alumno no puede   corregir y actualizar las evaluaciones corregidas.
+- El alumno no puede crear reportes.

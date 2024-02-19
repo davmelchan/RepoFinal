@@ -225,14 +225,11 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Perfil
-                            </a>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="{{route('Setting')}}">
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Ajustes
                             </a>
+
                             <div class="dropdown-divider"></div>
                             @auth
                                 <form action="{{route('logoutAlumno')}}" method="post">
@@ -289,11 +286,11 @@
                             @foreach($evidencias as $evidencia)
                                 @if($evidencia->Estado==1 && $resultado->Identificacion)
                             <tr>
-                                <td>{{$evidencia->Nombre}}</td>
-                                <td>{{$evidencia->Descripcion}}</td>
-                                <td>{{$evidencia->EvidenciasEstudiante->Nombre}}</td>
-                                <td>{{$evidencia->NombreArchivo}}</td>
-                                <td>{{$evidencia->Fecha}}</td>
+                                <td>{{$evidencia->EvidenciasBusqueda->Nombre}}</td>
+                                <td>{{$evidencia->EvidenciasBusqueda->Descripcion}}</td>
+                                <td>{{$evidencia->EvidenciasBusqueda->EvidenciasEstudiante->Nombre}}</td>
+                                <td>{{$evidencia->EvidenciasBusqueda->NombreArchivo}}</td>
+                                <td>{{$evidencia->EvidenciasBusqueda->Fecha}}</td>
                                 <td class="text-center">
                                     <button id="btnEditar" onclick="editar({{$evidencia}})"  class="btn btn-unan btn-circle">
                                         <i class="fa-solid fa-pen-to-square"></i>

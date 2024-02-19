@@ -181,11 +181,12 @@ class EstudianteController extends Controller
     public function indexEvidencia(){
         $empresas = Empresa::all();
         $resultado = Estudiante::where('Identificacion', '=', session('datos')->first()->Identificacion)->first();
-        $evidencias = Evidencias::where('idEmpresa','=', $resultado->idEmpresa)->get();
+
         $rol = Session::get('rol');
+        $evidencias = EvidenciaEstudiante::where('idEstudiante','=', session('datos')->first()->Identificacion)->get();
         foreach ($evidencias as $evidencia) {
-            $fecha = $evidencia->Fecha;
-            $evidencia->Fecha = Carbon::parse($fecha)->format('d/m/Y');
+            $fecha = $evidencia->EvidenciasBusqueda->Fecha;
+            $evidencia->EvidenciasBusqueda->Fecha = Carbon::parse($fecha)->format('d/m/Y');
 
         }
         $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();

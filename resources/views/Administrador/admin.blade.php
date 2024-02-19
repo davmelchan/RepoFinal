@@ -501,10 +501,10 @@
                                 <optgroup label="Roles">
                                     @foreach($roles as $rolito)
                                         @if($rolito->Estado==1)
-                                            @if(($rolito->IdRol>1 && !empty(session('datos')->first()->infoUser->Nombres))&&(!empty(session('datos')->first()->infoUser->Nombres && $rolito->IdRol!=29 ))    )
+                                            @if(($rolito->IdRol>1 && !empty(session('datos')->first()->infoUser->Nombres))&&(!empty(session('datos')->first()->infoUser->Nombres && $rolito->IdRol!=29)))
                                             <option value="{{$rolito->IdRol}}">{{$rolito->Nombre}}</option>
                                             @endif
-                                                @if(empty(session('datos')->first()->infoUser->Nombres))
+                                                @if(empty(session('datos')->first()->infoUser->Nombres) && $rolito->IdRol!=29)
                                                     <option value="{{$rolito->IdRol}}">{{$rolito->Nombre}}</option>
                                                 @endif
                                             @endif

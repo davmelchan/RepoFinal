@@ -307,7 +307,7 @@ class EstudianteController extends Controller
         if(empty($request->IdEvidencia))
         {
             $archivos=[
-            "Archivos"=>'max:10000|mimes:jpeg,png,jpg,docx|file|required',
+            "Archivos"=>'max:10000|mimes:jpeg,png,jpg,docx,pdf|file|required',
             ];
             $campo=[
                 "IdEmpresa"=>'required',
@@ -349,7 +349,7 @@ class EstudianteController extends Controller
         }
 
         $archivos=[
-            "Archivos"=>'max:10000|mimes:jpeg,png,jpg,docx|file',
+            "Archivos"=>'max:10000|mimes:jpeg,png,jpg,docx,pdf|file',
         ];
         $campo=[
             "IdEmpresa"=>'required',

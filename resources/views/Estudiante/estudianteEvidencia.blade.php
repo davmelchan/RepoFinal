@@ -269,6 +269,7 @@
                         <h6 class="m-0 font-weight-bold text-primary">Lista de evidencias</h6>
                     </div>
                     <div class="card-body">
+                        <div class="table-responsive">
                         <table id="example" class="table table-striped table-bordered nowrap" style="width:100%">
                             <thead>
                             <tr>
@@ -284,7 +285,7 @@
                             </thead>
                             <tbody>
                             @foreach($evidencias as $evidencia)
-                                @if($evidencia->Estado==1 && $resultado->Identificacion)
+                                @if($evidencia->EvidenciasBusqueda->Estado==1)
                             <tr>
                                 <td>{{$evidencia->EvidenciasBusqueda->Nombre}}</td>
                                 <td>{{$evidencia->EvidenciasBusqueda->Descripcion}}</td>
@@ -292,7 +293,7 @@
                                 <td>{{$evidencia->EvidenciasBusqueda->NombreArchivo}}</td>
                                 <td>{{$evidencia->EvidenciasBusqueda->Fecha}}</td>
                                 <td class="text-center">
-                                    <button id="btnEditar" onclick="editar({{$evidencia}})"  class="btn btn-unan btn-circle">
+                                    <button id="btnEditar" onclick="editar({{$evidencia->EvidenciasBusqueda}})"  class="btn btn-unan btn-circle">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
 
@@ -301,7 +302,7 @@
                                     <button onclick="eliminar('{{$evidencia->idEvidencia}}','{{route("Estudiante.EvidenciaDestroy",":id")}}')" class="btn btn-danger btn-circle">
                                         <i class="fas fa-trash"></i>
                                     </button>
-                                    <a href="{{asset(Storage::url($evidencia->RutaArchivo))}}" download="{{$evidencia->NombreArchivo}}" class="btn btn-success btn-circle">
+                                    <a href="{{asset(Storage::url($evidencia->EvidenciasBusqueda->RutaArchivo))}}" download="{{$evidencia->NombreArchivo}}" class="btn btn-success btn-circle">
                                         <i class="fa-solid fa-download"></i>
                                     </a>
 
@@ -316,7 +317,8 @@
                             </tbody>
 
                         </table>
-                    </div>
+                        </div>
+                        </div>
                 </div>
 
             </div>
@@ -416,7 +418,7 @@
                                 <span class="input-group-text">
                                    <i class="fa-solid fa-image"></i>
                                 </span>
-                            <input type="file" required class="form-control" name="Archivos" id="Archivos" accept=".jpg, .jpeg, .png, .docx" >
+                            <input type="file" required class="form-control" name="Archivos" id="Archivos" accept=".jpg, .jpeg, .png, .docx, .pdf" >
                         </div>
                     </div>
 

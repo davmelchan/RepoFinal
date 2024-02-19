@@ -13,6 +13,20 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 class LoginController extends Controller
 {
+
+public function loginLoad(){
+  //  Auth::logout();
+    if(Auth::check()){
+        $urlAnterior = Session::get('redirect_url');
+
+        // Redirigir a la URL anterior
+        return redirect($urlAnterior);
+    }
+
+    return view('login');
+}
+
+
     public function login(Request $request){
 
         $user = User::where('Identificacion',$request->identificacion)->first();
@@ -38,6 +52,7 @@ class LoginController extends Controller
 
 
                         $redireccion = route($url->permisos->Ruta);
+                        Session::put('redirect_url', $redireccion);
                         return redirect()->intended($redireccion);
 
                     }
@@ -59,8 +74,8 @@ class LoginController extends Controller
                             $resultados = User::where('Identificacion', $request->identificacion)->get();
                             Session::put('datos',$resultados);
 
-
                             $redireccion = route($url->permisos->Ruta);
+                            Session::put('redirect_url', $redireccion);
                             return redirect()->intended($redireccion);
 
                         }

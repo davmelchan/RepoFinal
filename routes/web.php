@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\Route;
     return view('login');
 });*/
 
-Route::post('/',[LoginController::class,'login'])->middleware('guest')->name('LoginPost');
 
 /*
  Vistas del rol de administrador
@@ -37,10 +36,22 @@ Route::get('/administrador',function(){
 
 })->middleware('auth');
 */
-Route::view('/','login')->name('login')->middleware('guest');
 
 
 
+Route::middleware(['loginfixer','cache.headers:private'])->group(function(){
+    Route::get('/',[LoginController::class,'loginLoad']);
+    Route::post('/',[LoginController::class,'login'])->name('LoginPost');
+
+});
+
+Route::middleware(['logoutfixer','cache.headers:private'])->group(function(){
+
+    Route::post('/salir',[AdminController::class,'logout'])->name('salir');
+    Route::post('/logout',[MaestroController::class,'logoutMaestro'])->name('logoutDocente');
+    Route::post('/out',[EstudianteController::class,'logoutAlumno'])->name('logoutAlumno');
+
+});
 Route::middleware(['Comprobar', 'cache.headers:private'])->group(function () {
 
     //Crud maestros
@@ -162,9 +173,7 @@ Route::middleware(['auth','cache.headers:private'])->group(function(){
 
 
 
-    Route::post('/salir',[AdminController::class,'logout'])->name('salir');
-    Route::post('/logout',[MaestroController::class,'logoutMaestro'])->name('logoutDocente');
-    Route::post('/out',[EstudianteController::class,'logoutAlumno'])->name('logoutAlumno');
+
 });
 
 

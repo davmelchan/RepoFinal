@@ -43,7 +43,13 @@ class EstudianteController extends Controller
                     "EmpresaName"=>'required|string',
                     "Descripcion"=>'required|string',
                     "Responsable"=>'required|string',
-                    "IdGrupo"=>'required|string'
+                    "IdGrupo"=>'required|string',
+                    "Telefono"=>'required',
+
+                ];
+
+                $cellphone =[
+                    "Telefono"=>'min:8'
                 ];
 
                 $vacios = Validator::make($request->all(),$campo);
@@ -51,36 +57,41 @@ class EstudianteController extends Controller
                     return response()->json(['errors' => "Digite lo espacios en blanco"],422);
                 }
 
+                $cellphoneVerify = Validator::make($request->all(),$cellphone);
+                if ($cellphoneVerify->fails()) {
+                    return response()->json(['errors' => "El campo teléfono minimo debe tener 8 digitos minimo "],422);
+                }
 
+                $verificar = GrupoMaestro::find($request->IdGrupo);
+                if (!$verificar) {
+                    return response()->json(['errors' => "Grupo no encontrado"],422);
+
+                }
+                if($verificar->Estado != 1){
+
+                    return response()->json(['errors' => "Grupo no activo"],422);
+                }
 
 
                 $nuevoRegistro = new Empresa;
                 $nuevoRegistro->Nombre = $request->EmpresaName;
                 $nuevoRegistro->Descripcion = $request->Descripcion;
                 $nuevoRegistro->Responsable = $request->Responsable;
+                $nuevoRegistro->TelResponsable = $request->Telefono;
                 $nuevoRegistro->Estado = 1;
                 $nuevoRegistro->save();
                 $idRegistro = $nuevoRegistro->IdEmpresa;
                 $estudiante = Estudiante::find(session('datos')->first()->Identificacion);
                 $info = ['idEmpresa' => $idRegistro ];
                 $estudiante->update($info);
-                $verificar = GrupoMaestro::find($request->IdGrupo);
-                if (!$verificar) {
-                    return response()->json(['errors' => "Grupo no encontrado"],422);
-
-                } else {
-                    if ($verificar->Estado == 1) {
-
-
-
 
                         $info = ['idGrupo' => $request->IdGrupo ];
                         $estudiante->update($info);
                         return response()->json(['success' => "Datos almacenados exitosamente"]);
-                    }
 
 
-                }
+
+
 
             }else {
                 $campo=[
@@ -89,10 +100,17 @@ class EstudianteController extends Controller
                 ];
 
                 $vacios = Validator::make($request->all(),$campo);
-                if ($vacios->fails()) {
+                $verificar = GrupoMaestro::find($request->IdGrupo);                if ($vacios->fails()) {
                     return response()->json(['errors' => "Digite lo espacios en blanco"],422);
                 }
+                if (!$verificar) {
+                    return response()->json(['errors' => "Grupo no encontrado"],422);
 
+                }
+                if($verificar->Estado != 1){
+
+                    return response()->json(['errors' => "Grupo no activo"],422);
+                }
 
 
                 $estudiante = Estudiante::find(session('datos')->first()->Identificacion);
@@ -100,28 +118,19 @@ class EstudianteController extends Controller
                 $estudiante->update($info);
 
 
-                $verificar = GrupoMaestro::find($request->IdGrupo);
-                if (!$verificar) {
-                    return response()->json(['errors' => "Grupo no encontrado"],422);
-
-                } else {
-                    if ($verificar->Estado == 1) {
-
-
-
 
                         $info = ['idGrupo' => $request->IdGrupo ];
                         $estudiante->update($info);
                         return response()->json(['success' => "Datos almacenados exitosamente"]);
-                    }
-                    return response()->json(['errors' => "Grupo no activo"],422);
+
+
 
                 }
 
 
 
 
-            }
+
 
         }
 
@@ -141,23 +150,26 @@ class EstudianteController extends Controller
             if (!$verificar) {
                 return response()->json(['errors' => "Grupo no encontrado"],422);
 
-            } else {
-                if ($verificar->Estado == 1) {
+            }
 
+
+                if ($verificar->Estado != 1) {
+                    return response()->json(['errors' => "Grupo no activo"], 422);
+                }
 
                     $estudiante = Estudiante::find(session('datos')->first()->Identificacion);
 
                     $info = ['idGrupo' => $request->IdGrupo];
                     $estudiante->update($info);
                     return response()->json(['success' => "Datos almacenados exitosamente"]);
-                }
-                return response()->json(['errors' => "Grupo no activo"],422);
+
+
 
 
 
             }
 
-        }
+
 
 
         return response()->json(['error' => "Datos no han sido almacenados "]);
@@ -202,10 +214,13 @@ class EstudianteController extends Controller
         if(!$trap){
             return redirect()->back();
         }
+        $empresas = Empresa::all();
+        $estudiante = Estudiante::where('Identificacion', '=', session('datos')->first()->Identificacion)->first();
+
         $resultado = Estudiante::where('Identificacion', '=', session('datos')->first()->Identificacion)->first();
         $rol = Session::get('rol');
         $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-        return view('Estudiante/setting',compact('secciones','resultado'));
+        return view('Estudiante/setting',compact('secciones','resultado','empresas','estudiante'));
 
     }
 

@@ -50,6 +50,8 @@ let btnGuardar = document.getElementById("btnGuardar");
 let formulario = document.getElementById("formulariov");
 let password = document.getElementById("Clave");
 let inputId = document.getElementById("idform");
+let frmIdentificador = document.getElementById("frmIdentificador");
+let vIdentificacion = 0;
 btnUsuario.addEventListener("click", function () {
 
     mymodal.show();
@@ -61,15 +63,71 @@ btnUsuario.addEventListener("click", function () {
         maximumSelectionLength: 1
     });
     formulario.reset();
+    frmIdentificador.removeAttribute("hidden");
     inputId.value = 1;
     $('#Roles').val("").trigger("change");
-
+    vIdentificacion= 1;
 });
 
 
 
 
 function guardar(ruta){
+
+if(vIdentificacion==1){
+    Swal.fire({
+        title: '¿Estás seguro de guardar los datos?',
+        text: 'El identificador no podra ser modificado',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Guardar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var formData = new FormData($('#formulariov')[0]);
+
+            // Realiza la llamada AJAX
+            $.ajax({
+                type: 'POST',
+                url: ruta,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    // Si la llamada es exitosa, puedes cerrar el modal, mostrar un mensaje, etc.
+
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: response.success,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1550);
+
+
+                },
+                error: function (xhr) {
+                    console.log(xhr);
+                    Swal.fire(
+                        'Error',
+                        xhr.responseJSON.errors,
+                        'error'
+                    )
+
+
+                }
+            })
+        }
+    });
+}else{
+
     var formData = new FormData($('#formulariov')[0]);
 
     // Realiza la llamada AJAX
@@ -79,9 +137,8 @@ function guardar(ruta){
         data: formData,
         processData: false,
         contentType: false,
-        success: function(response) {
+        success: function (response) {
             // Si la llamada es exitosa, puedes cerrar el modal, mostrar un mensaje, etc.
-
 
 
             Swal.fire({
@@ -92,13 +149,13 @@ function guardar(ruta){
                 timer: 1500
             });
 
-           setTimeout(function() {
+            setTimeout(function () {
                 window.location.reload();
             }, 1550);
 
 
         },
-        error: function(xhr) {
+        error: function (xhr) {
             console.log(xhr);
             Swal.fire(
                 'Error',
@@ -110,6 +167,7 @@ function guardar(ruta){
         }
     })
 
+}
 
 
 }
@@ -135,6 +193,7 @@ function editar(info,rolo){
     });
     titulo.innerText="Actualizar datos del usuario";
     btnGuardar.innerText="Actualizar"
+    frmIdentificador.setAttribute("hidden",true);
     $('#NombreMaestro').val(info.Nombres);
     $('#ApellidoMaestro').val(info.Apellidos);
     $('#IdGenero').val(info.idGenero);
@@ -142,8 +201,8 @@ function editar(info,rolo){
     $('#identificador').val(info.Identificacion);
     $('#Roles').val(rolo).trigger("change");
     password.removeAttribute("required");
-
-
+    inputId.value = "";
+    vIdentificacion= 0;
 }
 
 function eliminar(ruta,id){

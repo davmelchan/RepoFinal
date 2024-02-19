@@ -226,21 +226,16 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{session('datos')->first()->infoUser->Nombres}} {{session('datos')->first()->infoUser->Apellidos}}</span>
 
                             @endif
-                                @if(empty($resultado->FotoRuta))
-                                    <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
-                                @else
-                                    <img class="img-profile rounded-circle" >
-                                @endif
-                                @if(isset($trap->FotoRuta))
+                            @if(isset($trap->FotoRuta))
 
-                                    <img class="img-profile rounded-circle" src="{{asset('storage').'/'.$trap->FotoRuta}}">
+                                <img class="img-profile rounded-circle" src="{{asset('storage').'/'.$trap->FotoRuta}}">
 
 
-                                @else
-                                    <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
+                            @else
+                                <img class="img-profile rounded-circle" src="{{asset('img/undraw_profile.svg')}}">
 
 
-                                @endif
+                            @endif
 
 
                         </a>

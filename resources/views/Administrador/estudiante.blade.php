@@ -265,7 +265,9 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+
                                 @foreach($estudiantes as $estudiante)
+                                    @if($estudiante->Estado == 1)
                                     <tr>
 
                                         <td class="text-center">
@@ -313,6 +315,7 @@
 
 
                                     </tr>
+                                    @endif
                                 @endforeach
                                 </tbody>
                             </table>
@@ -413,7 +416,9 @@
                             </span>
                             <select name="Genero" required id="Genero" class="form-control">
                                 @foreach($generos as $genero)
+                                    @if($genero->Estado==1)
                                 <option value="{{$genero->IdGenero}}">{{$genero->Nombre}}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -436,7 +441,7 @@
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group" id="frmIdentificador">
                         <label for="identificador"  class="col-form-label">Identificación: </label>
                         <div class="input-group">
                                 <span class="input-group-text">
@@ -465,6 +470,18 @@
                             <input type="text" required class="form-control" minlength="8" maxlength="8" name="Telefono" id="Telefono">
                         </div>
                     </div>
+
+                    <div class="form-group" id="MdlGrupo">
+                        <label for="IdGrupo" class="col-form-label">Código del grupo:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                  <i class="fa-solid fa-chalkboard-user"></i>
+                                </span>
+                            <input type="text" required class="form-control" minlength="8" maxlength="8" id="IdGrupo" name="IdGrupo">
+                        </div>
+                    </div>
+
+
 
                 </form>
             </div>

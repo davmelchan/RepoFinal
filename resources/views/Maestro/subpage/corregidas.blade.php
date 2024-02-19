@@ -456,7 +456,7 @@
     </div>
 </div>
 
-<div id="EvCompany" class="modal fade"  tabindex="-1" role="dialog"
+<div id="EvCompany" class="modal fade EvCompany"  tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -589,7 +589,7 @@
 @include('Administrador/footer')
 
 <script src="{{asset('js/select2.full.min.js')}}"></script>
-<script src="{{asset('js/corregida.js')}}"></script>
+<script src="{{asset('js/Corregidas.js')}}"></script>
 
 </body>
 

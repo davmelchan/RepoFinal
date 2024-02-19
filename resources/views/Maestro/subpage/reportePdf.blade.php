@@ -69,7 +69,7 @@
     de nuestra facultad, y quien ha finalizado sus Prácticas de formación Profesional en el centro de prácticas
     <strong>{{strtolower($consulta->Empresa->Nombre)}}</strong> donde realizo sus prácticas en el área de <strong>{{strtolower($infoReporte->Area)}}</strong>
     desempeñandose en funcion de <strong>{{strtolower($infoReporte->RolAsignado)}}</strong> cumpliendo sus asignaciones en un total
-        de 120 horas, mismas que fueron desarrolladas en un horario de <strong>{{strtolower($infoReporte->HoraEntrada)}}</strong> a <strong>{{strtolower($infoReporte->HoraSalida)}}</strong>
+        de 240 horas, mismas que fueron desarrolladas en un horario de <strong>{{strtolower($infoReporte->HoraEntrada)}}</strong> a <strong>{{strtolower($infoReporte->HoraSalida)}}</strong>
     obteniendo una valoración de <strong>{{$empreEv->Nota}}%</strong> en conformidad del cumplimiento de sus asignaciones, realizada por el responsable del centro de práctica
         <strong>{{$consulta->Empresa->Responsable}}</strong> de igual manera se obtuvieron los siguientes parametros:</p>
 
@@ -83,7 +83,7 @@
             Evidencias guardadas: {{$conteoEvidencias}}
         </li>
         <li>
-            Evaluaciones realizadas: {{$conteoNotas}}
+            Evaluaciones asignadas: {{$conteoNotas}}
         </li>
     </ul>
 

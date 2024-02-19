@@ -66,6 +66,9 @@ let titulo = document.getElementById("exampleModalLabel");
 let btnGuardar= document.getElementById("btnGuardar");
 let password =document.getElementById("Clave");
 let inputId = document.getElementById("idform");
+let inputGrupo = document.getElementById("MdlGrupo");
+let frmIdentificador = document.getElementById("frmIdentificador");
+
 btnUsuario.addEventListener("click",function(e){
 
     mymodal.show();
@@ -79,13 +82,77 @@ btnUsuario.addEventListener("click",function(e){
     });
 
     formulario.reset();
+    inputGrupo.setAttribute("hidden",true);
+    frmIdentificador.removeAttribute("hidden");
     inputId.value = 1;
     password.setAttribute("required","required");
     $('#Empresa').val("").trigger("change");
+
 });
 
 
 function guardarGrupo(ruta){
+
+if(inputId.value == 1){
+    Swal.fire({
+        title: '¿Estás seguro de guardar los datos?',
+        text: 'El identificador no podra ser modificado',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Guardar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            var formData = new FormData($('#formulario')[0]);
+
+            // Realiza la llamada AJAX
+            $.ajax({
+                type: 'POST',
+                url: ruta,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // Si la llamada es exitosa, puedes cerrar el modal, mostrar un mensaje, etc.
+
+
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: response.success,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1550);
+
+
+                },
+                error: function(xhr) {
+                    Swal.fire(
+                        'Error',
+                        xhr.responseJSON.errors,
+                        'error'
+                    )
+
+
+                }
+            })
+
+
+
+
+        }
+
+    });
+}else{
+
     var formData = new FormData($('#formulario')[0]);
 
     // Realiza la llamada AJAX
@@ -125,6 +192,21 @@ function guardarGrupo(ruta){
         }
     })
 
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
@@ -145,19 +227,21 @@ function editar(info){
         dropdownParent: $("#formulario"),
         maximumSelectionLength: 1
     });
-
-
+    inputGrupo.removeAttribute("hidden");
+    frmIdentificador.setAttribute("hidden",true);
     titulo.innerText="Actualizar datos del estudiante";
     btnGuardar.innerText="Actualizar";
     $('#NombreEstudiante').val(info.Nombres);
     $('#ApellidoEstudiante').val(info.Apellidos);
     $('#Genero').val(info.idGenero);
-   $('#Direccion').val(info.Direccion);
-   $('#identificador').val(info.Identificacion);
-   $('#Telefono').val(info.Telefono);
-   $('#Empresa').val(info.idEmpresa).trigger("change");
+    $('#Direccion').val(info.Direccion);
+    $('#identificador').val(info.Identificacion);
+    $('#Telefono').val(info.Telefono);
+    $('#Empresa').val(info.idEmpresa).trigger("change");
+    $('#IdGrupo').val(info.idGrupo);
     password.removeAttribute("required");
-
+    inputId.value = "";
+    vIdentificacion= 0;
 
 }
 

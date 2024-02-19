@@ -363,6 +363,214 @@
 </div>
 @include('footer')
 
+@if(empty($resultado->idEmpresa)&& empty($resultado->idGrupo))
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Por favor ingrese la información correspondiente</h5>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{{route('Estudiante.corroborar')}}" id="formulario">
+                        @csrf
+                        <ul class="list-group">
+
+                            <li class="list-group-item list-group-item-danger"><strong>Nota:</strong> Si tu centro de prácticas no aparece en la seleccion haz click en añadir centro de prácticas</li>
+
+                        </ul>
+
+                        <div class="form-check mt-1">
+                            <input type="checkbox" class="form-check-input" id="miCheckbox">
+                            <label class="form-check-label" for="miCheckbox">Añadir centro de prácticas</label>
+                        </div>
+
+                        <div class="form-group" hidden>
+                            <label for="IdForm" class="col-form-label">Identificador:</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                                <input type="text" class="form-control" id="IdForm" name="IdForm" value="1">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label  class="col-form-label">Centro de práctica:</label>
+                            <div class="input-group" id="seleccion">
+
+                                <select name="Empresa" id="Empresa"   class="form-control company" style="display: none; width: 100%" multiple="multiple" >
+                                    <optgroup label="Centros de prácticas">
+
+                                        @foreach($empresas as $empresa)
+                                            @if($empresa->Estado==1 && $empresa->IdEmpresa>6)
+                                                <option value="{{$empresa->IdEmpresa}}">{{$empresa->Nombre}}</option>
+                                            @endif
+                                        @endforeach
+                                    </optgroup>
+                                </select>
+
+                            </div>
+                            <div class="input-group" id="nombreEmpresa" hidden="">
+
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-building"></i>
+                                </span>
+                                <input type="text" class="form-control" id="EmpresaName" name="EmpresaName">
+                            </div>
+
+                        </div>
+
+                        <div class="form-group" hidden="" id="frmDescripcion">
+                            <label for="Descripcion" class="col-form-label">Descripción:</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </span>
+                                <textarea type="text" style="resize: none" class="form-control" rows="4" cols="50" id="Descripcion" name="Descripcion"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group" hidden="" id="frmResponsable">
+                            <label for="Responsable" class="col-form-label">Responsable del centro de prácticas:</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-fw fa-building"></i>
+                                </span>
+                                <input type="text" class="form-control" id="Responsable" name="Responsable">
+                            </div>
+                        </div>
+
+                        <div class="form-group" hidden="" id="frmTelefono">
+                            <label for="Telefono">Teléfono responsable:</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-phone"></i>
+                                </span>
+                                <input type="text" required class="form-control" minlength="8" maxlength="8" name="Telefono" id="Telefono">
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="IdGrupo" class="col-form-label">Código del grupo:</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                  <i class="fa-solid fa-chalkboard-user"></i>
+                                </span>
+                                <input type="text" required class="form-control" minlength="8" maxlength="8" id="IdGrupo" name="IdGrupo">
+                            </div>
+                        </div>
+
+
+
+
+                    </form>
+
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" form="formulario" id="btnGuardar" onclick="guardarGrupo('{{route('Estudiante.corroborar')}}')" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+
+                    @auth
+                        <form action="{{route('logoutAlumno')}}" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+                        </form>
+                    @endauth
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+@if(empty($resultado->idGrupo))
+    <div class="modal fade" id="staticBackGroup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Por favor ingrese la información correspondiente</h5>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{{route('Estudiante.corroborar')}}" id="formulario">
+                        @csrf
+
+                        <div class="form-group" hidden>
+                            <label for="IdForm" class="col-form-label">Identificador:</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                                <input type="text" class="form-control" id="IdForm" name="IdForm" value="2">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="IdGrupo" class="col-form-label">Código del grupo:</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                  <i class="fa-solid fa-chalkboard-user"></i>
+                                </span>
+                                <input type="text" required class="form-control" minlength="8" maxlength="8" id="IdGrupo" name="IdGrupo">
+                            </div>
+                        </div>
+
+
+
+
+                    </form>
+
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" form="formulario" id="btnGuardar" onclick="guardarGrupo('{{route('Estudiante.corroborar')}}')" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+
+                    @auth
+                        <form action="{{route('logoutAlumno')}}" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+                        </form>
+                    @endauth
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
+
+
+@if(empty($resultado->idEmpresa)&&empty($resultado->idGrupo))
+    <script src="{{asset('js/modalSeguro.js')}}"></script>
+@elseif(empty($resultado->idGrupo))
+    <script src="{{asset('js/GrupoVerify.js')}}"></script>
+@endif
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <script>
 

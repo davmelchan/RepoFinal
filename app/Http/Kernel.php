@@ -37,6 +37,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\logFix::class
         ],
 
         'api' => [
@@ -68,6 +69,9 @@ class Kernel extends HttpKernel
         'Roles' => \App\Http\Middleware\Roles::class,
         'maestro' => \App\Http\Middleware\maestro::class,
         'EstudianteAcess' => \App\Http\Middleware\EstudianteAcess::class,
-        'Comprobar' => \App\Http\Middleware\Comprobar::class
+        'Comprobar' => \App\Http\Middleware\Comprobar::class,
+        'logfix' => \App\Http\Middleware\logFix::class,
+        'loginfixer' => \App\Http\Middleware\loginfixer::class,
+        'logoutfixer' => \App\Http\Middleware\logoutFix::class
         ];
 }

@@ -24,9 +24,10 @@ function mostrar(titu,tituloEv,descripcion,unidad,tipo,puntos){
 
 
 }
-const modal1 = document.getElementById("EvCompany");
-const mymodal1 = new bootstrap.Modal(modal1);
+
 function mostrarEmpresa(){
+    const modal1 = document.getElementById("EvCompany");
+    const mymodal1 = new bootstrap.Modal(modal1);
     mymodal1.show();
 
 }

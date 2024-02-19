@@ -7,6 +7,7 @@ use App\Models\Empresa;
 use App\Models\Evaluacion;
 use App\Models\Evaluaciones;
 use App\Models\Genero;
+use App\Models\GrupoMaestro;
 use App\Models\Maestros;
 use App\Models\Permisos;
 use App\Models\Roles;
@@ -58,8 +59,10 @@ class AdminController extends Controller
 
     public function GuardarRol(Request $request)
     {
-
-        if (isset($request->IdRol)) {
+        if (!auth()->check()){
+            return redirect()->back();
+        }
+            if (isset($request->IdRol)) {
             $rol = Roles::find($request->IdRol);
             if (!$rol) {
                 return back()->with('Fracaso', 'Rol no encontrado');
@@ -79,7 +82,9 @@ class AdminController extends Controller
 
     public function destroy($id)
     {
-
+        if (!auth()->check()){
+            return redirect()->back();
+        }
         $rol = Roles::find($id);
         $usuarios = User::where('IdRol', $id)->where('Estado',1)->get();
         if (!$rol) {
@@ -97,7 +102,9 @@ class AdminController extends Controller
     }
 
     public function permisosView(Request $request){
-
+        if (!auth()->check()){
+            return redirect()->back();
+        }
         $rolId = $request->input('pID');
         $variables = $request->input('notas');
         $valoresPosibles = Permisos::pluck('Id')->all();
@@ -165,6 +172,9 @@ class AdminController extends Controller
     }
 
     public function GuardarGenero(Request $request){
+        if (!auth()->check()){
+            return redirect()->back();
+        }
         if(isset($request->IdGenero)){
             $genero = Genero::find($request->IdGenero);
             if (!$genero) {
@@ -183,6 +193,9 @@ class AdminController extends Controller
         return back()->with('exito', 'Género guardado exitosamente');
     }
     public function EliminarGenero($id){
+        if (!auth()->check()){
+            return redirect()->back();
+        }
         $genero = Genero::find($id);
         $usuariosM = Maestros::where('idGenero', $id)->where('Estado',1)->get();
         $usuariosE = Estudiante::where('idGenero',$id)->where('Estado',1)->get();
@@ -215,6 +228,9 @@ class AdminController extends Controller
         return view('Administrador/unidades', $datos,compact('secciones','trap'));
     }
     public function GuardarUnidad(Request $request){
+        if (!auth()->check()){
+            return redirect()->back();
+        }
         if(isset($request->IdUnidad)){
 
             $unidad = Unidad::find($request->IdUnidad);
@@ -235,6 +251,9 @@ class AdminController extends Controller
         return back()->with('exito', 'Unidad guardada exitosamente');
     }
     public function EliminarUnidad($id){
+        if (!auth()->check()){
+            return redirect()->back();
+        }
         $unidad = Unidad::find($id);
         $checkEvaluacion = Evaluaciones::where('IdUnidad',$id)->where('Estado',1)->get();
         if (!$unidad) {
@@ -261,7 +280,9 @@ class AdminController extends Controller
         return view('Administrador/empresa',$datos,compact('secciones','trap'));
     }
     public function GuardarEmpresa(Request $request){
-
+        if (!auth()->check()){
+            return redirect()->back();
+        }
         if(isset($request->IdEmpresa)){
 
         $campos=[
@@ -327,6 +348,9 @@ class AdminController extends Controller
     }
 
     public function EliminarEmpresa($id){
+        if (!auth()->check()){
+            return redirect()->back();
+        }
         $empresa = Empresa::find($id);
         $usuariosE = Estudiante::where('idEmpresa',$id)->where('Estado',1)->get();
         if (!$empresa) {
@@ -355,6 +379,9 @@ class AdminController extends Controller
         return view('Administrador/AspectosEvaluacion',$datos,compact('secciones','trap'));
     }
     public function GuardarEvaluacion(Request $request){
+        if (!auth()->check()){
+            return redirect()->back();
+        }
         if(isset($request->IdAspecto)){
             $evaluacion = Evaluacion::find($request->IdAspecto);
             if(!$evaluacion){
@@ -372,6 +399,9 @@ class AdminController extends Controller
         return back()->with('exito', 'Categoría de evaluación guardada exitosamente');
     }
     public function EliminarEvaluacion($id){
+        if (!auth()->check()){
+            return redirect()->back();
+        }
         $evaluacion = Evaluacion::find($id);
         $checkEvaluacion = Evaluaciones::where('IdTipo',$id)->where('Estado',1)->get();
         if (!$evaluacion) {
@@ -400,6 +430,9 @@ class AdminController extends Controller
         return view('Administrador/valoracion',$datos,compact('secciones','trap'));
     }
     public function GuardarCatSupervision(Request $request){
+        if (!auth()->check()){
+            return redirect()->back();
+        }
         if(isset($request->IdValoracion)){
             $supervision = CatSupervisiones::find($request->IdValoracion);
             if(!$supervision){
@@ -417,6 +450,9 @@ class AdminController extends Controller
     }
 
     public function EliminarCatSupervision($id){
+        if (!auth()->check()){
+            return redirect()->back();
+        }
         $supervision = CatSupervisiones::find($id);
         $sup = Supervisiones::where('IdTipoSupervision',$id)->where('Estado',1)->get();
         if (!$supervision) {
@@ -449,11 +485,15 @@ class AdminController extends Controller
 
 
     public function SaveMaestro(Request $request){
+        if (!auth()->check()){
+            return redirect()->back();
+        }
 
+        $user= User::where('Identificacion', $request->identificador)->first();
         if(empty($request->idform)){
 
             $verificar = Maestros::find($request->identificador);
-            $user= User::where('Identificacion', $request->identificador)->first();
+
 
 
             $campos=[
@@ -462,12 +502,10 @@ class AdminController extends Controller
             "ApellidoMaestro"=>'required|string',
             "IdGenero"=>'required',
             "Especialidad"=>'required|string',
-            "identificador"=>'required|string',
+
                 "Roles"=>'required'
             ];
-            $identidad = [
-                "identificador"=>'min:8',
-            ];
+
 
 
             $vacios = Validator::make($request->all(),$campos);
@@ -475,24 +513,19 @@ class AdminController extends Controller
                 return response()->json(['errors' => "Digite lo espacios en blanco"],422);
             }
 
-
-            $verify = Validator::make($request->all(),$identidad);
-            if ($verify->fails()) {
-                return response()->json(['errors' => "El campo identificacion debe tener minimo 8 caracteres"],422);
-            }
             if(isset($request->Clave)){
 
                 $verificar->update(['especialidad' => $request->Especialidad,'idGenero'=>$request->IdGenero,
                     'Nombres'=>$request->NombreMaestro,'Apellidos'=>$request->ApellidoMaestro]);
 
-                $user->update(['password' => md5($request->Clave)]);
+                $user->update(['password' => md5($request->Clave),'IdRol'=>$request->Roles]);
                 return response()->json(['success'=> 'Usuario actualizado exitosamente']);
 
             }else{
 
                 $verificar->update(['especialidad' => $request->Especialidad,'idGenero'=>$request->IdGenero,
                     'Nombres'=>$request->NombreMaestro,'Apellidos'=>$request->ApellidoMaestro]);
-
+                $user->update(['IdRol'=>$request->Roles]);
                 return response()->json(['success'=> 'Usuario actualizado exitosamente']);
             }
 
@@ -525,11 +558,13 @@ class AdminController extends Controller
                 return response()->json(['errors' => "El campo identificacion debe tener minimo 8 caracteres"],422);
             }
 
+            if ($user){
+                return response()->json(['errors' => "Usuario ya existente"],422);
+            }
 
 
 
 
-            if(!$verificar){
                 $fechaHoy = Carbon::now();
                 $fechaFormateada = $fechaHoy->format('Y-m-d');
 
@@ -544,10 +579,6 @@ class AdminController extends Controller
                 Maestros::insert($maestro);
                 return response()->json(['success'=> 'Usuario almacenado exitosamente']);
 
-            }else{
-
-                return response()->json(['errors' => "Usuario ya existente"],422);
-            }
 
 
 
@@ -569,6 +600,9 @@ class AdminController extends Controller
 
 
     public function EliminarMaestro($id){
+        if (!auth()->check()){
+            return redirect()->back();
+        }
         $user= User::where('Identificacion', $id)->first();
         $maestro = Maestros::find($id);
         if (!$user) {
@@ -602,7 +636,9 @@ class AdminController extends Controller
     }
 
     public function GuardarEstudiante(Request $request){
-
+        if (!auth()->check()){
+            return redirect()->back();
+        }
         if(empty($request->idform)){
             $verificar = Estudiante::find($request->identificador);
             $user= User::where('Identificacion', $request->identificador)->first();
@@ -612,7 +648,7 @@ class AdminController extends Controller
                     "ApellidoEstudiante"=>'required|string',
                     "Direccion"=>'required|string',
                     "Genero"=>'required',
-                    "identificador"=>'required|string',
+
                     "Clave"=>'required|string',
                     "Telefono"=>'required',
                 ];
@@ -638,14 +674,34 @@ class AdminController extends Controller
                     return response()->json(['errors' => "El campo teléfono debe contener 8 digitos"],422);
                 }
 
+                $empresa =[
+                    "Empresa"=>'numeric'
+                ];
+                $empresaVerify = Validator::make($request->all(),$empresa);
 
 
+                if ($empresaVerify->fails()) {
+                    return response()->json(['errors' => "El campo empresa debe ser seleccionado no escrito"],422);
+                }
 
 
+                if(empty($request->IdGrupo)){
+                    $verificar->update(['Direccion'=>$request->Direccion,'idEmpresa'=>$request->Empresa
+                        ,'idGenero'=>$request->Genero,'Estado'=>1,'Nombres'=>$request->NombreEstudiante,'Apellidos'=>$request->ApellidoEstudiante,
+                        'Telefono'=>$request->Telefono,'idGrupo'=>$request->IdGrupo]);
+                    $user->update(['password'=>md5($request->Clave)]);
+                    return response()->json(['success'=>'Estudiante actualizado exitosamente']);
+                }
+                $consulta = GrupoMaestro::where('Identificacion','=',$request->IdGrupo)->first();
 
+                if(!isset($consulta)){
+                    return response()->json(['errors' => "El grupo no existe"],422);
+                }
 
-                $verificar->update(['Identificacion'=>$request->identificador,'Direccion'=>$request->Direccion,'idEmpresa'=>$request->Empresa
-                    ,'idGenero'=>$request->Genero,'Estado'=>1,'Nombres'=>$request->NombreEstudiante,'Apellidos'=>$request->ApellidoEstudiante,'Telefono'=>$request->Telefono]);
+                $verificar->update(['Direccion'=>$request->Direccion,
+                    'idEmpresa'=>$request->Empresa,'idGenero'=>$request->Genero,
+                    'Estado'=>1,'Nombres'=>$request->NombreEstudiante,'Apellidos'=>$request->ApellidoEstudiante,
+                    'Telefono'=>$request->Telefono,'idGrupo'=>$request->IdGrupo]);
                 $user->update(['password'=>md5($request->Clave)]);
                 return response()->json(['success'=>'Estudiante actualizado exitosamente']);
 
@@ -658,7 +714,7 @@ class AdminController extends Controller
                     "ApellidoEstudiante"=>'required|string',
                     "Direccion"=>'required|string',
                     "Genero"=>'required',
-                    "identificador"=>'required|string',
+
                     "Telefono"=>'required',
                 ];
                 $cellphone =[
@@ -682,8 +738,33 @@ class AdminController extends Controller
                     return response()->json(['errors' => "El campo identificacion debe tener minimo 8 caracteres"],422);
                 }
 
-                $verificar->update(['Identificacion'=>$request->identificador,'Direccion'=>$request->Direccion,'idEmpresa'=>$request->Empresa
-                    ,'idGenero'=>$request->Genero,'Estado'=>1,'Nombres'=>$request->NombreEstudiante,'Apellidos'=>$request->ApellidoEstudiante,'Telefono'=>$request->Telefono]);
+                $empresa =[
+                    "Empresa"=>'numeric'
+                ];
+                $empresaVerify = Validator::make($request->all(),$empresa);
+
+
+                if ($empresaVerify->fails()) {
+                    return response()->json(['errors' => "El campo empresa debe ser seleccionado no escrito"],422);
+                }
+
+                if(empty($request->IdGrupo)){
+                    $verificar->update(['Direccion'=>$request->Direccion,'idEmpresa'=>$request->Empresa
+                        ,'idGenero'=>$request->Genero,'Estado'=>1,'Nombres'=>$request->NombreEstudiante,'Apellidos'=>$request->ApellidoEstudiante,
+                        'Telefono'=>$request->Telefono,'idGrupo'=>$request->IdGrupo]);
+                    return response()->json(['success'=>'Estudiante actualizado exitosamente']);
+                }
+                $consulta = GrupoMaestro::where('Identificacion','=',$request->IdGrupo)->first();
+
+
+                if(!isset($consulta)){
+                    return response()->json(['errors' => "El grupo no existe"],422);
+                }
+
+
+                $verificar->update(['Direccion'=>$request->Direccion,'idEmpresa'=>$request->Empresa
+                    ,'idGenero'=>$request->Genero,'Estado'=>1,'Nombres'=>$request->NombreEstudiante,'Apellidos'=>$request->ApellidoEstudiante,
+                    'Telefono'=>$request->Telefono,'idGrupo'=>$request->IdGrupo]);
                 return response()->json(['success'=>'Estudiante actualizado exitosamente']);
             }
 
@@ -730,6 +811,13 @@ class AdminController extends Controller
             $fechaHoy = Carbon::now();
             $fechaFormateada = $fechaHoy->format('Y-m-d');
 
+            $verifyUser = User::where('Identificacion','=',$request->identificador)->first();
+            if($verifyUser){
+                return response()->json(['errors' => "El usuario ya existe"],422);
+
+            }
+
+
             $usuario = ['Identificacion'=>$request->identificador,'password'=>md5($request->Clave)
                 ,'FechaCreacion'=>$fechaFormateada,'Estado'=>1,'IdRol'=>29];
             User::insert($usuario);
@@ -755,7 +843,9 @@ class AdminController extends Controller
     }
 
 public function EliminarEstudiante($id){
-
+    if (!auth()->check()){
+        return redirect()->back();
+    }
 
     $user= User::where('Identificacion', $id)->first();
     $estudiante = Estudiante::find($id);

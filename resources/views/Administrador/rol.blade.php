@@ -227,7 +227,7 @@
                             <thead>
                             <tr>
                                 <th>Opciones</th>
-                                <th>Id</th>
+
                                 <th>Nombre del Rol</th>
                                 <th>Estado</th>
 
@@ -239,7 +239,7 @@
                                 @if($rol->Estado == 1 )
 
                                     <tr>
-                                        @if($rol->Nombre != 'Estudiante')
+                                        @if($rol->IdRol > 29  )
                                         <td class="text-center">
 
                                             <button id="btnEditar" onclick="editar({{$rol}})" class="mr-1 btn btn-unan btn-circle">
@@ -401,12 +401,13 @@
 
                                         </td>
                                         @else
+
                                             <td class="alert alert-primary text-center">
                                             <p>Predeterminado</p>
                                             </td>
 
                                         @endif
-                                            <td>{{$rol->IdRol}}</td>
+
                                         <td>{{$rol->Nombre}}</td>
                                         @if($rol->Estado==1)
                                             <td>Activo</td>
@@ -454,7 +455,7 @@
                                 </tfoot>
                                 <tbody>
                                 @foreach($datos as $rol)
-                                @if($rol->Estado == 1 )
+                                @if($rol->Estado == 1  )
                                 <tr>
                                     <td>{{$rol->IdRol}}</td>
                                     <td>{{$rol->Nombre}}</td>

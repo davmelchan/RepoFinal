@@ -44,6 +44,19 @@ function realizarAccion(){
     let seleccion = document.getElementById("seleccion");
     let frmDescripcion = document.getElementById("frmDescripcion");
     let frmResponsable= document.getElementById("frmResponsable");
+    let miInput = document.getElementById('Telefono');
+
+    miInput.addEventListener('input', function() {
+        let valor = miInput.value;
+        if (valor.length > 8) {
+            miInput.value = valor.slice(0, 8); // Limita la longitud del texto a 10 caracteres
+        }
+
+        miInput.value = valor.replace(/\D/g, '');
+
+
+    });
+    let frmTelefono = document.getElementById('frmTelefono');
     if (checkbox){
         inputEmpresa.removeAttribute("hidden")
         inputEmpresa.setAttribute("required","required");
@@ -55,6 +68,8 @@ function realizarAccion(){
         frmDescripcion.setAttribute("required","required");
         frmResponsable.removeAttribute("hidden");
         frmResponsable.setAttribute("required","required");
+        frmTelefono.removeAttribute("hidden");
+        frmTelefono.setAttribute("required","required");
 
     }else{
         inputEmpresa.setAttribute("hidden","hidden");
@@ -62,12 +77,15 @@ function realizarAccion(){
         seleccion.setAttribute("required","required");
         frmDescripcion.setAttribute("hidden","hidden");
         frmResponsable.setAttribute("hidden","hidden");
+        frmTelefono.setAttribute("hidden","hidden");
         frmDescripcion.removeAttribute("required");
         frmResponsable.removeAttribute("required");
         inputEmpresa.removeAttribute("required");
+        frmTelefono.removeAttribute("required");
         $('#EmpresaName').val('');
         $('#Descripcion').val('');
         $('#Responsable').val('');
+        $('#Telefono').val('');
 
 
     }

@@ -414,6 +414,17 @@
                             </div>
                         </div>
 
+                        <div class="form-group" hidden="" id="frmTelefono">
+                            <label for="Telefono">Teléfono responsable:</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-phone"></i>
+                                </span>
+                                <input type="text" required class="form-control" minlength="8" maxlength="8" name="Telefono" id="Telefono">
+                            </div>
+                        </div>
+
+
                         <div class="form-group">
                             <label for="IdGrupo" class="col-form-label">Código del grupo:</label>
                             <div class="input-group">

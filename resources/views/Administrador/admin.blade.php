@@ -15,6 +15,14 @@
 
     <!-- Custom fonts for this template -->
     <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" sizes="192x192"  href="{{asset('favcon/android-icon-192x192.png')}} ">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{asset('favcon/favicon-32x32.png')}}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{asset('favcon/favicon-96x96.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('favcon/favicon-16x16.png')}}">
+    <link rel="manifest" href="{{asset('favcon/manifest.json')}}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{{asset('favcon/ms-icon-144x144.png')}} ">
+    <meta name="theme-color" content="#ffffff">
     {{--
     "../vendor/fontawesome-free/css/all.min.css"
     "../css/sb-admin-2.css"
@@ -277,7 +285,7 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-center text-gray-800">Maestros de prácticas de formación profesional</h1>
+                <h1 class="h3 mb-2 text-center text-gray-800">Usuarios del sistema de portafolio académico</h1>
 
                 <button id="btnUsuarios" class="btn btn-primary btn-icon-split my-3">
                         <span class="icon text-white-50">
@@ -298,7 +306,7 @@
                                 <thead>
                                 <tr>
                                     <th>Opciones</th>
-                                    <th>Identificacion</th>
+                                    <th>Identificación</th>
                                     <th>Nombres</th>
 
                                     <th>Apellidos</th>
@@ -313,40 +321,82 @@
                                 <tbody>
 
                                 @foreach($maestros as $maestro)
+
                                     @if($maestro->Estado==1)
-                                        <tr>    <td>
-                                                <button id="btnEditar" onclick="editar({{$maestro}},'{{$maestro->infoUsuario->rolUser->IdRol}}')" class="btn btn-unan btn-circle">
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                </button>
-                                                <button onclick="eliminar('{{route("teacher.destroy",":id")}}','{{$maestro->Identificacion }}')" class="btn btn-danger btn-circle">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
+                                        @if(!empty(session('datos')->first()->infoUser->Nombres))
+                                            <tr>
+                                                <td>
+                                                    <button id="btnEditar" onclick="editar({{$maestro}},'{{$maestro->infoUsuario->rolUser->IdRol}}')" class="btn btn-unan btn-circle">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                    <button onclick="eliminar('{{route("teacher.destroy",":id")}}','{{$maestro->Identificacion }}')" class="btn btn-danger btn-circle">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
 
 
-                                            </td>
-                                            <td>{{$maestro->Identificacion}}</td>
-                                            <td>{{$maestro->Nombres}} {{$maestro->Apellidos}}</td>
-                                            <td>{{$maestro->Apellidos}}</td>
-                                            <td>{{$maestro->especialidad}}</td>
-                                            <td>{{$maestro->Genero->Nombre}}</td>
-                                            @if(isset($maestro->FotoRuta))
-                                                <td>{{$maestro->FotoRuta}}</td>
-                                            @else
-                                                <td>Sin fotografia</td>
-                                            @endif
-                                            <td>{{$maestro->infoUsuario->rolUser->Nombre}}</td>
-                                            @if($maestro->Estado==1)
+                                                </td>
+                                                <td>{{$maestro->Identificacion}}</td>
+                                                <td>{{$maestro->Nombres}} {{$maestro->Apellidos}}</td>
+                                                <td>{{$maestro->Apellidos}}</td>
+                                                <td>{{$maestro->especialidad}}</td>
+                                                <td>{{$maestro->Genero->Nombre}}</td>
+                                                @if(isset($maestro->FotoRuta))
+                                                    <td>{{$maestro->FotoRuta}}</td>
+                                                @else
+                                                    <td>Sin fotografia</td>
+                                                @endif
+                                                <td>{{$maestro->infoUsuario->rolUser->Nombre}}</td>
+                                                @if($maestro->Estado==1)
 
-                                                <td>Activo</td>
-                                            @else
+                                                    <td>Activo</td>
+                                                @else
 
-                                                <td>No activo</td>
-                                            @endif
-
-
+                                                    <td>No activo</td>
+                                                @endif
 
 
-                                        </tr>
+
+
+                                            </tr>
+                                        @endif
+
+                                        @if(empty(session('datos')->first()->infoUser->Nombres))
+                                            <tr>
+                                                <td>
+                                                    <button id="btnEditar" onclick="editar({{$maestro}},'{{$maestro->infoUsuario->rolUser->IdRol}}')" class="btn btn-unan btn-circle">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                    <button onclick="eliminar('{{route("teacher.destroy",":id")}}','{{$maestro->Identificacion }}')" class="btn btn-danger btn-circle">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+
+
+                                                </td>
+                                                <td>{{$maestro->Identificacion}}</td>
+                                                <td>{{$maestro->Nombres}} {{$maestro->Apellidos}}</td>
+                                                <td>{{$maestro->Apellidos}}</td>
+                                                <td>{{$maestro->especialidad}}</td>
+                                                <td>{{$maestro->Genero->Nombre}}</td>
+                                                @if(isset($maestro->FotoRuta))
+                                                    <td>{{$maestro->FotoRuta}}</td>
+                                                @else
+                                                    <td>Sin fotografia</td>
+                                                @endif
+                                                <td>{{$maestro->infoUsuario->rolUser->Nombre}}</td>
+                                                @if($maestro->Estado==1)
+
+                                                    <td>Activo</td>
+                                                @else
+
+                                                    <td>No activo</td>
+                                                @endif
+
+
+
+
+                                            </tr>
+                                        @endif
+
                                     @endif
                                 @endforeach                                </tbody>
                             </table>
@@ -451,8 +501,13 @@
                                 <optgroup label="Roles">
                                     @foreach($roles as $rolito)
                                         @if($rolito->Estado==1)
+                                            @if($rolito->IdRol>1 && !empty(session('datos')->first()->infoUser->Nombres))
                                             <option value="{{$rolito->IdRol}}">{{$rolito->Nombre}}</option>
-                                        @endif
+                                            @endif
+                                                @if(empty(session('datos')->first()->infoUser->Nombres))
+                                                    <option value="{{$rolito->IdRol}}">{{$rolito->Nombre}}</option>
+                                                @endif
+                                            @endif
                                     @endforeach
                                 </optgroup>
                             </select>
@@ -475,7 +530,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" id="frmIdentificador">
                         <label for="identificador" class="col-form-label">Identificador:</label>
                         <div class="input-group">
                                 <span class="input-group-text">

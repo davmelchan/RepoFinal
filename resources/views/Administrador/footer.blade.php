@@ -21,3 +21,4 @@
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap4.min.js"></script>
 <script src="{{asset('js/sweetalert2.js')}}"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.11.5/i18n/Spanish.json"></script>

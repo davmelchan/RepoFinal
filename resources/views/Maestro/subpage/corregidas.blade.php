@@ -602,7 +602,19 @@
 
             var table = $('#miTabla').DataTable({
 
-                "scrollX": true
+                "scrollX": true,
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ registros por página",
+                    "zeroRecords": "Registros no encontrados",
+                    "info": "Mostrando páginas _PAGE_ de _PAGES_",
+                    "infoEmpty": "Información no disponible",
+                    "infoFiltered": "(filtered from _MAX_ total records)",
+                    "search": 'Buscar:',
+                    'paginate':{
+                        'next':'Siguiente',
+                        'previous':'Anterior'
+                    }
+                }
             });
 
 

@@ -518,16 +518,11 @@ use Illuminate\Support\Str;
                 }
                 $fechaInicio = Carbon::parse($request->Fechainicio);
                 $fechaFin = Carbon::parse($request->Fechafinal);
-                $diferenciaEnDias = $fechaInicio->diffInDays($fechaFin);
+
 
                 if($fechaInicio->greaterThan($fechaFin)){
                     return response()->json(['errors' => "El campo fecha de inicio debe ser menor al campo de fecha de finalización"],422);
                 }
-
-                if($diferenciaEnDias < 30 ){
-                    return response()->json(['errors' => "El tiempo de pasantía debe ser minimo de 30 dias"],422);
-                }
-
                 $nota=[
                     "Nota"=>'numeric|min:60|max:100'
                 ];

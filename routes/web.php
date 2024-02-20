@@ -169,7 +169,7 @@ Route::middleware(['auth','cache.headers:private'])->group(function(){
     Route::post('/config/{id}',[MaestroController::class,'ImagenConfig'])->name('ImgConfig');
 
 
-
+    Route::post('/Reportelistado/expediente',[MaestroController::class,'Expediente'])->name('descargar.documentos');
 
 
 
@@ -177,7 +177,7 @@ Route::middleware(['auth','cache.headers:private'])->group(function(){
 });
 
 
-Route::post('/Reportelistado/expediente',[MaestroController::class,'Expediente'])->name('descargar.documentos');
+
 
 
 

@@ -385,12 +385,12 @@
                     @csrf
 
                     <div class="form-group" hidden>
-                        <label for="IdEstudiante" class="col-form-label">Identificador:</label>
+                        <label for="EstudianteId" class="col-form-label">Identificador:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-user"></i>
                                 </span>
-                            <input type="text" class="form-control" id="IdEstudiante" name="IdEstudiante" >
+                            <input type="text" class="form-control" id="EstudianteId" name="EstudianteId" >
                         </div>
                     </div>
 
@@ -447,6 +447,35 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label for="HorasPracticas" class="col-form-label">Horas totales de la asignatura:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                   <i class="fa-solid fa-clock"></i>
+                                </span>
+                            <input type="number" id="HorasPracticas" name="HorasPracticas" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Depto" class="col-form-label">Departamento dirigido de este reporte:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                               <i class="fa-solid fa-briefcase"></i>
+                                </span>
+                            <input type="text" readonly="" class="form-control" id="Depto" name="Depto" value="DEPARTAMENTO DE CIENCIAS DE LA EDUCACIÓN" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Coordinador" class="col-form-label">Coordinador(a):</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                <i class="fa-solid fa-user"></i>
+                                </span>
+                            <input type="text" class="form-control" readonly="" id="Coordinador" name="Coordinador" value="Kenya Ortiz">
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label for="Observacion" class="col-form-label">Observación:</label>

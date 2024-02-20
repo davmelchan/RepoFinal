@@ -54,7 +54,7 @@ function crearReporte(id){
     mymodal.show();
     form.reset();
     btn.innerText="Guardar";
-    $('#IdEstudiante').val(id);
+    $('#EstudianteId').val(id);
     function actualizarContador() {
         var textarea = document.getElementById('Observacion');
         var contador = document.getElementById('contador');
@@ -75,12 +75,14 @@ function crearReporte(id){
 
 function editarReporte(id,info){
     mymodal.show();
-    $('#IdEstudiante').val(id);
+
+    $('#EstudianteId').val(id);
     $('#Area').val(info.Area);
     $('#RolAsignado').val(info.RolAsignado);
     $('#HoraEntrada').val(info.HoraEntrada);
     $('#HoraSalida').val(info.HoraSalida);
     $('#Observacion').val(info.Observacion);
+    $('#HorasPracticas').val(info.HorasPracticas);
     btn.innerText="Actualizar";
     function actualizarContador() {
         var textarea = document.getElementById('Observacion');

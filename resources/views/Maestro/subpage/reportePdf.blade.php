@@ -42,7 +42,7 @@
     <img src="{{asset('img/logoReporteunan.png')}}" class="imagen-container" width="33%" alt="Logotipo UNAN" >
     <div class="texto-container">
         <p class="text-right mb-0">CENTRO UNIVERSITARIO REGIONAL</p>
-        <p class="text-right mt-0">DEPARTAMENTO DE CIENCIAS DE LA EDUCACIÓN</p>
+        <p class="text-right mt-0">{{$infoReporte->Departamento}}</p>
 
 
     </div>
@@ -69,7 +69,7 @@
     de nuestra facultad, y quien ha finalizado sus Prácticas de formación Profesional en el centro de prácticas
     <strong>{{strtolower($consulta->Empresa->Nombre)}}</strong> donde realizo sus prácticas en el área de <strong>{{strtolower($infoReporte->Area)}}</strong>
     desempeñandose en funcion de <strong>{{strtolower($infoReporte->RolAsignado)}}</strong> cumpliendo sus asignaciones en un total
-        de 240 horas, mismas que fueron desarrolladas en un horario de <strong>{{strtolower($infoReporte->HoraEntrada)}}</strong> a <strong>{{strtolower($infoReporte->HoraSalida)}}</strong>
+        de {{$infoReporte->HorasPracticas}} horas, mismas que fueron desarrolladas en un horario de <strong>{{strtolower($infoReporte->HoraEntrada)}}</strong> a <strong>{{strtolower($infoReporte->HoraSalida)}}</strong>
     obteniendo una valoración de <strong>{{$empreEv->Nota}}%</strong> en conformidad del cumplimiento de sus asignaciones, realizada por el responsable del centro de práctica
         <strong>{{$consulta->Empresa->Responsable}}</strong> de igual manera se obtuvieron los siguientes parametros:</p>
 
@@ -100,7 +100,7 @@
 </div>
 <div style="color: black" class="row mt-4 ml-5 mr-5">
     <p class="text-center mb-0">__________________________</p>
-    <p class="text-center mb-0"><strong> Kenya Ortiz</strong></p>
+    <p class="text-center mb-0"><strong>{{$infoReporte->Coordinador}}</strong></p>
     <p class="text-center mb-0">Coordinador(a) de la carrera de ingles</p>
 </div>
 <footer class="mt-4">

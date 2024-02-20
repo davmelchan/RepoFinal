@@ -204,30 +204,41 @@ class MaestroController extends Controller
               "Area"=>'required|string',
               "RolAsignado"=>'required|string',
               "Observacion"=>'required|string',
+              "Depto"=>'required|string',
+              "Coordinador"=>'required|string',
+              "HorasPracticas"=>'required|numeric'
 
           ];
           $validacion = Validator::make($request->all(), $campo);
           if($validacion->fails()){
               return response()->json(['errors' => "Digite los campos vacios"],422);
           }
+          if($request->HorasPracticas < 0){
+              return response()->json(['errors' => "El campo Horas totales de la asignatura no puede ser negativo"],422);
+          }
 
-          $verify = Reportes::where('IdAlumno', $request->IdEstudiante)
+
+          $verify = Reportes::where('IdAlumno', $request->EstudianteId)
               ->where('IdMaestro',session('datos')->first()->Identificacion)
               ->first();
 
-          if(!$verify){
-              $supervision=['IdAlumno'=>$request->IdEstudiante, 'IdMaestro' =>$request->IdDocente
+
+          if(!isset($verify)){
+              $supervision=['IdAlumno'=>$request->EstudianteId, 'IdMaestro' =>$request->IdDocente
                   ,'HoraEntrada'=>$request->HoraEntrada,'HoraSalida'=>$request->HoraSalida,'Area'=>$request->Area
-                  ,'Observacion'=>$request->Observacion, 'RolAsignado'=>$request->RolAsignado];
+                  ,'Observacion'=>$request->Observacion, 'RolAsignado'=>$request->RolAsignado,'HorasPracticas'=>$request->HorasPracticas
+                  ,'Departamento'=> $request->Depto ,'Coordinador'=>$request->Coordinador];
 
               Reportes::insert($supervision);
 
               return response()->json(['success'=>'Reporte creado de manera exitosa']);
 
           }
-          $supervision=['IdAlumno'=>$request->IdEstudiante, 'IdMaestro' =>$request->IdDocente
+          $supervision=['IdMaestro' =>$request->IdDocente
               ,'HoraEntrada'=>$request->HoraEntrada,'HoraSalida'=>$request->HoraSalida,'Area'=>$request->Area
-              ,'Observacion'=>$request->Observacion, 'RolAsignado'=>$request->RolAsignado];
+              ,'Observacion'=>$request->Observacion, 'RolAsignado'=>$request->RolAsignado,
+              'HorasPracticas'=>$request->HorasPracticas
+              ,'Departamento'=> $request->Depto ,'Coordinador'=>$request->Coordinador];
           $verify->update($supervision);
           return response()->json(['success'=>'Reporte actualizado de manera exitosa']);
 

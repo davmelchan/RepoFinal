@@ -56,7 +56,7 @@
     <ul class="navbar-nav bg-unan sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('EstudianteView')}}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('maestro')}}">
             <div class="sidebar-brand-icon ">
                 <i class="fa-solid fa-briefcase"></i>
             </div>
@@ -292,7 +292,7 @@
                             </thead>
                             <tbody>
                             @foreach($evidencias as $evidencia)
-                                @if($evidencia->Estado==1)
+                                @if($evidencia->EvidenciasBusqueda->Estado==1)
                                     <tr>
                                         <td>{{$evidencia->EvidenciasBusqueda->Nombre}}</td>
                                         <td>{{$evidencia->EvidenciasBusqueda->Descripcion}}</td>

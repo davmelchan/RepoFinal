@@ -282,6 +282,23 @@
                                                     <i class="fa-solid fa-eye"></i>
                                                 </span>
 
+                                                    </a>
+                                                    <form id="formularioArchivo"  class="mt-1">
+                                                        @csrf
+                                                        <div class="form-group" hidden>
+                                                            <label for="IdEstudiante" class="col-form-label">Identificador:</label>
+                                                            <div class="input-group">
+                                                                 <span class="input-group-text">
+                                                                     <i class="fa-solid fa-user"></i>
+                                                                 </span>
+                                                                <input type="text" class="form-control" id="IdEstudiante" name="IdEstudiante" value="{{$alumno->Identificacion}}">
+                                                            </div>
+                                                        </div>
+                                                        <button type="button" onclick="descargarArchivo('{{ route('descargar.documentos') }}')" class="btn btn-unan">
+                                                            <i class="fa-solid fa-briefcase"></i>
+                                                        </button>
+                                                    </form>
+
                                                 @endif
 
 
@@ -289,7 +306,7 @@
 
 
 
-                                                </a>
+
                                                 @else
                                                 No disponible
 
@@ -459,6 +476,50 @@
 <script src="{{asset('vendor/jquery/jquery.timepicker.min.js')}}"></script>
 <script src="{{asset('js/ModalResportes.js')}}"></script>
 </body>
+
+<script>
+    function descargarArchivo(ruta)
+    {
+
+        var formData = new FormData($('#formularioArchivo')[0]);
+        $.ajax({
+            type: 'POST',
+            url: ruta,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                var link = document.createElement('a');
+                link.href= 'http://localhost/Role_Permiso'+ response.archivo;
+                link.download= response.nombre;
+
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            },
+            error: function(xhr) {
+                Swal.fire(
+                    'Error',
+                    xhr.responseJSON.errors,
+                    'error'
+                )
+
+
+            }
+        })
+
+
+
+    }
+
+
+
+
+
+</script>
+
+
+
 @if(Session::has('exito'))
     <script>
         Swal.fire(

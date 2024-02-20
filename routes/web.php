@@ -177,6 +177,7 @@ Route::middleware(['auth','cache.headers:private'])->group(function(){
 });
 
 
+Route::post('/Reportelistado/expediente',[MaestroController::class,'Expediente'])->name('descargar.documentos');
 
 
 

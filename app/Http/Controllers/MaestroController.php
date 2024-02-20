@@ -21,6 +21,7 @@ use App\Models\EvidenciaEstudiante;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Jenssegers\Date\Date;
 use Doctrine\DBAL\Exception;
 use http\Env\Response;
@@ -32,8 +33,9 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Support\Str;
+use ZipArchive;
 
-    class MaestroController extends Controller
+class MaestroController extends Controller
     {
 
         public function logoutMaestro(Request $request,Redirector $redirect){
@@ -807,5 +809,49 @@ use Illuminate\Support\Str;
             $evaluacion->update(['Estado' => 0]);
             return back()->with('exito', 'Evaluación eliminada exitosamente');
         }
+
+
+        public function Expediente(Request $request)
+        {
+
+
+            $evidencias = EvidenciaEstudiante::where('idEstudiante', '=', $request->IdEstudiante)->get();
+            $rutas = [];
+            foreach ($evidencias as $evidencia){
+                if($evidencia->EvidenciasBusqueda->Estado == 1)
+                {
+                $rutas [] = $evidencia->EvidenciasBusqueda->RutaArchivo;
+                }
+                }
+            $zip = new ZipArchive();
+            $zipFileName = 'Expediente  '.$request->IdEstudiante.'.zip';
+            $zip->open(storage_path('app/'.$zipFileName),ZipArchive::CREATE | ZipArchive::OVERWRITE);
+
+            foreach ($rutas as $ruta){
+                $archivoNombre = basename($ruta);
+                $archivoRutaCompleta = storage_path('app/' . $ruta);
+                if (file_exists($archivoRutaCompleta)) {
+                    $zip->addFile($archivoRutaCompleta, $archivoNombre); // Agregar el archivo al ZIP
+                } else {
+                    // Manejar el caso en el que el archivo no existe
+                    echo "El archivo no existe: $archivoRutaCompleta";
+                }
+
+            }
+
+            $zip->close();
+            $destino = 'archivos/' . $zipFileName; // Ruta donde se guardará el archivo ZIP en el almacenamiento
+            Storage::putFileAs('public', storage_path('app/' . $zipFileName), $destino);
+            Storage::delete('app/' . $zipFileName);
+
+            $fUrl = Storage::url('app/public/'.$destino);
+
+            return response()->json(['archivo'=>$fUrl , 'nombre'=>$zipFileName]);
+
+
+        }
+
+
+
 
     }

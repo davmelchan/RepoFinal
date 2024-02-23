@@ -78,7 +78,7 @@
         <!-- Nav Item - Pages Collapse Menu -->
         @foreach($secciones as $seccion)
             <!-- Nav Item - Pages Collapse Menu -->
-            @if(Route::currentRouteName() == $seccion->permisos->Ruta )
+            @if($seccion->permisos->Id == 46)
             <li class="nav-item active">
                 <a class="nav-link" href="{{route($seccion->permisos->Ruta)}}">
                     <i class="{{$seccion->permisos->Icono}}"></i>

@@ -142,7 +142,7 @@ Route::middleware(['Comprobar', 'cache.headers:private'])->group(function () {
     Route::post('/EstudianteView',[EstudianteController::class,'comprobar'])->name("Estudiante.corroborar");
     ///Vista
     Route::get('/EstudianteSupervision',[EstudianteController::class,'indexSupervision'])->name('Estudiante.Supervision');
-    Route::get('/EstudianteEvidencia/',[EstudianteController::class,'indexEvidencia'])->name('Estudiante.Evidencia');
+
    //Metodo
     Route::post('/EstudianteEvidencia',[EstudianteController::class,'GuardarEvidencia'])->name('Estudiante.EvidenciaSave');
     Route::delete('/EstudianteEvidencia/{id}',[EstudianteController::class,'EliminarEvidencia'])->name('Estudiante.EvidenciaDestroy');
@@ -156,6 +156,14 @@ Route::middleware(['Comprobar', 'cache.headers:private'])->group(function () {
     Route::post('/ValoracionCentro',[MaestroController::class,'notaCentro'])->name('Maestro.Guardar.NotaCentro');
 
     Route::post('/permisos', [AdminController::class, 'permisosView'])->name('Administrador.permisos.guardar');
+    Route::get('/ActividadesEstudiante/',[EstudianteController::class,'TrackerListado'])->name('Estudiante.Listado.Actividades');
+    Route::post('/ActividadGuardar/',[EstudianteController::class,'TrackerSave'])->name('Estudiante.Guardar.Actividad');
+    Route::post('/ActividadEliminar/{id}',[EstudianteController::class,'TrackerDestroy'])->name('Estudiante.destroy.Actividad');
+
+    Route::get('/EstudianteEvidencia1/{id}',[EstudianteController::class,'indexEvidencia'])->name('Estudiante.Evidencia1');
+
+
+    Route::get('/ActividadesView/{id}',[MaestroController::class,'TrackerListado'])->name('Maestro.Listado.Actividades');
 
 
 });
@@ -175,14 +183,6 @@ Route::middleware(['auth','cache.headers:private'])->group(function(){
 
 
 });
-
-Route::get('/ActividadesView/{id}',[MaestroController::class,'TrackerListado'])->name('Maestro.Listado.Actividades');
-
-Route::get('/ActividadesEstudiante/',[EstudianteController::class,'TrackerListado'])->name('Estudiante.Listado.Actividades');
-Route::post('/ActividadGuardar/',[EstudianteController::class,'TrackerSave'])->name('Estudiante.Guardar.Actividad');
-Route::post('/ActividadEliminar/{id}',[EstudianteController::class,'TrackerDestroy'])->name('Estudiante.destroy.Actividad');
-
-Route::get('/EstudianteEvidencia1/{id}',[EstudianteController::class,'indexEvidencia'])->name('Estudiante.Evidencia1');
 
 
 

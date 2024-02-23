@@ -96,12 +96,6 @@
 
         @endforeach
 
-        <li class="nav-item">
-            <a class="nav-link" href="{{route('Estudiante.Listado.Actividades')}}">
-                <i class="fa-solid fa-briefcase"></i>
-                <span>Evidencias</span></a>
-        </li>
-
         <!--  <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                 aria-expanded="true" aria-controls="collapsePages">

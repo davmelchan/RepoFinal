@@ -60,7 +60,7 @@
         <!-- Heading -->
 
         @foreach($secciones as $seccion)
-            @if($seccion->permisos->Id == 10 )
+            @if(Route::currentRouteName() == $seccion->permisos->Ruta )
                 <li class="nav-item active">
                     <a class="nav-link" href="{{route($seccion->permisos->Ruta)}}">
                         <i class="{{$seccion->permisos->Icono}}"></i>

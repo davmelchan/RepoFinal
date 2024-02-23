@@ -11,13 +11,17 @@ let titulo = document.getElementById('exampleModalLabel');
 let btnFormulario = document.getElementById('btnGuardar');
 
 
-btnSupervision.addEventListener('click',function(){
-   mymodal.show();
-   titulo.innerText="Agregar datos de la evidencia";
-   btnFormulario.innerText="Guardar";
-   formulario.reset();
+function evidenciafrm(trackid){
+    mymodal.show();
+    titulo.innerText="Agregar datos de la evidencia";
+    btnFormulario.innerText="Guardar";
+    formulario.reset();
+    $('#IdActividad').val(trackid);
 
-});
+
+}
+
+
 
 
 function guardarGrupo(ruta){
@@ -61,12 +65,12 @@ function guardarGrupo(ruta){
 
 }
 
-function editar(info){
+function editar(titulo,descripcion,fecha,evid,trackid){
     mymodal.show();
     titulo.innerText = 'Actualizar datos de la evidencia';
     btnFormulario.innerText = 'Actualizar';
 
-    var partes = info.Fecha.split('/');
+    var partes = fecha.split('/');
 
     // Obtener las partes de la fecha
     var año = partes[2];
@@ -77,10 +81,10 @@ function editar(info){
     var fechaFormateada = año + '-' + mes + '-' + día;
 
 
-
-    $('#IdEvidencia').val(info.idEvidencia);
-    $('#NombreEvidencia').val(info.Nombre);
-    $('#Descripcion').val(info.Descripcion);
+    $('#IdActividad').val(trackid);
+    $('#IdEvidencia').val(evid);
+    $('#NombreEvidencia').val(titulo);
+    $('#Descripcion').val(descripcion);
     $('#FechaAgregar').val(fechaFormateada);
 
 }

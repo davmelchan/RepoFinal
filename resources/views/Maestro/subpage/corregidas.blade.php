@@ -565,7 +565,7 @@
                     </fieldset>
 
                     <div class="form-group">
-                        <label for="Nota" class="col-form-label">Puntaje:</label>
+                        <label for="Nota" class="col-form-label">Nivel de satisfacción del responsable:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-scroll"></i>

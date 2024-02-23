@@ -12,6 +12,8 @@ use App\Models\Evidencias;
 use App\Models\GrupoxMaestro;
 use App\Models\RolesxPermisos;
 use App\Models\Supervisiones;
+use App\Models\Tracker;
+use App\Models\Tracker_Evidencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -178,19 +180,32 @@ class EstudianteController extends Controller
 
 
 
-    public function indexEvidencia(){
+    public function indexEvidencia($idTrack){
+        $trackId = $idTrack;
         $empresas = Empresa::all();
         $resultado = Estudiante::where('Identificacion', '=', session('datos')->first()->Identificacion)->first();
+        $evidencias = Db::table('Tracker_Evidencia')
+            ->join('Evidencias_Tb', function ($join){
+             $join->on('Tracker_Evidencia.EvidenciaId','=','Evidencias_Tb.idEvidencia')
+             ->where('Evidencias_Tb.Estado','=',1);
+            })
+        ->join('EvidenciasXEstudiante',function ($join1){
+            $join1->on('Evidencias_Tb.idEvidencia','=','EvidenciasXEstudiante.idEvidencia')
+                ->where('EvidenciasXEstudiante.idEstudiante','=',session('datos')->first()->Identificacion);
 
-        $rol = Session::get('rol');
-        $evidencias = EvidenciaEstudiante::where('idEstudiante','=', session('datos')->first()->Identificacion)->get();
-        foreach ($evidencias as $evidencia) {
-            $fecha = $evidencia->EvidenciasBusqueda->Fecha;
-            $evidencia->EvidenciasBusqueda->Fecha = Carbon::parse($fecha)->format('d/m/Y');
+        })->get();
+        foreach ($evidencias as $evidencia){
+            $nacimiento = $evidencia->Fecha;
+            $evidencia->Fecha = Carbon::parse($nacimiento)->format('d/m/Y');
+
 
         }
+
+
+        $rol = Session::get('rol');
+
         $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-        return view('Estudiante/estudianteEvidencia',compact('evidencias','empresas','secciones','resultado'));
+        return view('Estudiante/estudianteEvidencia',compact('evidencias','empresas','secciones','resultado','trackId'));
 
     }
     public function indexSupervision(){
@@ -343,7 +358,9 @@ class EstudianteController extends Controller
             $nuevoRegistro->save();
             $idRegistro = $nuevoRegistro->idEvidencia;
             $evidenciaAlumno = ['idEvidencia' => $idRegistro ,'idEstudiante'=>session('datos')->first()->Identificacion ,'Estado' => 1];
+            $evidenciaTracker = ['EvidenciaId'=>$idRegistro,'TrackerId'=>$request->IdActividad];
            EvidenciaEstudiante::insert($evidenciaAlumno);
+           Tracker_Evidencia::insert($evidenciaTracker);
            return response()->json(['success'=>'Evidencia almacenada exitosamente']);
 
         }
@@ -416,4 +433,98 @@ class EstudianteController extends Controller
 
     }
 
+    public function TrackerListado(){
+
+        $resultado = Estudiante::where('Identificacion', '=', session('datos')->first()->Identificacion)->first();
+        $Actividades = Tracker::where('IdEstudiante','=',session('datos')->first()->Identificacion)->get();
+        foreach ($Actividades as $actividad) {
+            $fechaNacimiento = $actividad->FechaInicio;
+            $actividad->FechaInicio = Carbon::parse($fechaNacimiento)->format('d/m/Y');
+
+            $fechafinal = $actividad->FechaFinalizacion;
+            $actividad->FechaFinalizacion = Carbon::parse($fechafinal)->format('d/m/Y');
+
+        }
+        $rol = Session::get('rol');
+        $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
+        return view('Estudiante/actividadesView',compact('Actividades','secciones','resultado'));
+
+    }
+
+    public function TrackerSave(Request $request){
+        if(empty($request->IdActividad)){
+        $campo=[
+
+            "Fechainicio"=>'required',
+            "Fechafinal"=>'required',
+            "TituloActividad"=>'required',
+            "Estado"=>'required'
+        ];
+        $vacios = Validator::make($request->all(),$campo);
+
+        if ($vacios->fails()) {
+            return response()->json(['errors' => "Digite lo espacios en blanco"],422);
+        }
+        $fechaInicio = Carbon::parse($request->Fechainicio);
+        $fechaFin = Carbon::parse($request->Fechafinal);
+
+
+        if($fechaInicio->greaterThan($fechaFin)){
+            return response()->json(['errors' => "El campo fecha de inicio debe ser menor al campo de fecha de finalización"],422);
+        }
+
+        $parametros =['Titulo'=>$request->TituloActividad,'Estado'=>$request->Estado,'Activo'=>1,
+            'IdEstudiante'=>$request->IdEstudiante,'FechaInicio'=>$fechaInicio,
+            'FechaFinalizacion'=>$fechaFin];
+
+        Tracker::insert($parametros);
+        return response()->json(['success'=>"Datos almacenados correctamente"]);
+        }
+
+        $campo=[
+
+            "Fechainicio"=>'required',
+            "Fechafinal"=>'required',
+            "TituloActividad"=>'required',
+            "Estado"=>'required'
+        ];
+        $vacios = Validator::make($request->all(),$campo);
+
+        if ($vacios->fails()) {
+            return response()->json(['errors' => "Digite lo espacios en blanco"],422);
+        }
+        $fechaInicio = Carbon::parse($request->Fechainicio);
+        $fechaFin = Carbon::parse($request->Fechafinal);
+
+
+        if($fechaInicio->greaterThan($fechaFin)){
+            return response()->json(['errors' => "El campo fecha de inicio debe ser menor al campo de fecha de finalización"],422);
+        }
+        $actualizacion = Tracker::where('IdTracker','=',$request->IdActividad)->first();
+        $parametros =['Titulo'=>$request->TituloActividad,'Estado'=>$request->Estado,'Activo'=>1,
+            'IdEstudiante'=>$request->IdEstudiante,'FechaInicio'=>$fechaInicio,
+            'FechaFinalizacion'=>$fechaFin];
+
+        $actualizacion->update($parametros);
+
+
+
+        return response()->json(['success'=>"Datos actualizados correctamente"]);
+
+
+
+    }
+
+    public function TrackerDestroy($id){
+
+
+        $verify = Tracker::where('IdTracker','=',$id)->first();
+        if(!$verify){
+            return response()->json(['errors' => "Actividad no encontrada"],422);
+
+        }
+        $verify->update(['Activo'=>0]);
+        return response()->json(['success'=>"Actividad eliminada correctamente"]);
+
+    }
 }

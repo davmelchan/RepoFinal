@@ -15,6 +15,7 @@ use App\Models\Maestros;
 use App\Models\Reportes;
 use App\Models\RolesxPermisos;
 use App\Models\Supervisiones;
+use App\Models\Tracker;
 use App\Models\Unidad;
 use App\Models\Estudiante;
 use App\Models\EvidenciaEstudiante;
@@ -370,25 +371,63 @@ class MaestroController extends Controller
 
         }
 
-        public function EvidenciaVista($id){
+    public function TrackerListado($id){
+        $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
+
+        $estudiante = Estudiante::where('Identificacion','=',$id)->first();
+        $Actividades = Tracker::where('IdEstudiante','=',$id)->get();
+        foreach ($Actividades as $actividad) {
+            $fechaNacimiento = $actividad->FechaInicio;
+            $actividad->FechaInicio = Carbon::parse($fechaNacimiento)->format('d/m/Y');
+
+            $fechafinal = $actividad->FechaFinalizacion;
+            $actividad->FechaFinalizacion = Carbon::parse($fechafinal)->format('d/m/Y');
+
+        }
+        $rol = Session::get('rol');
+        $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
+
+
+        return view('Maestro/subpage/TrackerView',compact('estudiante','Actividades','secciones'));
+
+    }
+
+
+
+
+    public function EvidenciaVista($id,$idActividad){
             $trap = Maestros::where('Identificacion','=',session('datos')->first()->Identificacion)->first();
 
             $consulta = Estudiante::where('Identificacion','=',$id)->first();
+            $company = $consulta->Empresa->Nombre;
             $verificacion = GrupoxMaestro::where('IdMaestro','=',session('datos')->first()->Identificacion)
                 ->where('IdGrupo','=',$consulta->idGrupo)
                 ->where('Estado','=',1)->first();
             if(empty($verificacion)){
                 return redirect()->back();
             }
-            $evidencias = EvidenciaEstudiante::where('idEstudiante','=', $id)->get();
-            foreach ($evidencias as $evidencia) {
-                $fecha = $evidencia->EvidenciasBusqueda->Fecha;
-                $evidencia->EvidenciasBusqueda->Fecha = Carbon::parse($fecha)->format('d/m/Y');
 
-            }
+        $evidencias = Db::table('Tracker_Evidencia')
+            ->join('Evidencias_Tb', function ($join){
+                $join->on('Tracker_Evidencia.EvidenciaId','=','Evidencias_Tb.idEvidencia')
+                    ->where('Evidencias_Tb.Estado','=',1);
+            })
+            ->join('EvidenciasXEstudiante',function ($join1) use ($id) {
+                $join1->on('Evidencias_Tb.idEvidencia','=','EvidenciasXEstudiante.idEvidencia')
+                    ->where('EvidenciasXEstudiante.idEstudiante','=',$id);
+
+            })->get();
+        foreach ($evidencias as $evidencia){
+            $nacimiento = $evidencia->Fecha;
+            $evidencia->Fecha = Carbon::parse($nacimiento)->format('d/m/Y');
+
+
+        }
+
+        $actid = $idActividad;
             $rol = Session::get('rol');
             $secciones = RolesXPermisos::where('Roles_id',$rol)->orderBy('Permisos_Id','asc')->get();
-            return view('Maestro/subpage/EvideciaView',compact('evidencias','secciones','trap'));
+            return view('Maestro/subpage/EvideciaView',compact('evidencias','secciones','trap','actid','company'));
 
         }
 
@@ -861,6 +900,14 @@ class MaestroController extends Controller
 
 
         }
+
+    public function ActividadesView($id){
+
+            $alumno=$id;
+            return view('Estudiante/actividadesView',compact('alumno'));
+
+
+    }
 
 
 

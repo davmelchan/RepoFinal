@@ -479,7 +479,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="IdGenero" class="col-form-label">Genero: </label>
+                        <label for="IdGenero" class="col-form-label">Género: </label>
                         <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-location-dot"></i>

@@ -38,7 +38,7 @@ function edicion(estudiante,empresa,maestro,inicio,final,nota){
     const btnModal = document.getElementById("btnModal");
     const TituloModal = document.getElementById("exampleModalLabel");
     const frm = document.getElementById("formulario-Correccion");
-    console.log(estudiante);
+
     mymodal2.show();
     $('#IdMaestro').val(estudiante);
     $('#IdEmpresa').val(empresa);

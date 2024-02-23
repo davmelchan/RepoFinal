@@ -252,9 +252,9 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
-                <h1 class="h3 mb-2 text-center text-gray-800">Evidencias realizadas en el centro de prácticas</h1>
+                <h1 class="h3  text-center text-gray-800">Evidencias realizadas en el centro de prácticas</h1>
 
-                <button id="btnEvidencia" class="btn btn-success btn-icon-split my-3">
+                <button onclick="evidenciafrm('{{$trackId}}')" class="btn btn-success btn-icon-split my-3">
                         <span class="icon text-white-50">
                             <i class="fas fa-fw fa-clipboard"></i>
                         </span>
@@ -264,7 +264,7 @@
 
 
                 <!-- DataTales Example -->
-                <div class="card shadow mb-4 mt-4">
+                <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">Lista de evidencias</h6>
                     </div>
@@ -285,15 +285,15 @@
                             </thead>
                             <tbody>
                             @foreach($evidencias as $evidencia)
-                                @if($evidencia->EvidenciasBusqueda->Estado==1)
+                            @if($evidencia->TrackerId == $trackId)
                             <tr>
-                                <td>{{$evidencia->EvidenciasBusqueda->Nombre}}</td>
-                                <td>{{$evidencia->EvidenciasBusqueda->Descripcion}}</td>
-                                <td>{{$evidencia->EvidenciasBusqueda->EvidenciasEstudiante->Nombre}}</td>
-                                <td>{{$evidencia->EvidenciasBusqueda->NombreArchivo}}</td>
-                                <td>{{$evidencia->EvidenciasBusqueda->Fecha}}</td>
+                                <td>{{$evidencia->Nombre}}</td>
+                                <td>{{$evidencia->Descripcion}}</td>
+                                <td>{{$resultado->Empresa->Nombre}}</td>
+                                <td>{{$evidencia->NombreArchivo}}</td>
+                                <td>{{$evidencia->Fecha}}</td>
                                 <td class="text-center">
-                                    <button id="btnEditar" onclick="editar({{$evidencia->EvidenciasBusqueda}})"  class="btn btn-unan btn-circle">
+                                    <button id="btnEditar" onclick="editar('{{$evidencia->Nombre}}','{{$evidencia->Descripcion}}','{{$evidencia->Fecha}}','{{$evidencia->idEvidencia}}','{{$trackId}}')"  class="btn btn-unan btn-circle">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
 
@@ -302,7 +302,7 @@
                                     <button onclick="eliminar('{{$evidencia->idEvidencia}}','{{route("Estudiante.EvidenciaDestroy",":id")}}')" class="btn btn-danger btn-circle">
                                         <i class="fas fa-trash"></i>
                                     </button>
-                                    <a href="{{asset(Storage::url($evidencia->EvidenciasBusqueda->RutaArchivo))}}" download="{{$evidencia->NombreArchivo}}" class="btn btn-success btn-circle">
+                                    <a href="{{asset(Storage::url($evidencia->RutaArchivo))}}" download="{{$evidencia->NombreArchivo}}" class="btn btn-success btn-circle">
                                         <i class="fa-solid fa-download"></i>
                                     </a>
 
@@ -311,8 +311,9 @@
 
                                 </td>
 
+
                             </tr>
-                                @endif
+                            @endif
                             @endforeach
                             </tbody>
 
@@ -364,6 +365,16 @@
                 <div id="errores"></div>
                 <form method="POST" id="formulario" action="{{route('Estudiante.EvidenciaSave')}}"  enctype="multipart/form-data">
                     @csrf
+                    <div class="form-group" hidden>
+                        <label for="IdActividad" class="col-form-label">Identificador:</label>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            <input type="text" class="form-control" id="IdActividad" name="IdActividad">
+                        </div>
+                    </div>
+
                     <div class="form-group" hidden>
                         <label for="IdEvidencia" class="col-form-label">Identificador:</label>
                         <div class="input-group">

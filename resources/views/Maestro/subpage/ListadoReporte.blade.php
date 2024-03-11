@@ -448,7 +448,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="HorasPracticas" class="col-form-label">Horas totales de la asignatura:</label>
+                        <label for="HorasPracticas" class="col-form-label">Horas totales :</label>
                         <div class="input-group">
                                 <span class="input-group-text">
                                    <i class="fa-solid fa-clock"></i>
@@ -511,13 +511,18 @@
     {
 
         var formData = new FormData($('#formularioArchivo')[0]);
+
+
+
         $.ajax({
             type: 'POST',
             url: ruta,
             data: formData,
             processData: false,
             contentType: false,
-            success: function(response) {
+            success: function (response) {
+                // Si la llamada es exitosa, puedes cerrar el modal, mostrar un mensaje, etc.
+
                 var link = document.createElement('a');
                 link.href= 'http://localhost/Role_Permiso'+ response.archivo;
                 link.download= response.nombre;
@@ -525,8 +530,10 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
+
+
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 Swal.fire(
                     'Error',
                     xhr.responseJSON.errors,
@@ -534,8 +541,13 @@
                 )
 
 
+
             }
         })
+
+
+
+
 
 
 

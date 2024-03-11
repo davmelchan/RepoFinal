@@ -469,7 +469,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="ApellidoMaestro" class="col-form-label">Apellidos del maestro:</label>
+                        <label for="ApellidoMaestro" class="col-form-label">Apellidos:</label>
                         <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-user"></i>

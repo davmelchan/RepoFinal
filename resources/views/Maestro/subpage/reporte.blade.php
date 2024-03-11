@@ -42,7 +42,7 @@
             <div class="sidebar-brand-icon ">
                 <i class="fa-solid fa-briefcase"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">Portafolio Academico</div>
+            <div class="sidebar-brand-text mx-3">Portafolio Académico</div>
         </a>
 
         <!-- Divider -->

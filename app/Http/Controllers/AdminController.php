@@ -352,10 +352,11 @@ class AdminController extends Controller
             return redirect()->back();
         }
         $empresa = Empresa::find($id);
-        $usuariosE = Estudiante::where('idEmpresa',$id)->where('Estado',1)->get();
+        $usuariosE = Estudiante::where('idEmpresa','=',$id)->where('Estado','=',1)->first();
         if (!$empresa) {
             return response()->json(["error"=>"Centro de práctica no encontrado"]);
         }
+
         if ($usuariosE->isNotEmpty()) {
             return response()->json(["error"=>"Centro de prácticas no se ha podido eliminar" ],500);
         }

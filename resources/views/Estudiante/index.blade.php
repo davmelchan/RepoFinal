@@ -220,6 +220,7 @@
                         <h6 class="m-0 font-weight-bold text-primary">Evaluaciones</h6>
                     </div>
                     <div class="card-body">
+                        <div class="table-responsive">
                         <table id="example" class="table table-striped table-bordered nowrap" style="width:100%">
                             <thead>
                             <tr>
@@ -265,7 +266,7 @@
 
                             </tbody>
                         </table>
-
+                        </div>
                     </div>
                 </div>
 

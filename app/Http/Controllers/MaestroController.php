@@ -156,6 +156,7 @@ class MaestroController extends Controller
                   ->join('Evidencias_Tb', 'EvidenciasXEstudiante.idEvidencia', '=', 'Evidencias_Tb.idEvidencia')
                   ->where('EvidenciasXEstudiante.idEstudiante', $id)
                   ->where('EvidenciasXEstudiante.Estado','=',1)
+                  ->where('Evidencias_Tb.Estado','=',1)
                   ->count();
           $conteoSupervision = Supervisiones::where('idEstudiante','=',$id)->where('idDocente','=',session('datos')->first()->Identificacion)
               ->where('Estado','=',1)->count();
@@ -864,39 +865,60 @@ class MaestroController extends Controller
         public function Expediente(Request $request)
         {
 
+            return response()->json(['errors'=>'Supervisión no encontrada',422]);
 
+
+
+        }
+        public function Expediente2(Request $request)
+        {
             $evidencias = EvidenciaEstudiante::where('idEstudiante', '=', $request->IdEstudiante)->get();
-            $rutas = [];
-            foreach ($evidencias as $evidencia){
-                if($evidencia->EvidenciasBusqueda->Estado == 1)
-                {
-                $rutas [] = $evidencia->EvidenciasBusqueda->RutaArchivo;
-                }
-                }
-            $zip = new ZipArchive();
-            $zipFileName = 'Expediente  '.$request->IdEstudiante.'.zip';
-            $zip->open(storage_path('app/'.$zipFileName),ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
-            foreach ($rutas as $ruta){
-                $archivoNombre = basename($ruta);
-                $archivoRutaCompleta = storage_path('app/' . $ruta);
-                if (file_exists($archivoRutaCompleta)) {
-                    $zip->addFile($archivoRutaCompleta, $archivoNombre); // Agregar el archivo al ZIP
-                } else {
-                    // Manejar el caso en el que el archivo no existe
-                    echo "El archivo no existe: $archivoRutaCompleta";
+            if(empty($evidencias) ){
+                return response()->json(['errors' => "No existen evidencias de este estudiante"],422);
+
+            }else{
+
+                $rutas = [];
+                foreach ($evidencias as $evidencia){
+                    if($evidencia->EvidenciasBusqueda->Estado == 1)
+                    {
+                        $rutas [] = $evidencia->EvidenciasBusqueda->RutaArchivo;
+                    }
                 }
+                if(empty($rutas)){
+                    return response()->json(['errors' => "No existen evidencias de este estudiante"],422);
+                }
+                $zip = new ZipArchive();
+                $zipFileName = 'Expediente  '.$request->IdEstudiante.'.zip';
+                $zip->open(storage_path('app/'.$zipFileName),ZipArchive::CREATE | ZipArchive::OVERWRITE);
+
+                foreach ($rutas as $ruta){
+                    $archivoNombre = basename($ruta);
+                    $archivoRutaCompleta = storage_path('app/' . $ruta);
+                    if (file_exists($archivoRutaCompleta)) {
+                        $zip->addFile($archivoRutaCompleta, $archivoNombre); // Agregar el archivo al ZIP
+                    } else {
+                        // Manejar el caso en el que el archivo no existe
+                        echo "El archivo no existe: $archivoRutaCompleta";
+                    }
+
+                }
+
+                $zip->close();
+                $destino = 'archivos/' . $zipFileName; // Ruta donde se guardará el archivo ZIP en el almacenamiento
+                Storage::putFileAs('public', storage_path('app/' . $zipFileName), $destino);
+                Storage::delete('app/' . $zipFileName);
+
+                $fUrl = Storage::url('app/public/'.$destino);
+
+                return response()->json(['archivo'=>$fUrl , 'nombre'=>$zipFileName]);
+
 
             }
 
-            $zip->close();
-            $destino = 'archivos/' . $zipFileName; // Ruta donde se guardará el archivo ZIP en el almacenamiento
-            Storage::putFileAs('public', storage_path('app/' . $zipFileName), $destino);
-            Storage::delete('app/' . $zipFileName);
 
-            $fUrl = Storage::url('app/public/'.$destino);
 
-            return response()->json(['archivo'=>$fUrl , 'nombre'=>$zipFileName]);
 
 
         }

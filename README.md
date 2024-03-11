@@ -97,3 +97,18 @@ Estos usuarios son los que tienen un rol importante para que se realicen los pro
 - El alumno no puede crear,editar o eliminar evaluaciones asignadas.
 - El alumno no puede   corregir y actualizar las evaluaciones corregidas.
 - El alumno no puede crear reportes.
+
+# Instalación del proyecto
+
+- Instalar composer link: https://getcomposer.org/
+
+- Instalar xampp link: https://www.apachefriends.org/download.html
+
+- Instalar Sistema Gestor de base de datos SQL Server 2022: https://www.microsoft.com/es-es/sql-server/sql-server-downloads
+
+- Instalar Visual Studio Code : https://code.visualstudio.com/
+
+- Restaurar base de datos que esta en el repositorio llamada: Script de la base de datos
+
+- Descargar el repositorio y despues descomprimir a la siguiente dirección del directorio de la computadora: C:\xampp\htdocs 
+
